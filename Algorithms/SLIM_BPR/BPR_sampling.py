@@ -18,12 +18,12 @@ class BPR_Sampling(object):
         Sample a user that has viewed at least one and not all items
         :return: user_id
         """
-        while (True):
+        while True:
 
             user_id = np.random.randint(0, self.n_users)
             numSeenItems = self.URM_train[user_id].nnz
 
-            if (numSeenItems > 0 and numSeenItems < self.n_items):
+            if numSeenItems > 0 and numSeenItems < self.n_items:
                 return user_id
 
     def sampleItemPair(self, user_id):

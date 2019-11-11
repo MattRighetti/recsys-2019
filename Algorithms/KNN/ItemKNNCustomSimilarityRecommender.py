@@ -6,9 +6,8 @@ Created on 23/10/17
 @author: Maurizio Ferrari Dacrema
 """
 
-import numpy as np
 from Algorithms.Base.Recommender_utils import check_matrix, similarityMatrixTopK
-from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseSimilarityMatrixRecommender
+from Algorithms.Base import BaseSimilarityMatrixRecommender
 
 
 class ItemKNNCustomSimilarityRecommender(BaseSimilarityMatrixRecommender):

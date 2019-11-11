@@ -7,7 +7,6 @@ Created on 14/06/18
 """
 
 from Algorithms.Base.BaseMatrixFactorizationRecommender import BaseMatrixFactorizationRecommender
-from Algorithms.Base.Recommender_utils import check_matrix
 
 from sklearn.utils.extmath import randomized_svd
 import scipy.sparse as sps

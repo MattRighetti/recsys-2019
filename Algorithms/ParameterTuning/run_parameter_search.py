@@ -12,17 +12,17 @@ Created on 22/11/17
 ##########                                                  ##########
 ######################################################################
 from Algorithms.Base.NonPersonalizedRecommender import TopPop, Random, GlobalEffects
-from Algorithms.KNN.UserKNNCFRecommender import UserKNNCFRecommender
-from Algorithms.KNN.ItemKNNCFRecommender import ItemKNNCFRecommender
-from Algorithms.SLIM_BPR.Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
-from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import SLIMElasticNetRecommender
-from Algorithms.GraphBased.P3alphaRecommender import P3alphaRecommender
-from Algorithms.GraphBased.RP3betaRecommender import RP3betaRecommender
+from Algorithms.KNN import UserKNNCFRecommender
+from Algorithms.KNN import ItemKNNCFRecommender
+from Algorithms.SLIM_BPR.Cython import SLIM_BPR_Cython
+from Algorithms.SLIM_ElasticNet import SLIMElasticNetRecommender
+from Algorithms.GraphBased import P3alphaRecommender
+from Algorithms.GraphBased import RP3betaRecommender
 from Algorithms.MatrixFactorization.Cython.MatrixFactorization_Cython import MatrixFactorization_BPR_Cython, \
     MatrixFactorization_FunkSVD_Cython, MatrixFactorization_AsySVD_Cython
-from Algorithms.MatrixFactorization.PureSVDRecommender import PureSVDRecommender
-from Algorithms.MatrixFactorization.IALSRecommender import IALSRecommender
-from Algorithms.MatrixFactorization.NMFRecommender import NMFRecommender
+from Algorithms.MatrixFactorization import PureSVDRecommender
+from Algorithms.MatrixFactorization import IALSRecommender
+from Algorithms.MatrixFactorization import NMFRecommender
 
 ######################################################################
 ##########                                                  ##########

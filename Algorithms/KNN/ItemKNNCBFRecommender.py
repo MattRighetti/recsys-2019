@@ -7,7 +7,7 @@ Created on 23/10/17
 """
 
 from Algorithms.Base.Recommender_utils import check_matrix
-from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseSimilarityMatrixRecommender
+from Algorithms.Base import BaseSimilarityMatrixRecommender
 from Algorithms.Base.IR_feature_weighting import okapi_BM_25, TF_IDF
 import numpy as np
 

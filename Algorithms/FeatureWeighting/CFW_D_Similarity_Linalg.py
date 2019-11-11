@@ -14,8 +14,8 @@ from scipy.sparse import linalg
 
 from Algorithms.Base import BaseRecommender
 from Algorithms.Base.Recommender_utils import check_matrix
-from Algorithms.Base.Similarity.Compute_Similarity import Compute_Similarity
-from Algorithms.Base.SimilarityMatrixRecommender import SimilarityMatrixRecommender
+from Algorithms.Base.Similarity import Compute_Similarity
+from Algorithms.Base import SimilarityMatrixRecommender
 
 
 class CFW_D_Similarity_Linalg(SimilarityMatrixRecommender, BaseRecommender):

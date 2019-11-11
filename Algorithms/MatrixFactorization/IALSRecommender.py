@@ -4,8 +4,8 @@ Created on 23/03/2019
 @author: Maurizio Ferrari Dacrema
 """
 
-from Algorithms.Base.BaseMatrixFactorizationRecommender import BaseMatrixFactorizationRecommender
-from Algorithms.Base.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
+from Algorithms.Base import BaseMatrixFactorizationRecommender
+from Algorithms.Base import Incremental_Training_Early_Stopping
 from Algorithms.Base.Recommender_utils import check_matrix
 import numpy as np
 
