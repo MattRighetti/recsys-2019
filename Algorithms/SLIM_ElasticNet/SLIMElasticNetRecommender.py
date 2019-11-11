@@ -193,7 +193,7 @@ class MultiThreadSLIM_ElasticNet(SLIMElasticNetRecommender, BaseSimilarityMatrix
             positive_only=True,
             topK=100,
             workers=multiprocessing.cpu_count()):
-        assert l1_ratio >= 0 and l1_ratio <= 1, "SLIM_ElasticNet: l1_ratio must be between 0 and 1, provided value was {}".format(
+        assert 0 <= l1_ratio <= 1, "SLIM_ElasticNet: l1_ratio must be between 0 and 1, provided value was {}".format(
             l1_ratio)
 
         self.l1_ratio = l1_ratio
