@@ -7,3 +7,5 @@ class ItemBasedCollaborativeFiltering(object):
     """
     def __init__(self):
         print("ItemBasedCF Created")
+
+    
