@@ -47,5 +47,3 @@ class ItemBasedCollaborativeFiltering(object):
         scores[user_profile] = -np.inf
 
         return scores
-
-recommender = ItemBasedCollaborativeFiltering()
