@@ -1,7 +1,6 @@
 import numpy as np
 from scipy.sparse import csr_matrix
-
-from Algorithms.Notebooks_utils.Compute_Similarity_Python import Compute_Similarity_Python
+from Algorithms.Base.Similarity.Compute_Similarity_Python import Compute_Similarity_Python
 
 class ItemBasedCollaborativeFiltering(object):
     """

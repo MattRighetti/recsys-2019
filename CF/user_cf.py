@@ -1,5 +1,5 @@
 import numpy as np
-from Algorithms.Notebooks_utils.Compute_Similarity_Python import Compute_Similarity_Python
+from Algorithms.Base.Similarity.Compute_Similarity_Python import Compute_Similarity_Python
 
 
 class UserBasedCollaborativeFiltering(object):
@@ -14,11 +14,7 @@ class UserBasedCollaborativeFiltering(object):
         self.shrink = shrink
 
     def fit(self, normalize=True, similarity="cosine"):
-        similarity_object = Compute_Similarity_Python(self.URM.T,
-                                                      self.shrink,
-                                                      self.topK,
-                                                      normalize=normalize,
-                                                      similarity=similarity)
+        similarity_object = Compute_Similarity_Python(self.URM.T, self.shrink, self.topK, normalize=normalize, similarity=similarity)
         # Compute the similarity matrix (express with a score the similarity between two items
         self.W_sparse = similarity_object.compute_similarity()
 
