@@ -43,7 +43,7 @@ class TestGen(object):
     """
     This class generates URM_train & URM_test matrices
     """
-    def __init__(self, filePath, targetPath, train_perc=0.8):
+    def __init__(self, filePath, targetPath):
         self.dataReader = DataReader(filePath, targetPath)
         self.URM_all_csr = self.dataReader.URM_CSR()
         evaluator = Evaluator()
