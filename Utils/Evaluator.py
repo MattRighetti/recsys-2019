@@ -1,5 +1,7 @@
 import numpy as np
 import scipy.sparse as sps
+from random import seed
+from random import randint
 
 class Evaluator(object):
     def __init__(self):
@@ -28,14 +30,13 @@ class Evaluator(object):
 
             if values_in_row == 1:
                 train_mask = np.append(train_mask, [True])
-            else:
+            elif values_in_row != 0:
                 # Now values_in_row-1 must be True, 1 must be False
                 # Remove last interaction
-                for i in range(values_in_row):
-                    if i == values_in_row - 1:
-                        train_mask = np.append(train_mask, [False])
-                    else:
-                        train_mask = np.append(train_mask, [True])
+                sub_arr = np.array([True] * (values_in_row - 1) + [False])
+                np.random.shuffle(sub_arr)
+                train_mask = np.append(train_mask, sub_arr)
+
 
         train_mask = train_mask.astype(bool)
         test_mask = np.logical_not(train_mask)
