@@ -60,7 +60,7 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
         print()
 
 
-def evaluate_algorithm(URM_test, recommender_object, at=5):
+def evaluate_algorithm(URM_test, recommender_object, at=10):
     cumulative_precision = 0.0
     cumulative_recall = 0.0
     cumulative_MAP = 0.0
