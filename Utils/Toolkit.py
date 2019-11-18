@@ -3,10 +3,12 @@ import scipy.sparse as sps
 from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
 from Utils.Evaluator import Evaluator
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
+from Algorithms.SLIM_BPR.SLIM_BPR import SLIM_BPR
 from CF.item_cf import ItemBasedCollaborativeFiltering
 from CF.user_cf import UserBasedCollaborativeFiltering
 import matplotlib.pyplot as pyplot
-from multiprocessing import Process, Value, Array
+from multiprocessing import Process, Array
+
 
 class DataReader(object):
     """
@@ -141,6 +143,18 @@ class Tester(object):
             self.MAP_Shrink = []
             for shrink in arrayShrink:
                 self.evaluateAndAppend(self.MAP_Shrink, recommender, shrink, kind="shrink")
+
+    def evaluateSLIM_BPR(self, epoch=1, lambda_i=0.025, lambda_j=0.025, learning_rate=0.05):
+        MAP_array = []
+        recommender = SLIM_BPR(URM_train=self.testGen.URM_train, lambda_i=lambda_i, lambda_j=lambda_j, learning_rate=learning_rate)
+        recommender.fit(epochs=epoch)
+
+        result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
+        MAP_array.append(result_dict["MAP"])
+
+        map_result = result_dict['MAP']
+        print("{} -> MAP: {:.4f}\t".format(self.kind, map_result))
+
 
 
     def evaluateAndAppend(self, MAP_array, recommender, value, kind="shrink", boost=False, index=None):
