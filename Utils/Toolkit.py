@@ -1,6 +1,7 @@
 import pandas as pd
 import scipy.sparse as sps
 from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
+from Utils.Evaluator import Evaluator
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
 from CF.item_cf import ItemBasedCollaborativeFiltering
 from CF.user_cf import UserBasedCollaborativeFiltering
@@ -43,7 +44,9 @@ class TestGen(object):
     def __init__(self, filePath, targetPath, train_perc=0.8):
         self.dataReader = DataReader(filePath, targetPath)
         self.URM_all_csr = self.dataReader.URM_CSR()
-        self.URM_train, self.URM_test = train_test_holdout(self.URM_all_csr, train_perc=train_perc)
+        evaluator = Evaluator()
+        self.URM_train, self.URM_test = evaluator.leave_one_out(self.URM_all_csr)
+        # self.URM_train, self.URM_test = train_test_holdout(self.URM_all_csr, train_perc=train_perc)
 
     def get_dataReader(self):
         return self.dataReader
