@@ -5,6 +5,7 @@ from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
 from CF.item_cf import ItemBasedCollaborativeFiltering
 from CF.user_cf import UserBasedCollaborativeFiltering
 import matplotlib.pyplot as pyplot
+from multiprocessing import Process, Value, Array
 
 class DataReader(object):
     """
@@ -58,8 +59,8 @@ class Tester(object):
         self.MAP_TopK = []
         self.MAP_Shrink = []
 
-    def evaluateTopKs(self, arrayTopK=None, def_shrink=20):
-        self.MAP_TopK = []
+    def evaluateTopKs(self, arrayTopK=None, def_shrink=20, boost=False):
+        self.MAP_TopK = Array('d', 4)
         self.arrayTopK = arrayTopK
         recommender = None
 
@@ -68,17 +69,28 @@ class Tester(object):
         elif self.kind == "item_cf":
             recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=None, shrink=def_shrink)
 
-        for topK in arrayTopK:
-            recommender.set_topK(topK)
-            recommender.fit()
+        if boost:
 
-            result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
-            self.MAP_TopK.append(result_dict["MAP"])
-            print(f'MAP: {result_dict["MAP"]} with TopK = {recommender.get_topK()} '
-                  f'& Shrink = {recommender.get_shrink()}')
+            processes = []
+            counter = 0
 
-    def evaluateShrink(self, arrayShrink=None, def_topK=20):
-        self.MAP_Shrink = []
+            for shrink in arrayTopK:
+                p = Process(target=self.evaluateAndAppend,
+                            args=[self.MAP_TopK, recommender, shrink, "top_k", True, counter])
+                p.start()
+                processes.append(p)
+                counter += 1
+
+            for process in processes:
+                process.join()
+
+        else:
+            self.MAP_TopK = []
+            for shrink in arrayTopK:
+                self.evaluateAndAppend(self.MAP_TopK, recommender, shrink, kind="top_k")
+
+    def evaluateShrink(self, arrayShrink=None, def_topK=20, boost=False):
+        self.MAP_Shrink = Array('d', 4)
         self.arrayShrink = arrayShrink
         recommender = None
 
@@ -87,27 +99,84 @@ class Tester(object):
         elif self.kind == "item_cf":
             recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=def_topK, shrink=None)
 
-        for shrink in arrayShrink:
-            recommender.set_shrink(shrink)
-            recommender.fit()
+        if boost:
 
-            result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
-            self.MAP_Shrink.append(result_dict["MAP"])
-            map_result = result_dict['MAP']
-            print("{} -> MAP: {:.4f} with TopK = {} "
-                  "& Shrink = {}".format(self.kind, map_result, recommender.get_topK(), recommender.get_shrink()))
+            processes = []
+            counter = 0
+
+            for shrink in arrayShrink:
+                p = Process(target=self.evaluateAndAppend,
+                            args=[self.MAP_Shrink, recommender, shrink, "shrink", True, counter])
+
+                p.start()
+                processes.append(p)
+                counter += 1
+
+            for process in processes:
+                process.join()
+
+        else:
+            self.MAP_Shrink = []
+            for shrink in arrayShrink:
+                self.evaluateAndAppend(self.MAP_Shrink, recommender, shrink, kind="shrink")
+
+
+    def evaluateAndAppend(self, MAP_array, recommender, value, kind="shrink", boost=False, index=None):
+
+        if kind == "shrink":
+            recommender.set_shrink(value)
+        elif kind == "top_k":
+            recommender.set_topK(value)
+
+        recommender.fit()
+
+        result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
+
+        if boost:
+            MAP_array[index] = result_dict["MAP"]
+        else:
+            MAP_array.append(result_dict["MAP"])
+
+        map_result = result_dict['MAP']
+        print("{} -> MAP: {:.4f} with TopK = {} "
+              "& Shrink = {}\t".format(self.kind, map_result, recommender.get_topK(), recommender.get_shrink()))
 
     def evaluate(self, topK, shrink):
         recommender = None
 
         if self.kind == "user_cf":
-            recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
+            recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK, shrink)
         elif self.kind == "item_cf":
-            recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
+            recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK, shrink)
+
+        recommender.fit()
 
         result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
-        print(f'MAP: {result_dict["MAP"]} with TopK = {recommender.get_topK()} '
-              f'& Shrink = {recommender.get_shrink()}')
+        map_result = result_dict['MAP']
+        print("{} -> MAP: {:.4f} with TopK = {} "
+              "& Shrink = {}\t".format(self.kind, map_result, recommender.get_topK(), recommender.get_shrink()))
+
+    def multiProcEvaluateShrink(self, arrayShrink=None, def_topK=20):
+        processes = []
+
+        for shrink in arrayShrink:
+            p = Process(target=self.evaluate, args=[def_topK, shrink])
+            p.start()
+            processes.append(p)
+
+        for process in processes:
+            process.join()
+
+    def multiProcEvaluateTopK(self, arrayTopK=None, def_shrink=20):
+        processes = []
+
+        for topK in arrayTopK:
+            p = Process(target=self.evaluate, args=[topK, def_shrink])
+            p.start()
+            processes.append(p)
+
+        for process in processes:
+            process.join()
 
     def plotShrink(self):
         pyplot.plot(self.arrayShrink, self.MAP_Shrink)
