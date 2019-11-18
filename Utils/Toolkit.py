@@ -45,6 +45,25 @@ class TestGen(object):
         self.URM_all_csr = self.dataReader.URM_CSR()
         self.URM_train, self.URM_test = train_test_holdout(self.URM_all_csr, train_perc=train_perc)
 
+    def get_dataReader(self):
+        return self.dataReader
+
+
+class RecommenderGenerator(object):
+    def __init__(self, testGen):
+        self.recommender = None
+        self.testGen = testGen
+
+    def setKind(self, kind, topK, shrink):
+        if kind == "user_cf":
+            self.recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
+        elif kind == "item_cf":
+            self.recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
+
+    def get_recommender(self):
+        if self.recommender is not None:
+            return self.recommender
+
 
 class Tester(object):
     """
@@ -196,20 +215,17 @@ class OutputFile(object):
     This class will write to an output file a matrix of arrays (our data)
     """
     def __init__(self, outputFilePath):
-        self.outputFile = open(outputFilePath, 'w')
+        self.outputFile = outputFilePath
 
-    def writeLine(self, user_id, user_rec_array):
-        self.outputFile.write(f'{user_id},'
-                              f'{user_rec_array[0]} '
-                              f'{user_rec_array[1]} '
-                              f'{user_rec_array[2]} '
-                              f'{user_rec_array[3]} '
-                              f'{user_rec_array[4]} '
-                              f'{user_rec_array[5]} '
-                              f'{user_rec_array[6]} '
-                              f'{user_rec_array[7]} '
-                              f'{user_rec_array[8]} '
-                              f'{user_rec_array[9]}\n')
+    def write_output(self, fittedRecommender, testGen):
+        file = open(self.outputFile, "w")
+        file.write("user_id,item_list\n")
 
-    def closeFile(self):
-        self.outputFile.close()
+        dataReader = testGen.get_dataReader()
+
+        for user_id in dataReader.targetUsersList:
+            recommendations = fittedRecommender.recommend(user_id, at=10)
+            array_string = " ".join(str(x) for x in recommendations)
+            file.write(f'{user_id},{array_string}\n')
+
+        file.close()
