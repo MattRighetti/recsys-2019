@@ -9,7 +9,7 @@ Created on 06/07/2018
 import sys
 import time
 
-from Utils.seconds_to_biggest_unit import seconds_to_biggest_unit
+from Algorithms.Utils.seconds_to_biggest_unit import seconds_to_biggest_unit
 
 
 class Incremental_Training_Early_Stopping(object):

@@ -6,12 +6,12 @@ Created on 07/09/17
 @author: Maurizio Ferrari Dacrema
 """
 
-from Base.Recommender_utils import check_matrix
-from Base.BaseSimilarityMatrixRecommender import BaseSimilarityMatrixRecommender
-from Base.Recommender_utils import similarityMatrixTopK
-from Base.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
+from Algorithms.Base.Recommender_utils import check_matrix
+from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseSimilarityMatrixRecommender
+from Algorithms.Base.Recommender_utils import similarityMatrixTopK
+from Algorithms.Base.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
 
-from CythonCompiler.run_compile_subprocess import run_compile_subprocess
+from Algorithms.CythonCompiler.run_compile_subprocess import run_compile_subprocess
 import os, sys
 
 
@@ -72,7 +72,7 @@ class SLIM_BPR_Cython(BaseSimilarityMatrixRecommender, Incremental_Training_Earl
             **earlystopping_kwargs):
 
         # Import compiled module
-        from SLIM_BPR.Cython.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
+        from Algorithms.SLIM_BPR.Cython.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
 
         self.symmetric = symmetric
         self.train_with_sparse_weights = train_with_sparse_weights
