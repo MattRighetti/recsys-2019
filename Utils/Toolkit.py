@@ -4,6 +4,7 @@ from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
 from CF.item_cf import ItemBasedCollaborativeFiltering
 from CF.user_cf import UserBasedCollaborativeFiltering
+import matplotlib.pyplot as pyplot
 
 class DataReader(object):
     """
@@ -52,28 +53,73 @@ class Tester(object):
     def __init__(self, testGen, kind="user_cf"):
         self.testGen = testGen
         self.kind = kind
+        self.arrayShrink = []
+        self.arrayTopK = []
+        self.MAP_TopK = []
+        self.MAP_Shrink = []
 
     def evaluateTopKs(self, arrayTopK=None, def_shrink=20):
-        Map_values = []
+        self.MAP_TopK = []
+        self.arrayTopK = arrayTopK
         recommender = None
 
         if self.kind == "user_cf":
-            for topK in arrayTopK:
-                self.evaluateRecommender()
-
+            recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=None, shrink=def_shrink)
         elif self.kind == "item_cf":
-            for topK in arrayTopK:
-                recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=def_shrink)
-                recommender.fit()
+            recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=None, shrink=def_shrink)
 
-
-        result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
-        Map_values.append(result_dict["MAP"])
-
-    def evaluateRecommender(self, recommender, topK, shrink):
-            recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=def_shrink)
+        for topK in arrayTopK:
+            recommender.set_topK(topK)
             recommender.fit()
 
+            result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
+            self.MAP_TopK.append(result_dict["MAP"])
+            print(f'MAP: {result_dict["MAP"]} with TopK = {recommender.get_topK()} '
+                  f'& Shrink = {recommender.get_shrink()}')
+
+    def evaluateShrink(self, arrayShrink=None, def_topK=20):
+        self.MAP_Shrink = []
+        self.arrayShrink = arrayShrink
+        recommender = None
+
+        if self.kind == "user_cf":
+            recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=def_topK, shrink=None)
+        elif self.kind == "item_cf":
+            recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=def_topK, shrink=None)
+
+        for shrink in arrayShrink:
+            recommender.set_shrink(shrink)
+            recommender.fit()
+
+            result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
+            self.MAP_Shrink.append(result_dict["MAP"])
+            map_result = result_dict['MAP']
+            print("{} -> MAP: {:.4f} with TopK = {} "
+                  "& Shrink = {}".format(self.kind, map_result, recommender.get_topK(), recommender.get_shrink()))
+
+    def evaluate(self, topK, shrink):
+        recommender = None
+
+        if self.kind == "user_cf":
+            recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
+        elif self.kind == "item_cf":
+            recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
+
+        result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
+        print(f'MAP: {result_dict["MAP"]} with TopK = {recommender.get_topK()} '
+              f'& Shrink = {recommender.get_shrink()}')
+
+    def plotShrink(self):
+        pyplot.plot(self.arrayShrink, self.MAP_Shrink)
+        pyplot.ylabel('MAP')
+        pyplot.xlabel('Shrink')
+        pyplot.show()
+
+    def plotTopK(self):
+        pyplot.plot(self.arrayTopK, self.MAP_TopK)
+        pyplot.ylabel('MAP')
+        pyplot.xlabel('TopK')
+        pyplot.show()
 
 
 class OutputFile(object):

@@ -8,6 +8,7 @@ Created on 21/10/2018
 
 import numpy as np
 import scipy.sparse as sps
+import time
 
 
 def precision(is_relevant, relevant_items):
@@ -36,6 +37,28 @@ def MAP(is_relevant, relevant_items):
 
     return map_score
 
+# Print iterations progress
+def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
+    """
+    Call in a loop to create terminal progress bar
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        prefix      - Optional  : prefix string (Str)
+        suffix      - Optional  : suffix string (Str)
+        decimals    - Optional  : positive number of decimals in percent complete (Int)
+        length      - Optional  : character length of bar (Int)
+        fill        - Optional  : bar fill character (Str)
+        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
+    """
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end = printEnd)
+    # Print New Line on Complete
+    if iteration == total:
+        print()
+
 
 def evaluate_algorithm(URM_test, recommender_object, at=5):
     cumulative_precision = 0.0
@@ -48,10 +71,10 @@ def evaluate_algorithm(URM_test, recommender_object, at=5):
 
     n_users = URM_test.shape[0]
 
+    printProgressBar(0, n_users, prefix='Evaluation:', suffix='Complete', length=50)
     for user_id in range(n_users):
+        printProgressBar(user_id, n_users, prefix = 'Evaluation:', suffix = 'Complete', length = 50)
 
-        if user_id % 10000 == 0:
-            print("Evaluated user {} of {}".format(user_id, n_users))
 
         start_pos = URM_test.indptr[user_id]
         end_pos = URM_test.indptr[user_id + 1]
@@ -72,8 +95,8 @@ def evaluate_algorithm(URM_test, recommender_object, at=5):
     cumulative_recall /= num_eval
     cumulative_MAP /= num_eval
 
-    print("Recommender performance is: Precision = {:.4f}, Recall = {:.4f}, MAP = {:.4f}".format(
-        cumulative_precision, cumulative_recall, cumulative_MAP))
+    #print("Recommender performance is: Precision = {:.4f}, Recall = {:.4f}, MAP = {:.4f}".format(
+    # cumulative_precision, cumulative_recall, cumulative_MAP))
 
     result_dict = {
         "precision": cumulative_precision,

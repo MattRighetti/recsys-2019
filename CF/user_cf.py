@@ -8,10 +8,25 @@ class UserBasedCollaborativeFiltering(object):
     """
 
     def __init__(self, URM, topK, shrink):
-        print("UserBasedCF created!")
         self.URM = URM
         self.topK = topK
         self.shrink = shrink
+        self.W_sparse = None
+
+    def set_URM(self, URM):
+        self.URM = URM
+
+    def set_topK(self, topK):
+        self.topK = topK
+
+    def set_shrink(self, shrink):
+        self.shrink = shrink
+
+    def get_topK(self):
+        return self.topK
+
+    def get_shrink(self):
+        return self.shrink
 
     def fit(self, normalize=True, similarity="cosine"):
         similarity_object = Compute_Similarity_Python(self.URM.T, self.shrink, self.topK, normalize=normalize, similarity=similarity)
