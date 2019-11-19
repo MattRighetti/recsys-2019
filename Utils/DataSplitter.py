@@ -94,6 +94,38 @@ class DataSplitter(object):
 
         return self.apply_mask(train_mask)
 
+    def force_leave_k_out(self, k):
+        """
+        Leave K Out that removed k elements from row in dataset, if a row has less values
+        than K then everything is removed from train mask and put in test matrix
+        :param k:
+        :return:
+        """
+        train_mask = np.array([])
+
+        num_us_with_k = 0
+        num_us_not_k = 0
+
+        for row in range(len(self.indptr_array) - 1):
+            values_in_row = self.indptr_array[row + 1] - self.indptr_array[row]
+
+            if values_in_row <= k:
+                # REMOVE ALL FROM TRAIN
+                rand_arr = np.array([False] * values_in_row)
+                train_mask = np.append(train_mask, rand_arr)
+                num_us_not_k += 1
+            elif values_in_row != 0:
+                # Now values_in_row-1 must be True, 1 must be False
+                # Remove last interaction
+                sub_arr = np.array([True] * (values_in_row - k) + [False] * k)
+                np.random.shuffle(sub_arr)
+                train_mask = np.append(train_mask, sub_arr)
+                num_us_with_k += 1
+
+        print(f'\rUsers with more than {k} interactions: {num_us_with_k}, not {num_us_not_k}\r')
+
+        return self.apply_mask(train_mask)
+
     def k_fold(self, k):
 
         train_mask = np.array([])

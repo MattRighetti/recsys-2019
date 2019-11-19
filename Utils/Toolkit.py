@@ -1,3 +1,5 @@
+from enum import Enum
+
 import pandas as pd
 import os
 import datetime
@@ -41,14 +43,26 @@ class DataReader(object):
     def URM_CSC(self):
         return self.URM_COO().tocsc()
 
+class TestSplit(Enum):
+    LEAVE_ONE_OUT = 1
+    LEAVE_K_OUT = 2
+    FORCE_LEAVE_K_OUT = 3
+
 class TestGen(object):
     """
     This class generates URM_train & URM_test matrices
     """
-    def __init__(self):
+
+    def __init__(self, test=TestSplit.FORCE_LEAVE_K_OUT, k=10):
         self.dataReader = DataReader()
         self.URM_all_csr = self.dataReader.URM_CSR()
-        self.URM_train, self.URM_test = DataSplitter(self.URM_all_csr).leave_k_out(10)
+
+        if test is TestSplit.FORCE_LEAVE_K_OUT:
+            self.URM_train, self.URM_test = DataSplitter(self.URM_all_csr).force_leave_k_out(k)
+        elif test is TestSplit.LEAVE_K_OUT:
+            self.URM_train, self.URM_test = DataSplitter(self.URM_all_csr).leave_k_out(k)
+        elif test is TestSplit.LEAVE_ONE_OUT:
+            self.URM_train, self.URM_test = DataSplitter(self.URM_all_csr).leave_one_out()
 
     def get_dataReader(self):
         return self.dataReader
@@ -219,14 +233,14 @@ class Tester(object):
         map_result = result_dict['MAP']
         print("{} -> MAP: {:.4f}\t".format(self.kind, map_result))
 
-    def evaluate_HYB(self, userCF_w, itemCF_w):
+    def evaluate_HYB(self, userCF_w, itemCF_w, test_value=""):
         recommender = HybridRecommender(self.testGen.URM_train)
         recommender.fit(userCF_w=userCF_w, itemCF_w=itemCF_w)
 
         result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
 
         map_result = result_dict['MAP']
-        print("{} -> MAP: {:.4f}, UserCF_weight: {}, ItemCFweight: {}".format(self.kind, map_result, userCF_w, itemCF_w))
+        print("HYB -> MAP: {:.4f}, UserCF_weight: {}, ItemCFweight: {}, TestGen: {}".format(map_result, userCF_w, itemCF_w, test_value))
 
     def evaluateAndAppend(self, MAP_array, recommender, value, kind="shrink", boost=False, index=None):
 
