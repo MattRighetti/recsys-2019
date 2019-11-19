@@ -82,6 +82,7 @@ class Tester(object):
         self.arrayTopK = []
         self.MAP_TopK = []
         self.MAP_Shrink = []
+        self.MAP_Shrink_TopK = []
 
     def evaluateTopKs(self, arrayTopK=None, def_shrink=20, boost=False):
         self.MAP_TopK = Array('d', 4)
@@ -144,6 +145,42 @@ class Tester(object):
             for shrink in arrayShrink:
                 self.evaluateAndAppend(self.MAP_Shrink, recommender, shrink, kind="shrink")
 
+    def evaluateTopK_Shrink_Mixed(self, arrayTopKs, arrayShrinks, boost=False):
+        length = len(arrayTopKs)*len(arrayShrinks)
+        self.MAP_Shrink_TopK = Array('d', length)
+        self.arrayShrink = arrayShrinks
+        self.arrayTopK = arrayTopKs
+
+        if self.kind == "user_cf":
+            recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=None, shrink=None)
+        elif self.kind == "item_cf":
+            recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=None, shrink=None)
+
+        if boost:
+            processes = []
+            counter = 0
+
+            for shrink in arrayShrinks:
+                for topK in arrayTopKs:
+                    p = Process(target=self.evaluateAndAppend,
+                                args=[self.MAP_Shrink_TopK, recommender, [topK, shrink], "both", True, counter])
+                    counter += 1
+                    processes.append(p)
+
+            for process in processes:
+                process.start()
+
+            for process in processes:
+                process.join()
+
+
+        else:
+            self.MAP_Shrink_TopK = []
+            for topK in arrayTopKs:
+                for shrink in arrayShrinks:
+                    self.evaluateAndAppend(self.MAP_Shrink_TopK, recommender, shrink, topK)
+
+
     def evaluateSLIM_BPR(self, epoch=1, lambda_i=0.025, lambda_j=0.025, learning_rate=0.05):
         MAP_array = []
         recommender = SLIM_BPR(URM_train=self.testGen.URM_train, lambda_i=lambda_i, lambda_j=lambda_j, learning_rate=learning_rate)
@@ -170,6 +207,9 @@ class Tester(object):
             recommender.set_shrink(value)
         elif kind == "top_k":
             recommender.set_topK(value)
+        elif kind == "both":
+            recommender.set_topK(value[0])
+            recommender.set_shrink(value[1])
 
         recommender.fit()
 

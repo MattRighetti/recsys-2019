@@ -6,4 +6,4 @@ targetFile = "./data/alg_sample_submission.csv"
 testGen = TestGen(filePath, targetFile)
 tester = Tester(testGen, kind="user_cf")
 
-tester.evaluateTopKs([10, 20], def_shrink=20, boost=True)
+tester.evaluateTopK_Shrink_Mixed([10, 20], [700, 720, 730, 760], boost=True)
