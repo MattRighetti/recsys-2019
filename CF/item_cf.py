@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.sparse import csr_matrix
 from Algorithms.Base.Similarity.Compute_Similarity_Python import Compute_Similarity_Python
+from Algorithms.Notebooks_utils.Cosine_Similarity_Cython import Cosine_Similarity
 
 class ItemBasedCollaborativeFiltering(object):
     """
@@ -29,7 +30,10 @@ class ItemBasedCollaborativeFiltering(object):
         return self.shrink
 
     def fit(self, normalize=True, similarity='cosine'):
-        similarity_object = Compute_Similarity_Python(self.URM, self.topK, self.shrink, normalize=normalize, similarity=similarity)
+        if similarity == 'cosine':
+            similarity_object = Cosine_Similarity(self.URM, self.topK)
+        else:
+            similarity_object = Compute_Similarity_Python(self.URM, self.topK, self.shrink, normalize=normalize, similarity=similarity)
 
         self.W_sparse = similarity_object.compute_similarity()
 
