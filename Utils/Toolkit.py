@@ -1,7 +1,8 @@
 import pandas as pd
+import numpy as np
 import scipy.sparse as sps
 from HYB.hybrid import HybridRecommender
-from Utils.Evaluator import Evaluator
+from Utils.DataSplitter import DataSplitter
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
 from Algorithms.SLIM_BPR.SLIM_BPR import SLIM_BPR
 from CF.item_cf import ItemBasedCollaborativeFiltering
@@ -46,9 +47,7 @@ class TestGen(object):
     def __init__(self, filePath, targetPath):
         self.dataReader = DataReader(filePath, targetPath)
         self.URM_all_csr = self.dataReader.URM_CSR()
-        evaluator = Evaluator()
-        self.URM_train, self.URM_test = evaluator.leave_one_out(self.URM_all_csr)
-        # self.URM_train, self.URM_test = train_test_holdout(self.URM_all_csr, train_perc=train_perc)
+        self.URM_train, self.URM_test = DataSplitter(self.URM_all_csr).leave_k_out(10)
 
     def get_dataReader(self):
         return self.dataReader
@@ -192,14 +191,14 @@ class Tester(object):
         map_result = result_dict['MAP']
         print("{} -> MAP: {:.4f}\t".format(self.kind, map_result))
 
-    def evaluate_HYB(self):
+    def evaluate_HYB(self, userCF_w, itemCF_w):
         recommender = HybridRecommender(self.testGen.URM_train)
-        recommender.fit(userCBF_w=0.34, itemCBF_w=0.66)
+        recommender.fit(userCF_w=userCF_w, itemCF_w=itemCF_w)
 
         result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
 
         map_result = result_dict['MAP']
-        print("{} -> MAP: {:.4f}".format(self.kind, map_result))
+        print("{} -> MAP: {:.4f}, UserCF_weight: {}, ItemCFweight: {}".format(self.kind, map_result, userCF_w, itemCF_w))
 
     def evaluateAndAppend(self, MAP_array, recommender, value, kind="shrink", boost=False, index=None):
 
