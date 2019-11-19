@@ -7,8 +7,8 @@ class HybridRecommender(object):
     def __init__(self, URM_train):
         self.URM_train = URM_train
 
-        self.userCF = UserBasedCollaborativeFiltering(self.URM_train.copy(), topK=10, shrink=500)
-        self.itemCF = ItemBasedCollaborativeFiltering(self.URM_train.copy(), topK=20, shrink=10)
+        self.userCF = UserBasedCollaborativeFiltering(self.URM_train.copy(), topK=7, shrink=700)
+        self.itemCF = ItemBasedCollaborativeFiltering(self.URM_train.copy(), topK=20, shrink=100)
 
         self.itemCF.fit()
         self.userCF.fit(similarity="pearson")

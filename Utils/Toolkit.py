@@ -80,6 +80,9 @@ class RecommenderGenerator(object):
         if self.recommender is not None:
             return self.recommender
 
+    def setTopK(self, topK):
+        self.recommender.set_topK(topK)
+
     def initUserCF(self, topK=None, shrink=None):
         self.recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
         return self.get_recommender()
@@ -126,6 +129,8 @@ class Tester(object):
         elif self.kind == "item_cf":
             recommender = RecommenderGenerator(self.testGen).initItemCF()
 
+        recommender.set_shrink(def_shrink)
+
         if boost:
             processes = []
             counter = 0
@@ -161,6 +166,8 @@ class Tester(object):
             recommender = RecommenderGenerator(self.testGen).initUserCF()
         elif self.kind == "item_cf":
             recommender = RecommenderGenerator(self.testGen).initItemCF()
+
+        recommender.set_topK(def_topK)
 
         if boost:
             processes = []

@@ -40,7 +40,7 @@ class DataSplitter(object):
         self.URM_train = self.URM_train.tocsr()
         self.URM_test = self.URM_test.tocsr()
 
-        print(f'data in train: {len(self.URM_train.data)}, in test: {len(self.URM_test.data)}')
+        #print(f'data in train: {len(self.URM_train.data)}, in test: {len(self.URM_test.data)}')
 
         return self.URM_train, self.URM_test
 
@@ -90,7 +90,7 @@ class DataSplitter(object):
                 train_mask = np.append(train_mask, sub_arr)
                 num_us_with_k += 1
 
-        print(f'\rUsers with more than {k} interactions: {num_us_with_k}, not {num_us_not_k}\r')
+        #print(f'\rUsers with more than {k} interactions: {num_us_with_k}, not {num_us_not_k}\r')
 
         return self.apply_mask(train_mask)
 
@@ -122,7 +122,7 @@ class DataSplitter(object):
                 train_mask = np.append(train_mask, sub_arr)
                 num_us_with_k += 1
 
-        print(f'\rUsers with more than {k} interactions: {num_us_with_k}, not {num_us_not_k}\r')
+        #print(f'\rUsers with more than {k} interactions: {num_us_with_k}, not {num_us_not_k}\r')
 
         return self.apply_mask(train_mask)
 
