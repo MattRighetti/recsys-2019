@@ -1,6 +1,5 @@
 from CF.user_cf import UserBasedCollaborativeFiltering
 from CF.item_cf import ItemBasedCollaborativeFiltering
-from multiprocessing import Process
 import numpy as np
 
 class HybridRecommender(object):

@@ -1,5 +1,6 @@
 import pandas as pd
-import numpy as np
+import os
+import datetime
 import scipy.sparse as sps
 from HYB.hybrid import HybridRecommender
 from Utils.DataSplitter import DataSplitter
@@ -15,17 +16,17 @@ class DataReader(object):
     """
     This class will read the URM_train and the Target_users files and will generate every URM that we'll need
     """
-    def __init__(self, filePath, targetPath):
-        self.filePath = filePath
-        self.targetPath = targetPath
+    def __init__(self):
+        self.data_train_file_path = "./data/data_train.csv"
+        self.user_target_file_path = "./data/alg_sample_submission.csv"
         self.userList = []
         self.itemList = []
         self.ratingList = []
         self.targetUsersList = []
 
-    def URM(self):
-        df = pd.read_csv(self.filePath)
-        target_df = pd.read_csv(self.targetPath)
+    def URM_COO(self):
+        df = pd.read_csv(self.data_train_file_path)
+        target_df = pd.read_csv(self.user_target_file_path)
 
         self.ratingList = list(df['data'])
         self.userList = list(df['row'])
@@ -35,17 +36,17 @@ class DataReader(object):
         return sps.coo_matrix((self.ratingList, (self.userList, self.itemList)))
 
     def URM_CSR(self):
-        return self.URM().tocsr()
+        return self.URM_COO().tocsr()
 
     def URM_CSC(self):
-        return self.URM().tocsc()
+        return self.URM_COO().tocsc()
 
 class TestGen(object):
     """
     This class generates URM_train & URM_test matrices
     """
-    def __init__(self, filePath, targetPath):
-        self.dataReader = DataReader(filePath, targetPath)
+    def __init__(self):
+        self.dataReader = DataReader()
         self.URM_all_csr = self.dataReader.URM_CSR()
         self.URM_train, self.URM_test = DataSplitter(self.URM_all_csr).leave_k_out(10)
 
@@ -54,20 +55,31 @@ class TestGen(object):
 
 
 class RecommenderGenerator(object):
+    """
+    Factory of Recommenders
+    """
     def __init__(self, testGen):
         self.recommender = None
         self.testGen = testGen
-
-    def setKind(self, kind, topK, shrink):
-        if kind == "user_cf":
-            self.recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
-        elif kind == "item_cf":
-            self.recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
 
     def get_recommender(self):
         if self.recommender is not None:
             return self.recommender
 
+    def initUserCF(self, topK=None, shrink=None):
+        self.recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
+        return self.get_recommender()
+
+    def initItemCF(self, topK=None, shrink=None):
+        self.recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
+        return self.get_recommender()
+
+    def initHybrid(self):
+        self.recommender = HybridRecommender(self.testGen.URM_train)
+        return self.get_recommender()
+
+    def initSLIM_BPR(self):
+        self.recommender = SLIM_BPR(self.testGen.URM_train)
 
 class Tester(object):
     """
@@ -84,23 +96,29 @@ class Tester(object):
         self.MAP_Shrink_TopK = []
 
     def evaluateTopKs(self, arrayTopK=None, def_shrink=20, boost=False):
+        """
+        CollaborativeRecommenders only
+        :param arrayTopK: array of topK values to evaluate
+        :param def_shrink: value of shrink value to be used in the evaluation
+        :param boost: parameter that's going to activate multiprocessing if set to true
+        :return: None
+        """
         self.MAP_TopK = Array('d', 4)
         self.arrayTopK = arrayTopK
         recommender = None
 
         if self.kind == "user_cf":
-            recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=None, shrink=def_shrink)
+            recommender = RecommenderGenerator(self.testGen).initUserCF()
         elif self.kind == "item_cf":
-            recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=None, shrink=def_shrink)
+            recommender = RecommenderGenerator(self.testGen).initItemCF()
 
         if boost:
-
             processes = []
             counter = 0
 
-            for shrink in arrayTopK:
+            for topK in arrayTopK:
                 p = Process(target=self.evaluateAndAppend,
-                            args=[self.MAP_TopK, recommender, shrink, "top_k", True, counter])
+                            args=[self.MAP_TopK, recommender, topK, "top_k", True, counter])
                 p.start()
                 processes.append(p)
                 counter += 1
@@ -110,21 +128,27 @@ class Tester(object):
 
         else:
             self.MAP_TopK = []
-            for shrink in arrayTopK:
-                self.evaluateAndAppend(self.MAP_TopK, recommender, shrink, kind="top_k")
+            for topK in arrayTopK:
+                self.evaluateAndAppend(self.MAP_TopK, recommender, topK, kind="top_k")
 
     def evaluateShrink(self, arrayShrink=None, def_topK=20, boost=False):
+        """
+        CollaborativeRecommenders only
+        :param arrayShrink: array of shrink values to evaluate
+        :param def_topK: default topK to be used in the evaluation
+        :param boost: parameter that's going to activate multiprocessing if set to true
+        :return: None
+        """
         self.MAP_Shrink = Array('d', 4)
         self.arrayShrink = arrayShrink
         recommender = None
 
         if self.kind == "user_cf":
-            recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=def_topK, shrink=None)
+            recommender = RecommenderGenerator(self.testGen).initUserCF()
         elif self.kind == "item_cf":
-            recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=def_topK, shrink=None)
+            recommender = RecommenderGenerator(self.testGen).initItemCF()
 
         if boost:
-
             processes = []
             counter = 0
 
@@ -145,15 +169,19 @@ class Tester(object):
                 self.evaluateAndAppend(self.MAP_Shrink, recommender, shrink, kind="shrink")
 
     def evaluateTopK_Shrink_Mixed(self, arrayTopKs, arrayShrinks, boost=False):
+        """
+        Permutation of both the arrays and evaluation
+        """
         length = len(arrayTopKs)*len(arrayShrinks)
         self.MAP_Shrink_TopK = Array('d', length)
         self.arrayShrink = arrayShrinks
         self.arrayTopK = arrayTopKs
+        recommender = None
 
         if self.kind == "user_cf":
-            recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=None, shrink=None)
+            recommender = RecommenderGenerator(self.testGen).initUserCF()
         elif self.kind == "item_cf":
-            recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=None, shrink=None)
+            recommender = RecommenderGenerator(self.testGen).initUserCF()
 
         if boost:
             processes = []
@@ -277,11 +305,17 @@ class OutputFile(object):
     """
     This class will write to an output file a matrix of arrays (our data)
     """
-    def __init__(self, outputFilePath):
-        self.outputFile = outputFilePath
+    def __init__(self):
+        self.outputFile = self.create_unique_file()
 
     def write_output(self, fittedRecommender, testGen):
-        file = open(self.outputFile, "w")
+        """
+        Create a new file and writes to it
+        :param fittedRecommender: recommender already fitted
+        :param testGen:
+        :return:
+        """
+        file = open(self.outputFile, "w+")
         file.write("user_id,item_list\n")
 
         dataReader = testGen.get_dataReader()
@@ -292,3 +326,17 @@ class OutputFile(object):
             file.write(f'{user_id},{array_string}\n')
 
         file.close()
+
+    def create_unique_file(self):
+        """
+        Creates filename
+        :return: New random filename file_out_day_hour_minute_second.csv
+        """
+        current_date = datetime.datetime.now()
+        folder_path = "./output"
+
+        file_name = f'file_out_{current_date.day}_{current_date.hour}_{current_date.minute}_{current_date.second}.csv'
+
+        print(file_name)
+
+        return os.path.join(folder_path, file_name)
