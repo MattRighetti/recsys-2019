@@ -5,6 +5,7 @@ Created on 07/09/17
 
 @author: Maurizio Ferrari Dacrema
 """
+from abc import ABC
 
 from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseSimilarityMatrixRecommender
@@ -49,11 +50,11 @@ class SLIM_BPR_Cython(BaseSimilarityMatrixRecommender, Incremental_Training_Earl
 
         super(SLIM_BPR_Cython, self).__init__(URM_train)
 
-        assert free_mem_threshold >= 0.0 and free_mem_threshold <= 1.0, "SLIM_BPR_Recommender: free_mem_threshold must be between 0.0 and 1.0, provided was '{}'".format(
+        assert 0.0 <= free_mem_threshold <= 1.0, "SLIM_BPR_Recommender: free_mem_threshold must be between 0.0 and 1.0, provided was '{}'".format(
             free_mem_threshold)
 
         self.n_users, self.n_items = self.URM_train.shape
-
+        self.symmetric = None
         self.free_mem_threshold = free_mem_threshold
 
         if recompile_cython:

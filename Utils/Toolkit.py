@@ -1,6 +1,6 @@
 import pandas as pd
 import scipy.sparse as sps
-from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
+from HYB.hybrid import HybridRecommender
 from Utils.Evaluator import Evaluator
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
 from Algorithms.SLIM_BPR.SLIM_BPR import SLIM_BPR
@@ -155,7 +155,14 @@ class Tester(object):
         map_result = result_dict['MAP']
         print("{} -> MAP: {:.4f}\t".format(self.kind, map_result))
 
+    def evaluate_HYB(self):
+        recommender = HybridRecommender(self.testGen.URM_train)
+        recommender.fit(userCBF_w=2, itemCBF_w=5)
 
+        result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
+
+        map_result = result_dict['MAP']
+        print("{} -> MAP: {:.4f}".format(self.kind, map_result))
 
     def evaluateAndAppend(self, MAP_array, recommender, value, kind="shrink", boost=False, index=None):
 
