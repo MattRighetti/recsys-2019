@@ -157,7 +157,7 @@ class Tester(object):
 
     def evaluate_HYB(self):
         recommender = HybridRecommender(self.testGen.URM_train)
-        recommender.fit(userCBF_w=2, itemCBF_w=5)
+        recommender.fit(userCBF_w=0.34, itemCBF_w=0.66)
 
         result_dict = evaluate_algorithm(self.testGen.URM_test, recommender)
 

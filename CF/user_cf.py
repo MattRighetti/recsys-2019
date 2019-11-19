@@ -45,6 +45,13 @@ class UserBasedCollaborativeFiltering(object):
 
         return ranking[:at]
 
+    def get_scores(self, user_id):
+        user_profile = self.W_sparse[user_id, :]
+
+        scores = user_profile.dot(self.URM).toarray().ravel()
+
+        return scores
+
     def filter_seen(self, user_id, scores):
         start_pos = self.URM.indptr[user_id]
         end_pos =self.URM.indptr[user_id + 1]

@@ -50,6 +50,13 @@ class ItemBasedCollaborativeFiltering(object):
 
         return ranking[:at]
 
+    def get_scores(self, user_id):
+        user_profile = self.URM[user_id]
+
+        scores = user_profile.dot(self.W_sparse).toarray().ravel()
+
+        return scores
+
     def filter_seen(self, user_id, scores):
         """
         Function that removes items already seen by the user
