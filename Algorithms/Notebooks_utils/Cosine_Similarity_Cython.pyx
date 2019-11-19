@@ -156,8 +156,8 @@ cdef class Cosine_Similarity:
 
                 itemPerSec = processedItems/(time.time()-start_time)
 
-                print("Similarity item {} ( {:2.0f} % ), {:.2f} item/sec, required time {:.2f} min".format(
-                    processedItems, processedItems*1.0/self.n_items*100, itemPerSec, (self.n_items-processedItems) / itemPerSec / 60))
+                #print("Similarity item {} ( {:2.0f} % ), {:.2f} item/sec, required time {:.2f} min".format(
+                 #   processedItems, processedItems*1.0/self.n_items*100, itemPerSec, (self.n_items-processedItems) / itemPerSec / 60))
 
             this_item_weights = self.computeItemSimilarities(itemIndex)
 
