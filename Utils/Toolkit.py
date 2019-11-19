@@ -21,10 +21,16 @@ class DataReader(object):
     def __init__(self):
         self.data_train_file_path = "./data/data_train.csv"
         self.user_target_file_path = "./data/alg_sample_submission.csv"
+        self.item_subclass_file_path = "./data/data_ICM_sub_class.csv"
         self.userList = []
         self.itemList = []
         self.ratingList = []
         self.targetUsersList = []
+        self.icm_items_list = []
+        self.subclass_list = []
+        self.item_in_subclass_list = []
+
+
 
     def URM_COO(self):
         df = pd.read_csv(self.data_train_file_path)
@@ -43,6 +49,20 @@ class DataReader(object):
     def URM_CSC(self):
         return self.URM_COO().tocsc()
 
+    def ICM_COO(self):
+        df = pd.read_csv(self.item_subclass_file_path)
+        self.icm_items_list = list(df['row'])
+        self.subclass_list = list(df['col'])
+        self.item_in_subclass_list = list(df['data'])
+
+        return sps.coo_matrix((self.item_in_subclass_list, (self.icm_items_list, self.subclass_list)))
+
+    def ICM_CSR(self):
+        return self.ICM_COO().tocsr()
+
+    def ICM_CSC(self):
+        return self.ICM_COO().tocsc()
+
 class TestSplit(Enum):
     LEAVE_ONE_OUT = 1
     LEAVE_K_OUT = 2
@@ -56,6 +76,7 @@ class TestGen(object):
     def __init__(self, test=TestSplit.FORCE_LEAVE_K_OUT, k=10):
         self.dataReader = DataReader()
         self.URM_all_csr = self.dataReader.URM_CSR()
+        self.ICM = self.dataReader.ICM_COO()
 
         if test is TestSplit.FORCE_LEAVE_K_OUT:
             self.URM_train, self.URM_test = DataSplitter(self.URM_all_csr).force_leave_k_out(k)
