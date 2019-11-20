@@ -39,18 +39,6 @@ def MAP(is_relevant, relevant_items):
 
 # Print iterations progress
 def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
-    """
-    Call in a loop to create terminal progress bar
-    @params:
-        iteration   - Required  : current iteration (Int)
-        total       - Required  : total iterations (Int)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        length      - Optional  : character length of bar (Int)
-        fill        - Optional  : bar fill character (Str)
-        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
-    """
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
@@ -105,3 +93,33 @@ def evaluate_algorithm(URM_test, recommender_object, at=10):
     }
 
     return result_dict
+
+def evaluate_MAP(URM_test, recommender_object, at=10):
+    cumulative_MAP = 0.0
+
+    num_eval = 0
+
+    URM_test = sps.csr_matrix(URM_test)
+
+    n_users = URM_test.shape[0]
+
+    printProgressBar(0, n_users, prefix='Evaluation:', suffix='Complete', length=50)
+    for user_id in range(n_users):
+        printProgressBar(user_id, n_users, prefix = 'Evaluation:', suffix = 'Complete', length = 50)
+
+        start_pos = URM_test.indptr[user_id]
+        end_pos = URM_test.indptr[user_id + 1]
+
+        if end_pos - start_pos > 0:
+            relevant_items = URM_test.indices[start_pos:end_pos]
+
+            recommended_items = recommender_object.recommend(user_id, at)
+            num_eval += 1
+
+            is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
+
+            cumulative_MAP += MAP(is_relevant, relevant_items)
+
+    cumulative_MAP /= num_eval
+
+    return cumulative_MAP

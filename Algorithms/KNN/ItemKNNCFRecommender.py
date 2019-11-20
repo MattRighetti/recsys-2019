@@ -5,19 +5,21 @@ Created on 23/10/17
 
 @author: Maurizio Ferrari Dacrema
 """
+from abc import ABC
 
 from Algorithms.Base.Recommender_utils import check_matrix
-from Algorithms.Base import BaseSimilarityMatrixRecommender
+from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseSimilarityMatrixRecommender
 
 from Algorithms.Base.IR_feature_weighting import okapi_BM_25, TF_IDF
 import numpy as np
 
-from Algorithms.Base.Similarity import Compute_Similarity
+from Algorithms.Base.Similarity.Compute_Similarity_Python import Compute_Similarity_Python
 
 
 class ItemKNNCFRecommender(BaseSimilarityMatrixRecommender):
-    """ ItemKNN recommender"""
-
+    """
+    ItemKNN recommender
+    """
     RECOMMENDER_NAME = "ItemKNNCFRecommender"
 
     FEATURE_WEIGHTING_VALUES = ["BM25", "TF-IDF", "none"]
@@ -25,9 +27,7 @@ class ItemKNNCFRecommender(BaseSimilarityMatrixRecommender):
     def __init__(self, URM_train):
         super(ItemKNNCFRecommender, self).__init__(URM_train)
 
-    def fit(self, topK=50, shrink=100, similarity='cosine', normalize=True, feature_weighting="none",
-            **similarity_args):
-
+    def fit(self, topK=50, shrink=100, similarity='cosine', normalize=True, feature_weighting="none", **similarity_args):
         self.topK = topK
         self.shrink = shrink
 
@@ -46,8 +46,7 @@ class ItemKNNCFRecommender(BaseSimilarityMatrixRecommender):
             self.URM_train = TF_IDF(self.URM_train.T).T
             self.URM_train = check_matrix(self.URM_train, 'csr')
 
-        similarity = Compute_Similarity(self.URM_train, shrink=shrink, topK=topK, normalize=normalize,
-                                        similarity=similarity, **similarity_args)
+        similarity = Compute_Similarity_Python(self.URM_train, self.shrink, self.topK, normalize=normalize, similarity=similarity)
 
         self.W_sparse = similarity.compute_similarity()
         self.W_sparse = check_matrix(self.W_sparse, format='csr')

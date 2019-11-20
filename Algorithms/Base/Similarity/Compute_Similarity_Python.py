@@ -229,10 +229,10 @@ class Compute_Similarity_Python:
         start_col_local = 0
         end_col_local = self.n_columns
 
-        if start_col is not None and start_col > 0 and start_col < self.n_columns:
+        if start_col is not None and 0 < start_col < self.n_columns:
             start_col_local = start_col
 
-        if end_col is not None and end_col > start_col_local and end_col < self.n_columns:
+        if end_col is not None and start_col_local < end_col < self.n_columns:
             end_col_local = end_col
 
         start_col_block = start_col_local

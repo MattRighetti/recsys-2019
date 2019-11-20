@@ -16,7 +16,6 @@ class BaseRecommender(object):
     RECOMMENDER_NAME = "Recommender_Base_Class"
 
     def __init__(self, URM_train):
-
         super(BaseRecommender, self).__init__()
 
         self.URM_train = check_matrix(URM_train.copy(), 'csr', dtype=np.float32)

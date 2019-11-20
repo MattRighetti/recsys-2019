@@ -59,4 +59,4 @@ docs/_build/
 # PyBuilder
 target/
 .ipynb_checkpoints/
-output/file_out.csv
+./output/*

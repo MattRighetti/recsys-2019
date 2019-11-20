@@ -11,6 +11,7 @@ import scipy.sparse as sps
 
 from Algorithms.Base.Similarity.Compute_Similarity_Python import Compute_Similarity_Python
 from Algorithms.Base.Similarity import Compute_Similarity_Euclidean
+from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 
 from enum import Enum
 
@@ -74,13 +75,12 @@ class Compute_Similarity:
 
             if use_implementation == "cython":
 
-                try:
-                    from Algorithms.Base.Similarity import Compute_Similarity_Cython
+                #try:
                     self.compute_similarity_object = Compute_Similarity_Cython(dataMatrix, **args)
 
-                except ImportError:
-                    print("Unable to load Cython Compute_Similarity, reverting to Python")
-                    self.compute_similarity_object = Compute_Similarity_Python(dataMatrix, **args)
+                #except ImportError:
+                    #print("Unable to load Cython Compute_Similarity, reverting to Python")
+                    #self.compute_similarity_object = Compute_Similarity_Python(dataMatrix, **args)
 
 
             elif use_implementation == "python":
