@@ -1,7 +1,6 @@
 import numpy as np
 from scipy.sparse import csr_matrix
 from Algorithms.Base.Similarity.Compute_Similarity_Python import Compute_Similarity_Python
-from Algorithms.Notebooks_utils.Cython.Cosine_Similarity_Cython import *
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
 
 
