@@ -270,9 +270,9 @@ class Compute_Similarity_Python:
             if time.time() - start_time_print_batch >= 30 or end_col_block == end_col_local:
                 columnPerSec = processedItems / (time.time() - start_time)
 
-                print("Similarity column {} ( {:2.0f} % ), {:.2f} column/sec, elapsed time {:.2f} min".format(
-                    processedItems, processedItems / (end_col_local - start_col_local) * 100, columnPerSec,
-                                    (time.time() - start_time) / 60))
+    #            print("Similarity column {} ( {:2.0f} % ), {:.2f} column/sec, elapsed time {:.2f} min".format(
+    #                processedItems, processedItems / (end_col_local - start_col_local) * 100, columnPerSec,
+    #                                (time.time() - start_time) / 60))
 
                 sys.stdout.flush()
                 sys.stderr.flush()

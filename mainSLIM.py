@@ -4,7 +4,7 @@ from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 from Algorithms.Base.NonPersonalizedRecommender import TopPop
 from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
 
-leave_k_out = TestGen(test=TestSplit.LEAVE_K_OUT, k=10)
+leave_k_out = TestGen(test=TestSplit.LEAVE_K_OUT, k=3)
 
 URM_train, URM_validation = train_test_holdout(leave_k_out.URM_train)
 evaluator_validation_early_stopping = EvaluatorHoldout(URM_validation, cutoff_list=[10], exclude_seen = False)
@@ -15,18 +15,7 @@ topKS = []
 max_topk = 0
 max_MAP = 0
 
-
-recommender = SLIM_BPR_Cython(leave_k_out.URM_train)
-recommender.fit(800)
-recommender_2 = TopPop(URM_train=leave_k_out.URM_train)
-recommender_2.fit()
-
-output = OutputFile()
-output.write_output(recommender, leave_k_out, recommender_2)
-
-print("done")
-
-for topK in range(22,44,2):
+for topK in range(0,300, 10):
     recommender = SLIM_BPR_Cython(leave_k_out.URM_train)
     recommender.fit(topK=topK,
                     epochs = 1000,
