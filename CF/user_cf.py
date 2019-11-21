@@ -1,6 +1,6 @@
 import numpy as np
-from Algorithms.Base.Similarity.Compute_Similarity_Python import Compute_Similarity_Python
-from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
+from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
+from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
 
 
 class UserBasedCollaborativeFiltering(object):
@@ -35,7 +35,7 @@ class UserBasedCollaborativeFiltering(object):
         return self.shrink
 
     def fit(self, normalize=True, similarity="cosine"):
-        similarity_object = Compute_Similarity_Python(self.URM_train.T, self.shrink, self.topK, normalize=normalize, similarity=similarity)
+        similarity_object = Compute_Similarity_Cython(self.URM_train.T, self.shrink, self.topK, normalize=normalize, similarity=similarity)
         # Compute the similarity matrix (express with a score the similarity between two items
         self.W_sparse = similarity_object.compute_similarity()
 
@@ -56,9 +56,9 @@ class UserBasedCollaborativeFiltering(object):
 
         scores = user_profile.dot(self.URM_train).toarray().ravel()
 
-        max = np.amax(scores)
+        max_value = np.amax(scores)
 
-        normalized_scores = np.true_divide(scores, max)
+        normalized_scores = np.true_divide(scores, max_value)
 
         return normalized_scores
 
@@ -71,8 +71,12 @@ class UserBasedCollaborativeFiltering(object):
 
         return scores
 
-    def evaluate(self, URM_test):
-        result_dict = evaluate_algorithm(URM_test, self)
-        map_result = result_dict['MAP']
+    def evaluate_MAP(self, URM_test):
+        result = evaluate_MAP(URM_test, self)
         print("UserCF -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\t".format(map_result, self.get_topK(), self.get_shrink()))
+              "& Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
+
+    def evaluate_MAP_target(self, URM_test, target_user_list):
+        result = evaluate_MAP_target_users(URM_test, self, target_user_list)
+        print("UserCF -> MAP: {:.4f} with TopK = {} "
+              "& Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))

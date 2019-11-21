@@ -1,10 +1,7 @@
 import numpy as np
-from scipy.sparse import csr_matrix
-from Algorithms.Base.Similarity.Compute_Similarity_Python import Compute_Similarity_Python
+from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
 from Algorithms.Notebooks_utils.Cython.Cosine_Similarity_Cython import Cosine_Similarity
-from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
-
 
 
 class ItemBasedCollaborativeFiltering(object):
@@ -38,7 +35,7 @@ class ItemBasedCollaborativeFiltering(object):
         if similarity == 'cosine':
             similarity_object = Cosine_Similarity(self.URM_train, self.topK)
         else:
-            similarity_object = Compute_Similarity_Python(self.URM_train, self.topK, self.shrink, normalize=normalize, similarity=similarity)
+            similarity_object = Compute_Similarity_Cython(self.URM_train, self.topK, self.shrink, normalize=normalize, similarity=similarity)
 
         self.W_sparse = similarity_object.compute_similarity()
 
@@ -59,11 +56,15 @@ class ItemBasedCollaborativeFiltering(object):
         return ranking[:at]
 
     def get_scores(self, user_id):
-        user_profile = self.URM_train[user_id]
+        user_profile = self.W_sparse[user_id, :]
 
-        scores = user_profile.dot(self.W_sparse).toarray().ravel()
+        scores = user_profile.dot(self.URM_train).toarray().ravel()
 
-        return scores
+        max_value = np.amax(scores)
+
+        normalized_scores = np.true_divide(scores, max_value)
+
+        return normalized_scores
 
     def filter_seen(self, user_id, scores):
         """

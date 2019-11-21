@@ -1,24 +1,18 @@
-from CF.user_cf import UserBasedCollaborativeFiltering
-from CF.item_cf import ItemBasedCollaborativeFiltering
+from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
 import numpy as np
 
 class HybridRecommender(object):
-
-    def __init__(self, URM_train):
+    def __init__(self, URM_train, userCF, itemCF):
         self.URM_train = URM_train
 
-        self.userCF = UserBasedCollaborativeFiltering(self.URM_train.copy(), topK=7, shrink=700)
-        self.itemCF = ItemBasedCollaborativeFiltering(self.URM_train.copy(), topK=20, shrink=100)
-
-        self.itemCF.fit()
-        self.userCF.fit(similarity="pearson")
+        self.userCF = userCF
+        self.itemCF = itemCF
 
         self.userCF_w = None
         self.itemCF_w = None
 
         self.userCF_scores = None
         self.itemCF_scores = None
-
 
     def fit(self, userCF_w=1, itemCF_w=1):
         self.userCF_w = userCF_w
@@ -45,3 +39,19 @@ class HybridRecommender(object):
         scores[user_profile] = -np.inf
 
         return scores
+
+    def evaluate_MAP(self, URM_test):
+        result = evaluate_MAP(URM_test, self)
+        print("HYB -> MAP: {:.4f} with UserCF TopK = {} "
+              "& UserCF Shrink = {}, ItemCF TopK = {} & ItemCF Shrink = {} \t".format(result, self.userCF.get_topK,
+                                                                                      self.userCF.get_shrink(),
+                                                                                      self.itemCF.get_topK,
+                                                                                      self.itemCF.get_shrink))
+
+    def evaluate_MAP_target(self, URM_test, target_user_list):
+        result = evaluate_MAP_target_users(URM_test, self, target_user_list)
+        print("HYB -> MAP: {:.4f} with UserCF TopK = {} "
+              "& UserCF Shrink = {}, ItemCF TopK = {} & ItemCF Shrink = {} \t".format(result, self.userCF.get_topK,
+                                                                                      self.userCF.get_shrink(),
+                                                                                      self.itemCF.get_topK,
+                                                                                      self.itemCF.get_shrink))

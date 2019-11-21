@@ -94,7 +94,7 @@ def evaluate_algorithm(URM_test, recommender_object, at=10):
 
     return result_dict
 
-def evaluate_MAP(URM_test, recommender_object, at=10):
+def evaluate_MAP(URM_test, recommender_object, at=10, verbose=False):
     cumulative_MAP = 0.0
 
     num_eval = 0
@@ -103,9 +103,11 @@ def evaluate_MAP(URM_test, recommender_object, at=10):
 
     n_users = URM_test.shape[0]
 
-    printProgressBar(0, n_users, prefix='Evaluation:', suffix='Complete', length=50)
+    if verbose:
+        printProgressBar(0, n_users, prefix='Evaluation:', suffix='Complete', length=50)
     for user_id in range(n_users):
-        printProgressBar(user_id, n_users, prefix = 'Evaluation:', suffix = 'Complete', length = 50)
+        if verbose:
+            printProgressBar(user_id, n_users, prefix = 'Evaluation:', suffix = 'Complete', length = 50)
 
         start_pos = URM_test.indptr[user_id]
         end_pos = URM_test.indptr[user_id + 1]
@@ -124,16 +126,18 @@ def evaluate_MAP(URM_test, recommender_object, at=10):
 
     return cumulative_MAP
 
-def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10):
+def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10, verbose=False):
     cumulative_MAP = 0.0
 
     num_eval = 0
 
     URM_test = sps.csr_matrix(URM_test)
 
-    printProgressBar(0, max(target_users), prefix='Evaluation:', suffix='Complete', length=50)
+    if verbose:
+        printProgressBar(0, max(target_users), prefix='Evaluation:', suffix='Complete', length=50)
     for user_id in target_users:
-        printProgressBar(user_id, max(target_users), prefix = 'Evaluation:', suffix = 'Complete', length = 50)
+        if verbose:
+            printProgressBar(user_id, max(target_users), prefix = 'Evaluation:', suffix = 'Complete', length = 50)
 
         start_pos = URM_test.indptr[user_id]
         end_pos = URM_test.indptr[user_id + 1]

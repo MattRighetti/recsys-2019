@@ -1,7 +1,5 @@
 import numpy as np
 import scipy.sparse as sps
-from random import seed
-from random import randint
 
 class DataSplitter(object):
     def __init__(self, URM_all):
@@ -56,7 +54,6 @@ class DataSplitter(object):
                 np.random.shuffle(sub_arr)
                 train_mask = np.append(train_mask, sub_arr)
 
-
         return self.apply_mask(train_mask)
 
     def leave_k_out(self, k):
@@ -82,7 +79,6 @@ class DataSplitter(object):
                 np.random.shuffle(sub_arr)
                 train_mask = np.append(train_mask, sub_arr)
                 num_us_with_k += 1
-
         #print(f'\rUsers with more than {k} interactions: {num_us_with_k}, not {num_us_not_k}\r')
 
         return self.apply_mask(train_mask)
@@ -124,9 +120,7 @@ class DataSplitter(object):
         include_mask = np.array([])
         for row in range(len(Matrix_CSR.indptr) - 1):
             values_in_row = Matrix_CSR.indptr[row + 1] - Matrix_CSR.indptr[row]
-            if values_in_row < k:
-                include_mask = np.append(include_mask, [True] * values_in_row)
-            elif values_in_row != 0:
+            if values_in_row != 0:
                 # Now values_in_row-1 must be True, 1 must be False
                 # Remove last interaction
                 sub_arr = np.random.choice([True, False], values_in_row, p=[1/k, (k-1)/k ])
