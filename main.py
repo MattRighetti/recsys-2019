@@ -19,12 +19,12 @@ for i in range(len(matrices)):
     train_matrix = None
 
     for j in range(len(matrices)):
-        if train_matrix is not None:
-            if i != j:
-                train_matrix += matrices[j]
-        else:
-            train_matrix = matrices[j]
+            if j != i:
+                if train_matrix is not None:
+                    train_matrix += matrices[j]
+                else:
+                    train_matrix = matrices[j]
 
     itemCF1 = ItemBasedCollaborativeFiltering(train_matrix, topK=7, shrink=15)
-    itemCF1.fit(similarity="tanimoto")
+    itemCF1.fit(similarity="tversky")
     print(evaluate_MAP_target_users(test_matrix, itemCF1, target_users))
