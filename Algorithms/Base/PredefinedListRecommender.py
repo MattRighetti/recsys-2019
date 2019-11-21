@@ -11,7 +11,6 @@ from Algorithms.Base.Recommender_utils import check_matrix
 
 import scipy.sparse as sps
 
-
 class PredefinedListRecommender(BaseRecommender):
     """PredefinedListRecommender recommender"""
 
@@ -25,17 +24,19 @@ class PredefinedListRecommender(BaseRecommender):
 
         self.URM_train = sps.csr_matrix((self.URM_recommendations.shape))
 
+
+
     def fit(self):
         pass
 
-    def recommend(self, user_id, cutoff=None, remove_seen_flag=True, remove_top_pop_flag=False,
-                  remove_CustomItems_flag=False):
+
+    def recommend(self, user_id, cutoff = None, remove_seen_flag=True, remove_top_pop_flag = False, remove_custom_items_flag = False):
 
         if cutoff is None:
-            cutoff = self.URM_train.shape[1] - 1
+            cutoff= self.URM_train.shape[1] - 1
 
         start_pos = self.URM_recommendations.indptr[user_id]
-        end_pos = self.URM_recommendations.indptr[user_id + 1]
+        end_pos = self.URM_recommendations.indptr[user_id+1]
 
         recommendation_list = self.URM_recommendations.data[start_pos:end_pos]
 
@@ -44,5 +45,10 @@ class PredefinedListRecommender(BaseRecommender):
 
         return recommendation_list[:cutoff]
 
+
+
     def __str__(self):
         return "PredefinedListRecommender"
+
+
+

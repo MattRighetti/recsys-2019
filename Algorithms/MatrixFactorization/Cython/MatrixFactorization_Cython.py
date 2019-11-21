@@ -6,11 +6,11 @@ Created on 07/09/17
 @author: Maurizio Ferrari Dacrema
 """
 
-from Base.BaseMatrixFactorizationRecommender import BaseMatrixFactorizationRecommender
-from Base.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
-from Base.Recommender_utils import check_matrix
+from Algorithms.Base.BaseMatrixFactorizationRecommender import BaseMatrixFactorizationRecommender
+from Algorithms.Base.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
+from Algorithms.Base.Recommender_utils import check_matrix
 
-from CythonCompiler.run_compile_subprocess import run_compile_subprocess
+from Algorithms.CythonCompiler.run_compile_subprocess import run_compile_subprocess
 import os, sys
 import numpy as np
 
@@ -52,7 +52,7 @@ class _MatrixFactorization_Cython(BaseMatrixFactorizationRecommender, Incrementa
         self.negative_interactions_quota = negative_interactions_quota
 
         # Import compiled module
-        from MatrixFactorization.Cython.MatrixFactorization_Cython_Epoch import MatrixFactorization_Cython_Epoch
+        from Algorithms.MatrixFactorization.Cython.MatrixFactorization_Cython_Epoch import MatrixFactorization_Cython_Epoch
 
         if self.algorithm_name in ["FUNK_SVD", "ASY_SVD"]:
 

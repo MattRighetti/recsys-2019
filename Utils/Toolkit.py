@@ -363,7 +363,7 @@ class OutputFile(object):
         dataReader = testGen.get_dataReader()
 
         for user_id in dataReader.targetUsersList:
-            recommendations = fittedRecommender.recommend(user_id, at=10)
+            recommendations = fittedRecommender.recommend(user_id, 10)
             array_string = " ".join(str(x) for x in recommendations)
             file.write(f'{user_id},{array_string}\n')
 

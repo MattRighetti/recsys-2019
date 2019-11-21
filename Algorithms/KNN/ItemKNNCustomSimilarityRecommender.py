@@ -7,7 +7,7 @@ Created on 23/10/17
 """
 
 from Algorithms.Base.Recommender_utils import check_matrix, similarityMatrixTopK
-from Algorithms.Base import BaseSimilarityMatrixRecommender
+from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseSimilarityMatrixRecommender
 
 
 class ItemKNNCustomSimilarityRecommender(BaseSimilarityMatrixRecommender):

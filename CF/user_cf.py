@@ -56,7 +56,11 @@ class UserBasedCollaborativeFiltering(object):
 
         scores = user_profile.dot(self.URM_train).toarray().ravel()
 
-        return scores
+        max = np.amax(scores)
+
+        normalized_scores = np.true_divide(scores, max)
+
+        return normalized_scores
 
     def filter_seen(self, user_id, scores):
         start_pos = self.URM_train.indptr[user_id]

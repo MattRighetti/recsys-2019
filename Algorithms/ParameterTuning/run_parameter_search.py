@@ -11,18 +11,17 @@ Created on 22/11/17
 ##########                  PURE COLLABORATIVE              ##########
 ##########                                                  ##########
 ######################################################################
-from Algorithms.Base.NonPersonalizedRecommender import TopPop, Random, GlobalEffects
-from Algorithms.KNN import UserKNNCFRecommender
-from Algorithms.KNN import ItemKNNCFRecommender
-from Algorithms.SLIM_BPR.Cython import SLIM_BPR_Cython
-from Algorithms.SLIM_ElasticNet import SLIMElasticNetRecommender
-from Algorithms.GraphBased import P3alphaRecommender
-from Algorithms.GraphBased import RP3betaRecommender
-from Algorithms.MatrixFactorization.Cython.MatrixFactorization_Cython import MatrixFactorization_BPR_Cython, \
-    MatrixFactorization_FunkSVD_Cython, MatrixFactorization_AsySVD_Cython
-from Algorithms.MatrixFactorization import PureSVDRecommender
-from Algorithms.MatrixFactorization import IALSRecommender
-from Algorithms.MatrixFactorization import NMFRecommender
+from Algorithms.Base.NonPersonalizedRecommender import GlobalEffects, Random, TopPop
+from Algorithms.KNN.UserKNNCFRecommender import UserKNNCFRecommender
+from Algorithms.KNN.ItemKNNCFRecommender import ItemKNNCFRecommender
+from Algorithms.SLIM_BPR.Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
+from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import SLIMElasticNetRecommender
+from Algorithms.GraphBased.P3alphaRecommender import P3alphaRecommender
+from Algorithms.GraphBased.RP3betaRecommender import RP3betaRecommender
+from Algorithms.MatrixFactorization.Cython.MatrixFactorization_Cython import MatrixFactorization_BPR_Cython, MatrixFactorization_FunkSVD_Cython, MatrixFactorization_AsySVD_Cython
+from Algorithms.MatrixFactorization.PureSVDRecommender import PureSVDRecommender
+from Algorithms.MatrixFactorization.IALSRecommender import IALSRecommender
+from Algorithms.MatrixFactorization.NMFRecommender import NMFRecommender
 
 ######################################################################
 ##########                                                  ##########
@@ -39,6 +38,7 @@ from Algorithms.Utils.PoolWithSubprocess import PoolWithSubprocess
 from Algorithms.ParameterTuning.SearchBayesianSkopt import SearchBayesianSkopt
 from Algorithms.ParameterTuning.SearchSingleCase import SearchSingleCase
 from Algorithms.ParameterTuning.SearchAbstractClass import SearchInputRecommenderArgs
+from Utils.Toolkit import DataReader
 
 
 def run_KNNRecommender_on_similarity_type(similarity_type, parameterSearch,
@@ -478,10 +478,12 @@ def read_data_split_and_search():
         - A _best_result_test file which contains a dictionary with the results, on the test set, of the best solution chosen using the validation set
     """
 
-    from Data_manager.Movielens1M.Movielens1MReader import Movielens1MReader
-    from Data_manager.DataSplitter_k_fold_stratified import DataSplitter_Warm_k_fold
 
-    dataset_object = Movielens1MReader()
+    from Algorithms.Data_manager.DataSplitter_k_fold import DataSplitter_Warm_k_fold
+    from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
+    from Algorithms.Utils.PoolWithSubprocess import PoolWithSubprocess
+
+    dataset_object = DataReader()
 
     dataSplitter = DataSplitter_Warm_k_fold(dataset_object)
 
@@ -498,18 +500,16 @@ def read_data_split_and_search():
     collaborative_algorithm_list = [
         Random,
         TopPop,
-        P3alphaRecommender,
-        RP3betaRecommender,
+        #P3alphaRecommender,
+        #RP3betaRecommender,
         ItemKNNCFRecommender,
         UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
         # PureSVDRecommender,
-        # SLIM_BPR_Cython,
+        SLIM_BPR_Cython,
         # SLIMElasticNetRecommender
     ]
-
-    from Base.Evaluation.Evaluator import EvaluatorHoldout
 
     evaluator_validation = EvaluatorHoldout(URM_validation, cutoff_list=[5])
     evaluator_test = EvaluatorHoldout(URM_test, cutoff_list=[5, 10])
@@ -523,12 +523,12 @@ def read_data_split_and_search():
                                                        evaluator_test=evaluator_test,
                                                        output_folder_path=output_folder_path)
 
-    from Utils.PoolWithSubprocess import PoolWithSubprocess
 
-    # pool = PoolWithSubprocess(processes=int(multiprocessing.cpu_count()), maxtasksperchild=1)
-    # resultList = pool.map(runParameterSearch_Collaborative_partial, collaborative_algorithm_list)
-    # pool.close()
-    # pool.join()
+
+    pool = PoolWithSubprocess(processes=int(multiprocessing.cpu_count()), maxtasksperchild=1)
+    resultList = pool.map(runParameterSearch_Collaborative_partial, collaborative_algorithm_list)
+    pool.close()
+    pool.join()
 
     for recommender_class in collaborative_algorithm_list:
 
