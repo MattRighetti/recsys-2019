@@ -88,6 +88,9 @@ class TestGen(object):
     def get_dataReader(self):
         return self.dataReader
 
+    def get_targetList(self):
+        return self.dataReader.targetUsersList
+
 
 class RecommenderGenerator(object):
     """

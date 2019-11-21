@@ -123,3 +123,31 @@ def evaluate_MAP(URM_test, recommender_object, at=10):
     cumulative_MAP /= num_eval
 
     return cumulative_MAP
+
+def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10):
+    cumulative_MAP = 0.0
+
+    num_eval = 0
+
+    URM_test = sps.csr_matrix(URM_test)
+
+    printProgressBar(0, max(target_users), prefix='Evaluation:', suffix='Complete', length=50)
+    for user_id in target_users:
+        printProgressBar(user_id, max(target_users), prefix = 'Evaluation:', suffix = 'Complete', length = 50)
+
+        start_pos = URM_test.indptr[user_id]
+        end_pos = URM_test.indptr[user_id + 1]
+
+        if end_pos - start_pos > 0:
+            relevant_items = URM_test.indices[start_pos:end_pos]
+
+            recommended_items = recommender_object.recommend(user_id, at)
+            num_eval += 1
+
+            is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
+
+            cumulative_MAP += MAP(is_relevant, relevant_items)
+
+    cumulative_MAP /= num_eval
+
+    return cumulative_MAP

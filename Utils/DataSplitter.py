@@ -126,20 +126,19 @@ class DataSplitter(object):
 
         return self.apply_mask(train_mask)
 
-    def k_fold(self, k):
+    def k_fold_zone(self, k=3):
 
-        train_mask = np.array([])
+        include_mask = np.array([])
 
         for row in range(len(self.indptr_array) - 1):
             values_in_row = self.indptr_array[row + 1] - self.indptr_array[row]
 
-            if values_in_row <= k:
-                train_mask = np.append(train_mask, [True]*values_in_row)
+            if values_in_row < k:
+                train_mask = np.append(include_mask, [True]*values_in_row)
             elif values_in_row != 0:
                 # Now values_in_row-1 must be True, 1 must be False
                 # Remove last interaction
-                sub_arr = np.array([True] * (values_in_row - k) + [False] * k)
-                np.random.shuffle(sub_arr)
-                train_mask = np.append(train_mask, sub_arr)
+                sub_arr = np.random.choice([True, False], values_in_row, p=[1/k, (1-(1/k))])
+                include_mask = np.append(include_mask, sub_arr)
 
-        return self.apply_mask(train_mask)
+                self.apply_mask(include_mask)
