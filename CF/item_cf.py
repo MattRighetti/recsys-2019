@@ -2,6 +2,9 @@ import numpy as np
 from scipy.sparse import csr_matrix
 from Algorithms.Base.Similarity.Compute_Similarity_Python import Compute_Similarity_Python
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
+from Algorithms.Notebooks_utils.Cython.Cosine_Similarity_Cython import Cosine_Similarity
+from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
+
 
 
 class ItemBasedCollaborativeFiltering(object):
@@ -13,6 +16,7 @@ class ItemBasedCollaborativeFiltering(object):
         self.topK = topK
         self.shrink = shrink
         self.W_sparse = None
+        self.similarity = None
 
     def set_URM_train(self, URM):
         self.URM_train = URM
@@ -30,6 +34,7 @@ class ItemBasedCollaborativeFiltering(object):
         return self.shrink
 
     def fit(self, normalize=True, similarity='cosine'):
+        self.similarity = similarity
         if similarity == 'cosine':
             similarity_object = Cosine_Similarity(self.URM_train, self.topK)
         else:
@@ -40,7 +45,10 @@ class ItemBasedCollaborativeFiltering(object):
     def recommend(self, user_id, at=None, exclude_seen=True):
         # Compute the scores using the dot product
         user_profile = self.URM_train[user_id]
-        scores = user_profile.dot(self.W_sparse).toarray().ravel()
+        if self.similarity == 'cosine':
+            scores = user_profile.dot(self.W_sparse).ravel()
+        else:
+            scores = user_profile.dot(self.W_sparse).toarray().ravel()
 
         if exclude_seen:
             scores = self.filter_seen(user_id, scores)
