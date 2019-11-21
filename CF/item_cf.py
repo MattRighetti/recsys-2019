@@ -1,14 +1,13 @@
 import numpy as np
 from scipy.sparse import csr_matrix
 from Algorithms.Base.Similarity.Compute_Similarity_Python import Compute_Similarity_Python
-from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
+from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
 
 
 class ItemBasedCollaborativeFiltering(object):
     """
     ItemBasedCollaborativeFiltering
     """
-
     def __init__(self, URM_train, topK, shrink):
         self.URM_train = URM_train
         self.topK = topK
@@ -75,8 +74,12 @@ class ItemBasedCollaborativeFiltering(object):
 
         return scores
 
-    def evaluate(self, URM_test):
-        result_dict = evaluate_algorithm(URM_test, self)
-        map_result = result_dict['MAP']
+    def evaluate_MAP(self, URM_test):
+        result = evaluate_MAP(URM_test, self)
         print("UserCF -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\t".format(map_result, self.get_topK(), self.get_shrink()))
+              "& Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
+
+    def evaluate_MAP_target(self, URM_test, target_user_list):
+        result = evaluate_MAP_target_users(URM_test, self, target_user_list)
+        print("UserCF -> MAP: {:.4f} with TopK = {} "
+              "& Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
