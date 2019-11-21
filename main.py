@@ -1,4 +1,4 @@
-from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP
+from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
 from HYB.hybrid import HybridRecommender
 from Utils.Toolkit import TestGen, Tester, OutputFile, DataReader
 from Utils.Toolkit import TestSplit
@@ -9,18 +9,13 @@ from CF.item_cf import ItemBasedCollaborativeFiltering
 from CBF.item_CBF import ItemContentBasedRecommender
 from multiprocessing import Process
 
-#force_leave_k_out_5 = TestGen(test=TestSplit.FORCE_LEAVE_K_OUT, k=5)
-leave_k_out = TestGen(test=TestSplit.LEAVE_K_OUT, k=10)
-#force_leave_k_out_10 = TestGen(test=TestSplit.FORCE_LEAVE_K_OUT, k=10)
+k_fold = TestGen(TestSplit.K_FOLD, k=4)
+matrices = k_fold.get_k_fold_matrices()
+print(len(matrices))
+target_users = k_fold.get_targetList()
 
-itemCF1 = ItemBasedCollaborativeFiltering(leave_k_out.URM_train, topK=22, shrink=210)
-itemCF1.fit()
-itemCF2 = ItemBasedCollaborativeFiltering(leave_k_out.URM_train, topK=10, shrink=10)
-itemCF2.fit()
 
-print(evaluate_MAP(leave_k_out.URM_test, itemCF2))
-print(evaluate_MAP(leave_k_out.URM_test, itemCF1))
 
-ev = Evaluator([itemCF1, itemCF2])
-ev.evaluate_recommenders(leave_k_out.URM_test)
-print(ev.get_best_recommender().get_topK())
+#itemCF1 = ItemBasedCollaborativeFiltering(leave_k_out.URM_train, topK=topK, shrink=15)
+#itemCF1.fit(similarity="tanimoto")
+#print(evaluate_MAP_target_users(leave_k_out.URM_test, itemCF1, target_users))

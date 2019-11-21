@@ -67,6 +67,7 @@ class TestSplit(Enum):
     LEAVE_ONE_OUT = 1
     LEAVE_K_OUT = 2
     FORCE_LEAVE_K_OUT = 3
+    K_FOLD = 4
 
 class TestGen(object):
     """
@@ -84,12 +85,17 @@ class TestGen(object):
             self.URM_train, self.URM_test = DataSplitter(self.URM_all_csr).leave_k_out(k)
         elif test is TestSplit.LEAVE_ONE_OUT:
             self.URM_train, self.URM_test = DataSplitter(self.URM_all_csr).leave_one_out()
+        elif test is TestSplit.K_FOLD:
+            self.Matrices = DataSplitter(self.URM_all_csr).k_fold(k=k)
 
     def get_dataReader(self):
         return self.dataReader
 
     def get_targetList(self):
         return self.dataReader.targetUsersList
+
+    def get_k_fold_matrices(self):
+        return self.Matrices
 
 
 class RecommenderGenerator(object):

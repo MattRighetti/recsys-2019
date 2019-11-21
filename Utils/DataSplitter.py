@@ -14,20 +14,13 @@ class DataSplitter(object):
         self.at = 10
         self.indptr_array = self.URM_all.indptr
 
-    def split_data(self, algorithm="leave_one_out"):
-        if algorithm == "leave_one_out":
-            self.leave_one_out()
-        elif algorithm == "leave_k_out":
-            self.leave_k_out(k=3)
-        elif algorithm == "k_fold":
-            self.k_fold(k=2)
-
     def apply_mask(self, train_mask):
 
         # URM_all to COO matrix
         URM_all_coo = self.URM_all.tocoo()
         # shape (num_of_user, num_of_items)
         shape = URM_all_coo.shape
+        print(shape)
 
         train_mask = train_mask.astype(bool)
         test_mask = np.logical_not(train_mask)
@@ -126,19 +119,50 @@ class DataSplitter(object):
 
         return self.apply_mask(train_mask)
 
-    def k_fold_zone(self, k=3):
-
+    def split(self, Matrix_CSR, k):
+        Matrix_CSR = sps.csr_matrix(Matrix_CSR)
         include_mask = np.array([])
-
-        for row in range(len(self.indptr_array) - 1):
-            values_in_row = self.indptr_array[row + 1] - self.indptr_array[row]
-
+        for row in range(len(Matrix_CSR.indptr) - 1):
+            values_in_row = Matrix_CSR.indptr[row + 1] - Matrix_CSR.indptr[row]
             if values_in_row < k:
-                train_mask = np.append(include_mask, [True]*values_in_row)
+                include_mask = np.append(include_mask, [True] * values_in_row)
             elif values_in_row != 0:
                 # Now values_in_row-1 must be True, 1 must be False
                 # Remove last interaction
-                sub_arr = np.random.choice([True, False], values_in_row, p=[1/k, (1-(1/k))])
+                sub_arr = np.random.choice([True, False], values_in_row, p=[1/k, (k-1)/k ])
                 include_mask = np.append(include_mask, sub_arr)
 
-                self.apply_mask(include_mask)
+        # URM_all to COO matrix
+        Matrix_CSR = Matrix_CSR.tocoo()
+        # shape (num_of_user, num_of_items)
+        shape = Matrix_CSR.shape
+
+        train_mask = include_mask.astype(bool)
+        test_mask = np.logical_not(train_mask)
+
+        first_matrix = sps.coo_matrix(
+            (Matrix_CSR.data[train_mask], (Matrix_CSR.row[train_mask], Matrix_CSR.col[train_mask])),
+                shape=shape)
+        last_matrix = sps.coo_matrix(
+            (Matrix_CSR.data[test_mask], (Matrix_CSR.row[test_mask], Matrix_CSR.col[test_mask])),
+                shape=shape)
+
+        first_matrix = first_matrix.tocsr()
+        last_matrix = last_matrix.tocsr()
+
+        # print(f'data in train: {len(self.URM_train.data)}, in test: {len(self.URM_test.data)}')
+
+        return first_matrix, last_matrix
+
+    def k_fold(self, k=3):
+        URM_to_be_splitted = sps.csc_matrix(self.URM_all)
+        matrices = []
+        last_matrix = None
+        while k > 1:
+            first_matrix, last_matrix = self.split(URM_to_be_splitted, k)
+            matrices.append(first_matrix)
+            URM_to_be_splitted = last_matrix
+            k -= 1
+        matrices.append(last_matrix)
+
+        return matrices
