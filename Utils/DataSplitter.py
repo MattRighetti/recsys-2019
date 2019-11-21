@@ -155,7 +155,7 @@ class DataSplitter(object):
         return first_matrix, last_matrix
 
     def k_fold(self, k=3):
-        URM_to_be_splitted = sps.csc_matrix(self.URM_all)
+        URM_to_be_splitted = sps.csr_matrix(self.URM_all)
         matrices = []
         last_matrix = None
         while k > 1:
