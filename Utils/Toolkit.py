@@ -1,5 +1,5 @@
 from enum import Enum
-
+import numpy as np
 import pandas as pd
 import scipy.sparse as sps
 from HYB.hybrid import HybridRecommender
@@ -18,26 +18,21 @@ class DataReader(object):
         self.data_train_file_path = "./data/data_train.csv"
         self.user_target_file_path = "./data/alg_sample_submission.csv"
         self.item_subclass_file_path = "./data/data_ICM_sub_class.csv"
-        self.userList = []
-        self.itemList = []
-        self.ratingList = []
-        self.targetUsersList = []
+
+        df = pd.read_csv(self.data_train_file_path)
+        target_df = pd.read_csv(self.user_target_file_path)
+
+        self.userList = list(df['row'])
+        self.itemList = list(df['col'])
+        self.ratingList = list(df['data'])
+        self.targetUsersList = list(target_df['user_id'])
         self.icm_items_list = []
         self.subclass_list = []
         self.item_in_subclass_list = []
 
 
-
     def URM_COO(self):
-        df = pd.read_csv(self.data_train_file_path)
-        target_df = pd.read_csv(self.user_target_file_path)
-
-        self.ratingList = list(df['data'])
-        self.userList = list(df['row'])
-        self.itemList = list(df['col'])
-        self.targetUsersList = list(target_df['user_id'])
-
-        return sps.coo_matrix((self.ratingList, (self.userList, self.itemList)))
+        return sps.coo_matrix((self.ratingList, (self.userList, self.itemList)), dtype=np.float64)
 
     def URM_CSR(self):
         return self.URM_COO().tocsr()
