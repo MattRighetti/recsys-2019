@@ -135,7 +135,7 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10,
 
     if verbose:
         printProgressBar(0, max(target_users), prefix='Evaluation:', suffix='Complete', length=50)
-    for user_id in range(URM_test.shape[0]):
+    for user_id in target_users:
         if verbose:
             printProgressBar(user_id, max(target_users), prefix = 'Evaluation:', suffix = 'Complete', length = 50)
 
