@@ -126,7 +126,7 @@ def evaluate_MAP(URM_test, recommender_object, at=10, verbose=False):
 
     return cumulative_MAP
 
-def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10, verbose=False):
+def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10, verbose=True):
     cumulative_MAP = 0.0
 
     num_eval = 0
@@ -135,7 +135,7 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10,
 
     if verbose:
         printProgressBar(0, max(target_users), prefix='Evaluation:', suffix='Complete', length=50)
-    for user_id in target_users:
+    for user_id in range(URM_test.shape[0]):
         if verbose:
             printProgressBar(user_id, max(target_users), prefix = 'Evaluation:', suffix = 'Complete', length = 50)
 

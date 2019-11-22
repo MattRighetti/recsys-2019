@@ -8,8 +8,6 @@ from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
 from Algorithms.SLIM_BPR.SLIM_BPR import SLIM_BPR
 from CF.item_cf import ItemBasedCollaborativeFiltering
 from CF.user_cf import UserBasedCollaborativeFiltering
-import matplotlib.pyplot as pyplot
-from multiprocessing import Process, Array
 
 
 class DataReader(object):

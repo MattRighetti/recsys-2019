@@ -32,20 +32,14 @@ class ItemBasedCollaborativeFiltering(object):
 
     def fit(self, normalize=True, similarity='cosine'):
         self.similarity = similarity
-        if similarity == 'cosine':
-            similarity_object = Cosine_Similarity(self.URM_train, self.topK)
-        else:
-            similarity_object = Compute_Similarity_Cython(self.URM_train, self.topK, self.shrink, normalize=normalize, similarity=similarity)
+        similarity_object = Compute_Similarity_Cython(self.URM_train, self.topK, self.shrink, normalize=normalize, similarity=similarity)
 
         self.W_sparse = similarity_object.compute_similarity()
 
     def recommend(self, user_id, at=None, exclude_seen=True):
         # Compute the scores using the dot product
         user_profile = self.URM_train[user_id]
-        if self.similarity == 'cosine':
-            scores = user_profile.dot(self.W_sparse).ravel()
-        else:
-            scores = user_profile.dot(self.W_sparse).toarray().ravel()
+        scores = user_profile.dot(self.W_sparse).toarray().ravel()
 
         if exclude_seen:
             scores = self.filter_seen(user_id, scores)
@@ -92,3 +86,8 @@ class ItemBasedCollaborativeFiltering(object):
         result = evaluate_MAP_target_users(URM_test, self, target_user_list)
         print("UserCF -> MAP: {:.4f} with TopK = {} "
               "& Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
+        return result
+
+    def wrapper(self, URM_train, URM_test, target_users, map):
+        self.fit()
+        map = self.evaluate_MAP_target(URM_test, target_users)
