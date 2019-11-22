@@ -1,3 +1,4 @@
+from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users
 from Utils.Toolkit import TestGen, DataReader
 from Utils.Toolkit import TestSplit
 from CF.item_cf import ItemBasedCollaborativeFiltering
@@ -26,6 +27,8 @@ for topK in topK_collection:
                         train_matrix += matrices[j]
                     else:
                         train_matrix = matrices[j]
+
+
 
             itemCF1 = ItemBasedCollaborativeFiltering(URM_train=train_matrix, topK=topK, shrink=shrink)
             itemCF1.fit(similarity='cosine')
