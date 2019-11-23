@@ -245,7 +245,7 @@ class EvaluatorHoldout(Evaluator):
                                                                                       remove_seen_flag=self.exclude_seen,
                                                                                       cutoff=self.max_cutoff,
                                                                                       remove_top_pop_flag=False,
-                                                                                      remove_CustomItems_flag=self.ignore_items_flag,
+                                                                                      remove_custom_items_flag=self.ignore_items_flag,
                                                                                       return_scores=True
                                                                                       )
 
