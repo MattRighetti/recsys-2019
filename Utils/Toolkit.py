@@ -2,12 +2,12 @@ from enum import Enum
 import numpy as np
 import pandas as pd
 import scipy.sparse as sps
+from sklearn import feature_extraction
+
+from Algorithms.Base.IR_feature_weighting import okapi_BM_25
 from HYB.hybrid import HybridRecommender
 from Utils.DataSplitter import DataSplitter
-from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
-from Algorithms.SLIM_BPR.SLIM_BPR import SLIM_BPR
-from CF.item_cf import ItemBasedCollaborativeFiltering
-from CF.user_cf import UserBasedCollaborativeFiltering
+from sklearn.preprocessing import normalize
 
 
 class DataReader(object):
@@ -44,35 +44,35 @@ class DataReader(object):
         icm_items_list = list(df['row'])
         subclass_list = list(df['col'])
         item_in_subclass_list = list(df['data'])
-        return sps.coo_matrix((item_in_subclass_list, (icm_items_list, subclass_list)))
+        return sps.coo_matrix((item_in_subclass_list, (icm_items_list, subclass_list)), dtype=np.float64)
 
     def ICM_asset_COO(self):
         df = pd.read_csv(self.item_assets_file_path)
         icm_items_list = list(df['row'])
         asset_list = list(df['col'])
         item_asset_list = list(df['data'])
-        return sps.coo_matrix((item_asset_list, (icm_items_list, asset_list)))
+        return sps.coo_matrix((item_asset_list, (icm_items_list, asset_list)), dtype=np.float64)
 
     def ICM_price_COO(self):
         df = pd.read_csv(self.item_price_file_path)
         icm_items_list = list(df['row'])
         price_list = list(df['col'])
         item_price_list = list(df['data'])
-        return sps.coo_matrix((item_price_list, (icm_items_list, price_list)))
+        return sps.coo_matrix((item_price_list, (icm_items_list, price_list)), dtype=np.float64)
 
     def UCM_region_COO(self):
         df = pd.read_csv(self.item_price_file_path)
         ucm_user_list = list(df['row'])
         region_list = list(df['col'])
         user_region_list = list(df['data'])
-        return sps.coo_matrix((user_region_list, (ucm_user_list, region_list)))
+        return sps.coo_matrix((user_region_list, (ucm_user_list, region_list)), dtype=np.float64)
 
     def UCM_age_coo(self):
         df = pd.read_csv(self.item_price_file_path)
         ucm_user_list = list(df['row'])
         age_list = list(df['col'])
         user_age_list = list(df['data'])
-        return sps.coo_matrix((user_age_list, (ucm_user_list, age_list)))
+        return sps.coo_matrix((user_age_list, (ucm_user_list, age_list)), dtype=np.float64)
 
 class TestSplit(Enum):
     LEAVE_ONE_OUT = 1
@@ -97,33 +97,17 @@ class TestGen(object):
     def get_k_fold_matrices(self):
         return self.Matrices
 
+#########################################################################################################
+#                                               UTILITIES                                               #
+#########################################################################################################
 
-class RecommenderGenerator(object):
-    """
-    Factory of Recommenders
-    """
-    def __init__(self, testGen):
-        self.recommender = None
-        self.testGen = testGen
+def get_URM_BM_25(URM):
+    return okapi_BM_25(URM)
 
-    def get_recommender(self):
-        if self.recommender is not None:
-            return self.recommender
+def normalize_matrix(URM, axis=0):
+    n_matrix = normalize(URM, 'l2', axis)
+    return n_matrix.tocsr()
 
-    def setTopK(self, topK):
-        self.recommender.set_topK(topK)
-
-    def initUserCF(self, topK=None, shrink=None):
-        self.recommender = UserBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
-        return self.get_recommender()
-
-    def initItemCF(self, topK=None, shrink=None):
-        self.recommender = ItemBasedCollaborativeFiltering(self.testGen.URM_train, topK=topK, shrink=shrink)
-        return self.get_recommender()
-
-    def initHybrid(self):
-        self.recommender = HybridRecommender(self.testGen.URM_train)
-        return self.get_recommender()
-
-    def initSLIM_BPR(self):
-        self.recommender = SLIM_BPR(self.testGen.URM_train)
+def get_URM_TFIDF(URM):
+    URM_tfidf = feature_extraction.text.TfidfTransformer().fit_transform(URM)
+    return URM_tfidf.tocsr()
