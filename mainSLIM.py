@@ -25,14 +25,14 @@ max_topk = 0
 max_lambda_v = 0
 max_MAP = 0
 
-for lambda_v in range(1, 100, 2):
+for lambda_v in range(10, 100, 2):
     for topK in range(0,300, 10):
         recommender = SLIM_BPR_Cython(URM_train, verbose=False)
         recommender.fit(topK=topK,
                         lambda_i=(lambda_v/100),
                         lambda_j=(lambda_v/100),
-                        epochs = 1000,
-                        validation_every_n = 50,
+                        epochs = 100,
+                        validation_every_n = 20,
                         stop_on_validation = True,
                         evaluator_object = evaluator_validation_early_stopping,
                         lower_validations_allowed = 10,
