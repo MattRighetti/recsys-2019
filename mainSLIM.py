@@ -1,6 +1,6 @@
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users
 from Utils.OutputWriter import write_output
-from Utils.Toolkit import TestGen, RecommenderGenerator, TestSplit, DataReader
+from Utils.Toolkit import TestGen, TestSplit, DataReader
 from Algorithms.SLIM_BPR.Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 from Algorithms.Base.NonPersonalizedRecommender import TopPop

@@ -19,7 +19,6 @@ class DataSplitter(object):
         URM_all_coo = self.URM_all.tocoo()
         # shape (num_of_user, num_of_items)
         shape = URM_all_coo.shape
-        print(shape)
 
         train_mask = train_mask.astype(bool)
         test_mask = np.logical_not(train_mask)

@@ -1,11 +1,14 @@
-from Utils.Toolkit import TestGen, RecommenderGenerator, TestSplit
-from CF.item_cf import ItemBasedCollaborativeFiltering
-from Algorithms.SLIM_BPR.Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
-from Algorithms.ParameterTuning.SearchBayesianSkopt import SearchBayesianSkopt
-from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
-from Algorithms.ParameterTuning.run_parameter_search import runParameterSearch_Collaborative
-from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
-from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
+from NonPersonalized.top_pop import TopPop
+from Utils.Toolkit import DataReader, TestGen, TestSplit
 
-leave_k_out = TestGen(TestSplit.LEAVE_K_OUT, k=10)
-print(leave_k_out.URM_train)
+top_pop = TopPop()
+URM_all_CSR = DataReader().URM_CSR()
+target_users = DataReader().targetUsersList
+
+lou_matrices = TestGen(URM_all_CSR, TestSplit.LEAVE_ONE_OUT)
+
+URM_train = lou_matrices.URM_train
+URM_test = lou_matrices.URM_test
+top_pop.fit(URM_train)
+for i in range(10):
+    print(top_pop.recommend(i))

@@ -21,7 +21,7 @@ class UserContentBasedRecommender(object):
         self.SM_age = None
 
     def compute_similarity(self, UCM, topK, shrink):
-        similarity_object = Compute_Similarity_Cython(UCM.transpose(), shrink, topK, True, similarity='cosine')
+        similarity_object = Compute_Similarity_Cython(UCM.transpose(), shrink, topK, True, similarity='jaccard')
         return similarity_object.compute_similarity()
 
     def recommend(self, user_id, at=10):
@@ -35,10 +35,10 @@ class UserContentBasedRecommender(object):
         # PRICE IS NOT INCLUDED INTENTIONALLY
         self.URM_train = URM_train
         self.UCM_age = DataReader().UCM_age_COO().tocsr()
-        #self.UCM_age = get_URM_BM_25(self.UCM_age)
+        self.UCM_age = get_URM_BM_25(self.UCM_age)
         self.UCM_region = DataReader().UCM_region_COO().tocsr()
-        #self.UCM_region = get_URM_TFIDF(self.UCM_region)
-        #self.UCM_region = normalize(self.UCM_region)
+        self.UCM_region = get_URM_TFIDF(self.UCM_region)
+        self.UCM_region = normalize(self.UCM_region)
 
         self.SM_age = self.compute_similarity(self.UCM_age, self.topK_age, self.shrink_age)
         self.SM_region = self.compute_similarity(self.UCM_region, self.topK_region, self.shrink_region)
