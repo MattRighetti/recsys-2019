@@ -67,7 +67,7 @@ class DataReader(object):
         user_region_list = list(df['data'])
         return sps.coo_matrix((user_region_list, (ucm_user_list, region_list)), dtype=np.float64)
 
-    def UCM_age_coo(self):
+    def UCM_age_COO(self):
         df = pd.read_csv(self.item_price_file_path)
         ucm_user_list = list(df['row'])
         age_list = list(df['col'])
