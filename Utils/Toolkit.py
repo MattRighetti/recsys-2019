@@ -18,21 +18,20 @@ class DataReader(object):
         self.data_train_file_path = "./data/data_train.csv"
         self.user_target_file_path = "./data/alg_sample_submission.csv"
         self.item_subclass_file_path = "./data/data_ICM_sub_class.csv"
+        self.item_assets_file_path = "./data/data_ICM_asset.csv"
+        self.item_price_file_path = "./data/data_ICM_price.csv"
+        self.user_age_file_path = "./data/data_UCM_age.csv"
+        self.user_region_file_path = "./data/data_UCM_region.csv"
 
-        df = pd.read_csv(self.data_train_file_path)
         target_df = pd.read_csv(self.user_target_file_path)
-
-        self.userList = list(df['row'])
-        self.itemList = list(df['col'])
-        self.ratingList = list(df['data'])
         self.targetUsersList = list(target_df['user_id'])
-        self.icm_items_list = []
-        self.subclass_list = []
-        self.item_in_subclass_list = []
-
 
     def URM_COO(self):
-        return sps.coo_matrix((self.ratingList, (self.userList, self.itemList)), dtype=np.float64)
+        df = pd.read_csv(self.data_train_file_path)
+        userList = list(df['row'])
+        itemList = list(df['col'])
+        ratingList = list(df['data'])
+        return sps.coo_matrix((ratingList, (userList, itemList)), dtype=np.float64)
 
     def URM_CSR(self):
         return self.URM_COO().tocsr()
@@ -40,19 +39,40 @@ class DataReader(object):
     def URM_CSC(self):
         return self.URM_COO().tocsc()
 
-    def ICM_COO(self):
+    def ICM_subclass_COO(self):
         df = pd.read_csv(self.item_subclass_file_path)
-        self.icm_items_list = list(df['row'])
-        self.subclass_list = list(df['col'])
-        self.item_in_subclass_list = list(df['data'])
+        icm_items_list = list(df['row'])
+        subclass_list = list(df['col'])
+        item_in_subclass_list = list(df['data'])
+        return sps.coo_matrix((item_in_subclass_list, (icm_items_list, subclass_list)))
 
-        return sps.coo_matrix((self.item_in_subclass_list, (self.icm_items_list, self.subclass_list)))
+    def ICM_asset_COO(self):
+        df = pd.read_csv(self.item_assets_file_path)
+        icm_items_list = list(df['row'])
+        asset_list = list(df['col'])
+        item_asset_list = list(df['data'])
+        return sps.coo_matrix((item_asset_list, (icm_items_list, asset_list)))
 
-    def ICM_CSR(self):
-        return self.ICM_COO().tocsr()
+    def ICM_price_COO(self):
+        df = pd.read_csv(self.item_price_file_path)
+        icm_items_list = list(df['row'])
+        price_list = list(df['col'])
+        item_price_list = list(df['data'])
+        return sps.coo_matrix((item_price_list, (icm_items_list, price_list)))
 
-    def ICM_CSC(self):
-        return self.ICM_COO().tocsc()
+    def UCM_region_COO(self):
+        df = pd.read_csv(self.item_price_file_path)
+        ucm_user_list = list(df['row'])
+        region_list = list(df['col'])
+        user_region_list = list(df['data'])
+        return sps.coo_matrix((user_region_list, (ucm_user_list, region_list)))
+
+    def UCM_age_coo(self):
+        df = pd.read_csv(self.item_price_file_path)
+        ucm_user_list = list(df['row'])
+        age_list = list(df['col'])
+        user_age_list = list(df['data'])
+        return sps.coo_matrix((user_age_list, (ucm_user_list, age_list)))
 
 class TestSplit(Enum):
     LEAVE_ONE_OUT = 1
