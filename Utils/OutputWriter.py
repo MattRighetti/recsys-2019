@@ -1,7 +1,7 @@
 import os
 import datetime
 
-def write_output(self, fittedRecommender, target_user_list):
+def write_output(fittedRecommender, target_user_list):
     """
     Create a new file and writes to it
     :param fittedRecommender: recommender already fitted

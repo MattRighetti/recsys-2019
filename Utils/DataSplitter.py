@@ -4,6 +4,7 @@ import scipy.sparse as sps
 class DataSplitter(object):
     def __init__(self, URM_all):
         self.URM_all = URM_all
+        self.warm_users = None
         self.URM_train = None
         self.URM_test = None
         self.target_users = None
@@ -35,24 +36,28 @@ class DataSplitter(object):
 
         return self.URM_train, self.URM_test
 
-
     def leave_one_out(self):
+
+        # Don't consider cold users, can't say nothing about them
+        warm_users_mask = np.ediff1d(self.URM_all.tocsr().indptr) > 0
+        warm_users = np.arange(self.URM_all.shape[0])[warm_users_mask]
 
         indptr_array = self.URM_all.indptr
 
         train_mask = np.array([])
 
         for row in range(len(indptr_array) - 1):
-            values_in_row = indptr_array[row + 1] - indptr_array[row]
+            if row in warm_users:
+                values_in_row = indptr_array[row + 1] - indptr_array[row]
 
-            if values_in_row == 1:
-                train_mask = np.append(train_mask, [True])
-            elif values_in_row != 0:
-                # Now values_in_row-1 must be True, 1 must be False
-                # Remove last interaction
-                sub_arr = np.array([True] * (values_in_row - 1) + [False])
-                np.random.shuffle(sub_arr)
-                train_mask = np.append(train_mask, sub_arr)
+                if values_in_row == 1:
+                    train_mask = np.append(train_mask, [False])
+                elif values_in_row != 0:
+                    # Now values_in_row-1 must be True, 1 must be False
+                    # Remove last interaction
+                    sub_arr = np.array([True] * (values_in_row - 1) + [False])
+                    np.random.shuffle(sub_arr)
+                    train_mask = np.append(train_mask, sub_arr)
 
         return self.apply_mask(train_mask)
 

@@ -8,21 +8,12 @@ class ItemBasedCollaborativeFiltering(object):
     """
     ItemBasedCollaborativeFiltering
     """
-    def __init__(self, URM_train, topK, shrink):
-        self.URM_train = URM_train
+    def __init__(self, topK, shrink):
+        self.URM_train = None
         self.topK = topK
         self.shrink = shrink
-        self.W_sparse = None
-        self.similarity = None
-
-    def set_URM_train(self, URM):
-        self.URM_train = URM
-
-    def set_topK(self, topK):
-        self.topK = topK
-
-    def set_shrink(self, shrink):
-        self.shrink = shrink
+        self.SM_item = None
+        self.RM = None
 
     def get_topK(self):
         return self.topK
@@ -30,41 +21,28 @@ class ItemBasedCollaborativeFiltering(object):
     def get_shrink(self):
         return self.shrink
 
-    def fit(self, normalize=True, similarity='cosine'):
-        self.similarity = similarity
-        if similarity == 'cosine':
-            similarity_object = Cosine_Similarity(self.URM_train, self.topK)
-        else:
-            similarity_object = Compute_Similarity_Cython(self.URM_train, self.topK, self.shrink, normalize=normalize, similarity=similarity)
+    def get_similarity_matrix(self, similarity='cosine'):
+        similarity_object = Compute_Similarity_Cython(self.URM_train, self.shrink, self.topK, True, similarity=similarity)
+        return similarity_object.compute_similarity()
 
-        self.W_sparse = similarity_object.compute_similarity()
+    def fit(self, URM_train):
+        self.URM_train = URM_train.tocsr()
+        self.SM_item = self.get_similarity_matrix()
+        self.RM = self.URM_train.dot(self.SM_item)
 
     def recommend(self, user_id, at=None, exclude_seen=True):
-        # Compute the scores using the dot product
-        user_profile = self.URM_train[user_id]
-        if self.similarity == 'cosine':
-            scores = user_profile.dot(self.W_sparse).ravel()
-        else:
-            scores = user_profile.dot(self.W_sparse).toarray().ravel()
+        expected_ratings = self.get_expected_recommendations(user_id)
+        recommended_items = np.flip(np.argsort(expected_ratings), 0)
 
         if exclude_seen:
-            scores = self.filter_seen(user_id, scores)
+            unseen_items_mask = np.in1d(recommended_items, self.URM_train[user_id].indices, assume_unique=True, invert=True)
+            recommended_items = recommended_items[unseen_items_mask]
 
-        # Rank items
-        ranking = scores.argsort()[::-1]
+        return recommended_items[:at]
 
-        return ranking[:at]
-
-    def get_scores(self, user_id):
-        user_profile = self.W_sparse[user_id, :]
-
-        scores = user_profile.dot(self.URM_train).toarray().ravel()
-
-        max_value = np.amax(scores)
-
-        normalized_scores = np.true_divide(scores, max_value)
-
-        return normalized_scores
+    def get_expected_recommendations(self, user_id):
+        expected_recommendations = self.RM[user_id].todense()
+        return np.squeeze(np.asarray(expected_recommendations))
 
     def filter_seen(self, user_id, scores):
         """
@@ -92,3 +70,8 @@ class ItemBasedCollaborativeFiltering(object):
         result = evaluate_MAP_target_users(URM_test, self, target_user_list)
         print("UserCF -> MAP: {:.4f} with TopK = {} "
               "& Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
+        return result
+
+    def wrapper(self, URM_train, URM_test, target_users, map):
+        self.fit()
+        map = self.evaluate_MAP_target(URM_test, target_users)

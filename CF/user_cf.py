@@ -8,25 +8,20 @@ class UserBasedCollaborativeFiltering(object):
     UserBasedCollaborativeFiltering recommender system
     """
 
-    def __init__(self, URM_train, topK, shrink):
+    def __init__(self, topK, shrink):
         """
-        :param URM: URM_TRAIN!
-        :param topK:
-        :param shrink:
+        Initialises a UserCF Recommender
+        URM_train MUST BE IN CSR
+        SM = Similarity Matrix
+        RM = Recommended Matrix
+        :param topK: topK Value
+        :param shrink: shrink Value
         """
-        self.URM_train = URM_train
+        self.URM_train = None
         self.topK = topK
         self.shrink = shrink
-        self.W_sparse = None
-
-    def set_URM(self, URM):
-        self.URM = URM
-
-    def set_topK(self, topK):
-        self.topK = topK
-
-    def set_shrink(self, shrink):
-        self.shrink = shrink
+        self.SM_users = None
+        self.RM = None
 
     def get_topK(self):
         return self.topK
@@ -34,49 +29,39 @@ class UserBasedCollaborativeFiltering(object):
     def get_shrink(self):
         return self.shrink
 
-    def fit(self, normalize=True, similarity="cosine"):
-        similarity_object = Compute_Similarity_Cython(self.URM_train.T, self.shrink, self.topK, normalize=normalize, similarity=similarity)
-        # Compute the similarity matrix (express with a score the similarity between two items
-        self.W_sparse = similarity_object.compute_similarity()
+    def get_similarity_matrix(self, similarity='cosine'):
+        # Similarity on URM_train.transpose()
+        similarity_object = Compute_Similarity_Cython(self.URM_train.T, self.shrink, self.topK, True, similarity=similarity)
+        return similarity_object.compute_similarity()
+
+    def fit(self, URM_train):
+        """
+        Fits model, calculates Similarity Matrix and Recommended Matrix
+        :param URM_train: URM_train MUST BE IN CSR
+        :return:
+        """
+        self.URM_train = URM_train
+        self.SM_users = self.get_similarity_matrix()
+        self.RM = self.SM_users.dot(self.URM_train)
+
+    def get_expected_recommendations(self, user_id):
+        expected_recommendations = self.RM[user_id].todense()
+        return np.squeeze(np.asarray(expected_recommendations))
 
     def recommend(self, user_id, at=None, exclude_seen=True):
-        # Use dot product to compute the scores of the items
-        scores = self.W_sparse[user_id, :].dot(self.URM_train).toarray().ravel()
+        expected_ratings = self.get_expected_recommendations(user_id)
+        recommended_items = np.flip(np.argsort(expected_ratings), 0)
 
         if exclude_seen:
-            scores = self.filter_seen(user_id, scores)
+            unseen_items_mask = np.in1d(recommended_items, self.URM_train[user_id].indices, assume_unique=True, invert=True)
+            recommended_items = recommended_items[unseen_items_mask]
 
-        #rank items
-        ranking = scores.argsort()[::-1]
-
-        return ranking[:at]
-
-    def get_scores(self, user_id):
-        user_profile = self.W_sparse[user_id, :]
-
-        scores = user_profile.dot(self.URM_train).toarray().ravel()
-
-        max_value = np.amax(scores)
-
-        normalized_scores = np.true_divide(scores, max_value)
-
-        return normalized_scores
-
-    def filter_seen(self, user_id, scores):
-        start_pos = self.URM_train.indptr[user_id]
-        end_pos =self.URM_train.indptr[user_id + 1]
-
-        user_profile = self.URM_train.indices[start_pos:end_pos]
-        scores[user_profile] = -np.inf
-
-        return scores
+        return recommended_items[:at]
 
     def evaluate_MAP(self, URM_test):
         result = evaluate_MAP(URM_test, self)
-        print("UserCF -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
+        print("UserCF -> MAP: {:.4f} with TopK = {} & Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
 
     def evaluate_MAP_target(self, URM_test, target_user_list):
         result = evaluate_MAP_target_users(URM_test, self, target_user_list)
-        print("UserCF -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
+        print("UserCF -> MAP: {:.4f} with TopK = {} & Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
