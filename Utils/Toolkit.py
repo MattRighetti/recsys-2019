@@ -5,7 +5,6 @@ import scipy.sparse as sps
 from sklearn import feature_extraction
 
 from Algorithms.Base.IR_feature_weighting import okapi_BM_25
-from HYB.hybrid import HybridRecommender
 from Utils.DataSplitter import DataSplitter
 from sklearn.preprocessing import normalize
 
@@ -23,8 +22,9 @@ class DataReader(object):
         self.user_age_file_path = "./data/data_UCM_age.csv"
         self.user_region_file_path = "./data/data_UCM_region.csv"
 
+    def target_users(self):
         target_df = pd.read_csv(self.user_target_file_path)
-        self.targetUsersList = list(target_df['user_id'])
+        return list(target_df['user_id'])
 
     def URM_COO(self):
         df = pd.read_csv(self.data_train_file_path)
@@ -111,3 +111,29 @@ def normalize_matrix(URM, axis=0):
 def get_URM_TFIDF(URM):
     URM_tfidf = feature_extraction.text.TfidfTransformer().fit_transform(URM)
     return URM_tfidf.tocsr()
+
+def get_data():
+    dataReader = DataReader()
+    UCM_region = dataReader.UCM_region_COO()
+    UCM_age = dataReader.UCM_age_COO()
+    URM_all = dataReader.URM_COO()
+    ICM_price = dataReader.ICM_price_COO()
+    ICM_asset = dataReader.ICM_price_COO()
+    ICM_subclass = dataReader.ICM_subclass_COO()
+    target_users = dataReader.target_users()
+
+    testGen = TestGen(URM_all.tocsr(), TestSplit.LEAVE_ONE_OUT)
+
+    data = {
+        'URM_all': URM_all,
+        'train': testGen.URM_train,
+        'test': testGen.URM_test,
+        'target_users': target_users,
+        'UCM_region': UCM_region,
+        'UCM_age': UCM_age,
+        'ICM_price': ICM_price,
+        'ICM_asset': ICM_asset,
+        'ICM_subclass': ICM_subclass
+    }
+
+    return data

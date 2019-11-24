@@ -1,21 +1,29 @@
-from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users
 from HYB.user_wise_hybrid import UserWiseHybridRecommender
 from Utils.OutputWriter import write_output
-from Utils.Toolkit import TestGen, DataReader
-from Utils.Toolkit import TestSplit
+from Utils.Toolkit import TestGen, DataReader, TestSplit, get_data
 
-dr = DataReader()
-URM_all_CSR = dr.URM_CSR()
-target_users = dr.targetUsersList
-lou = TestGen(URM_all_CSR, TestSplit.LEAVE_ONE_OUT)
-URM_train = lou.URM_train
-URM_test = lou.URM_test
+data = get_data()
+URM_all_CSR = data['URM_all'].tocsr()
+target_users = data['target_users']
+train = data['train'].tocsr()
+test = data['test'].tocsr()
+
+max_map = 0
+max_recomm = None
 
 hyb = UserWiseHybridRecommender()
-hyb.fit(URM_train)
-hyb.evaluate_MAP_target(URM_test, target_users)
+for i in range(30, 35):
+    for j in range(25, 29):
+        hyb.set_shrink(j)
+        hyb.set_topK(i)
+        hyb.fit(train)
+        result = hyb.evaluate_MAP_target(test, target_users)
 
-URM_final = URM_train+URM_test
+        if result > max_map:
+            max_map = result
+            print(f'best TopK: {i}, Shrink: {j}')
+            URM_final = URM_all_CSR
+            hyb.fit(URM_final)
+            max_recomm = hyb
 
-hyb.fit(URM_final)
-write_output(hyb, target_users)
+write_output(max_recomm, target_users)

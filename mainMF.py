@@ -1,23 +1,24 @@
-from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
-from Utils.Toolkit import TestGen, Tester, OutputFile, RecommenderGenerator, TestSplit
-from Algorithms.MatrixFactorization.Cython.MatrixFactorization_Cython import MatrixFactorization_BPR_Cython
-from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm
-from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
+from lightfm import LightFM
+from lightfm.evaluation import precision_at_k, auc_score
 
-leave_k_out = TestGen(test=TestSplit.LEAVE_K_OUT, k=10)
+from Utils.Toolkit import DataReader, TestGen, TestSplit
 
-URM_train, URM_validation = train_test_holdout(leave_k_out.URM_train)
-evaluator_validation_early_stopping = EvaluatorHoldout(URM_validation, cutoff_list=[10], exclude_seen = False)
+dr = DataReader()
+URM_all_CSR = dr.URM_CSR()
+target_users = dr.targetUsersList
+lou = TestGen(URM_all_CSR, TestSplit.LEAVE_ONE_OUT)
+URM_train = lou.URM_train
+URM_test = lou.URM_test
 
-recommender = MatrixFactorization_BPR_Cython(leave_k_out.URM_train)
-for factors in range(100,400,50):
-    recommender.fit(epochs=1000,
-                    num_factors=factors,
-                    validation_every_n=100,
-                    stop_on_validation=True,
-                    evaluator_object=evaluator_validation_early_stopping,
-                    lower_validations_allowed=10,
-                    validation_metric="MAP")
-    result = evaluate_algorithm(leave_k_out.URM_test,recommender)
-    print(result)
+model = LightFM(loss='warp')
+model.fit(URM_train.tocsr(), epochs=50)
+
+train_precision = precision_at_k(model, URM_train, k=10, num_threads=8).mean()
+test_precision = precision_at_k(model, URM_test, k=10, num_threads=8).mean()
+
+train_auc = auc_score(model, URM_train).mean()
+test_auc = auc_score(model, URM_test).mean()
+
+print('Precision: train %.2f, test %.2f.' % (train_precision, test_precision))
+print('AUC: train %.2f, test %.2f.' % (train_auc, test_auc))
 

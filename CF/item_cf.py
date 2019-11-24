@@ -21,7 +21,7 @@ class ItemBasedCollaborativeFiltering(object):
     def get_shrink(self):
         return self.shrink
 
-    def get_similarity_matrix(self, similarity='cosine'):
+    def get_similarity_matrix(self, similarity='tversky'):
         similarity_object = Compute_Similarity_Cython(self.URM_train, self.shrink, self.topK, True, similarity=similarity)
         return similarity_object.compute_similarity()
 
