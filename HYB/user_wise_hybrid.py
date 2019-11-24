@@ -14,7 +14,8 @@ class UserWiseHybridRecommender(object):
         self.user_profile_lengths = None
 
     def fit(self, URM_train):
-        self.itemCF = self.itemCF = ItemBasedCollaborativeFiltering(topK=self.topK, shrink=self.shrink)
+        if self is None:
+            self.itemCF = ItemBasedCollaborativeFiltering(topK=self.topK, shrink=self.shrink)
         self.URM_train = URM_train.tocsr()
         self.TopPop.fit(URM_train.copy().tocsr())
         self.itemCF.fit(URM_train.copy().tocsr())
@@ -36,3 +37,6 @@ class UserWiseHybridRecommender(object):
 
     def set_shrink(self, shrink):
         self.shrink = shrink
+
+    def set_item_cf(self, itemCF):
+        self.itemCF = itemCF

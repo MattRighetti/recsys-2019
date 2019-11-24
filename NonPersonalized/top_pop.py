@@ -1,8 +1,5 @@
 import numpy as np
 
-from Utils.Toolkit import DataReader, TestGen, TestSplit
-
-
 class TopPop(object):
     def __init__(self):
         self.URM_train = None
