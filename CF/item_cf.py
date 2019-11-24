@@ -1,8 +1,6 @@
 import numpy as np
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
-from Algorithms.Notebooks_utils.Cython.Cosine_Similarity_Cython import Cosine_Similarity
-
 
 class ItemBasedCollaborativeFiltering(object):
     """
@@ -15,14 +13,14 @@ class ItemBasedCollaborativeFiltering(object):
         self.SM_item = None
         self.RM = None
 
-    def get_topK(self):
-        return self.topK
-
-    def get_shrink(self):
-        return self.shrink
-
-    def get_similarity_matrix(self, similarity='tversky'):
-        similarity_object = Compute_Similarity_Cython(self.URM_train, self.shrink, self.topK, True, similarity=similarity)
+    def get_similarity_matrix(self, similarity='tanimoto'):
+        similarity_object = Compute_Similarity_Cython(self.URM_train,
+                                                      self.shrink,
+                                                      self.topK,
+                                                      normalize = True,
+                                                      tversky_alpha = 1.0,
+                                                      tversky_beta = 1.0,
+                                                      similarity = similarity)
         return similarity_object.compute_similarity()
 
     def fit(self, URM_train):
@@ -30,7 +28,7 @@ class ItemBasedCollaborativeFiltering(object):
         self.SM_item = self.get_similarity_matrix()
         self.RM = self.URM_train.dot(self.SM_item)
 
-    def recommend(self, user_id, at=None, exclude_seen=True):
+    def recommend(self, user_id, at=10, exclude_seen=True):
         expected_ratings = self.get_expected_recommendations(user_id)
         recommended_items = np.flip(np.argsort(expected_ratings), 0)
 
@@ -64,14 +62,12 @@ class ItemBasedCollaborativeFiltering(object):
     def evaluate_MAP(self, URM_test):
         result = evaluate_MAP(URM_test, self)
         print("UserCF -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
+              "& Shrink = {}\t".format(result, self.topK, self.shrink))
+        return result
 
     def evaluate_MAP_target(self, URM_test, target_user_list):
         result = evaluate_MAP_target_users(URM_test, self, target_user_list)
         print("UserCF -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
+              "& Shrink = {}\t".format(result, self.topK, self.shrink))
         return result
 
-    def wrapper(self, URM_train, URM_test, target_users, map):
-        self.fit()
-        map = self.evaluate_MAP_target(URM_test, target_users)

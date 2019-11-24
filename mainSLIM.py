@@ -1,22 +1,19 @@
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users
 from Utils.OutputWriter import write_output
-from Utils.Toolkit import TestGen, TestSplit, DataReader
+from Utils.Toolkit import TestGen, TestSplit, DataReader, get_data
 from Algorithms.SLIM_BPR.Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 from Algorithms.Base.NonPersonalizedRecommender import TopPop
 from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
 
-URM_all_CSR = DataReader().URM_CSR()
-target_users = DataReader().targetUsersList
+data = get_data()
+URM_all_CSR = data['']
+target_users = data['']
 
-lou_matrices = TestGen(URM_all_CSR, TestSplit.LEAVE_ONE_OUT)
+URM_train = data['train']
+URM_test = data['test']
 
-URM_train = lou_matrices.URM_train
-URM_test = lou_matrices.URM_test
-
-URM_train, URM_validation = train_test_holdout(URM_train, 0.85)
-
-evaluator_validation_early_stopping = EvaluatorHoldout(URM_validation, cutoff_list=[10], exclude_seen=True)
+evaluator_validation_early_stopping = EvaluatorHoldout(URM_test, cutoff_list=[10], exclude_seen=True)
 
 recommender = None
 MAPS = []
@@ -59,7 +56,7 @@ recommender.fit(topK=max_topk,
                 evaluator_object = evaluator_validation_early_stopping,
                 lower_validations_allowed = 10,
                 validation_metric = "MAP"
-                )
+)
 write_output(recommender, target_users)
 
 

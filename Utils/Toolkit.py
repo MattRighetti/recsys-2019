@@ -14,13 +14,13 @@ class DataReader(object):
     This class will read the URM_train and the Target_users files and will generate every URM that we'll need
     """
     def __init__(self):
-        self.data_train_file_path = "./data/data_train.csv"
-        self.user_target_file_path = "./data/alg_sample_submission.csv"
-        self.item_subclass_file_path = "./data/data_ICM_sub_class.csv"
-        self.item_assets_file_path = "./data/data_ICM_asset.csv"
-        self.item_price_file_path = "./data/data_ICM_price.csv"
-        self.user_age_file_path = "./data/data_UCM_age.csv"
-        self.user_region_file_path = "./data/data_UCM_region.csv"
+        self.data_train_file_path = "../data/data_train.csv"
+        self.user_target_file_path = "../data/alg_sample_submission.csv"
+        self.item_subclass_file_path = "../data/data_ICM_sub_class.csv"
+        self.item_assets_file_path = "../data/data_ICM_asset.csv"
+        self.item_price_file_path = "../data/data_ICM_price.csv"
+        self.user_age_file_path = "../data/data_UCM_age.csv"
+        self.user_region_file_path = "../data/data_UCM_region.csv"
 
     def target_users(self):
         target_df = pd.read_csv(self.user_target_file_path)
@@ -32,12 +32,6 @@ class DataReader(object):
         itemList = list(df['col'])
         ratingList = list(df['data'])
         return sps.coo_matrix((ratingList, (userList, itemList)), dtype=np.float64)
-
-    def URM_CSR(self):
-        return self.URM_COO().tocsr()
-
-    def URM_CSC(self):
-        return self.URM_COO().tocsc()
 
     def ICM_subclass_COO(self):
         df = pd.read_csv(self.item_subclass_file_path)
@@ -61,14 +55,14 @@ class DataReader(object):
         return sps.coo_matrix((item_price_list, (icm_items_list, price_list)), dtype=np.float64)
 
     def UCM_region_COO(self):
-        df = pd.read_csv(self.item_price_file_path)
+        df = pd.read_csv(self.user_region_file_path)
         ucm_user_list = list(df['row'])
         region_list = list(df['col'])
         user_region_list = list(df['data'])
         return sps.coo_matrix((user_region_list, (ucm_user_list, region_list)), dtype=np.float64)
 
     def UCM_age_COO(self):
-        df = pd.read_csv(self.item_price_file_path)
+        df = pd.read_csv(self.user_age_file_path)
         ucm_user_list = list(df['row'])
         age_list = list(df['col'])
         user_age_list = list(df['data'])
@@ -97,6 +91,20 @@ class TestGen(object):
     def get_k_fold_matrices(self):
         return self.Matrices
 
+class Tuner(object):
+    @staticmethod
+    def tune(recommender, split_kind=None, at=10):
+        print(f'Running {recommender.NAME}...')
+
+        if split_kind is None:
+            data = get_data()
+        else:
+            data = get_data(split_kind)
+
+        score = global_evaluate_single(recommender)
+        print(f'Evaluation score: {score}')
+
+
 #########################################################################################################
 #                                               UTILITIES                                               #
 #########################################################################################################
@@ -112,7 +120,7 @@ def get_URM_TFIDF(URM):
     URM_tfidf = feature_extraction.text.TfidfTransformer().fit_transform(URM)
     return URM_tfidf.tocsr()
 
-def get_data():
+def get_data(split_kind=None):
     dataReader = DataReader()
     UCM_region = dataReader.UCM_region_COO()
     UCM_age = dataReader.UCM_age_COO()
@@ -122,7 +130,10 @@ def get_data():
     ICM_subclass = dataReader.ICM_subclass_COO()
     target_users = dataReader.target_users()
 
-    testGen = TestGen(URM_all.tocsr(), TestSplit.LEAVE_ONE_OUT)
+    if split_kind is None:
+        testGen = TestGen(URM_all.tocsr(), TestSplit.LEAVE_ONE_OUT)
+    else:
+        testGen = TestGen(URM_all.tocsr(), split_kind)
 
     data = {
         'URM_all': URM_all,

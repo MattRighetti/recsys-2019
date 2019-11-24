@@ -23,15 +23,15 @@ class UserBasedCollaborativeFiltering(object):
         self.SM_users = None
         self.RM = None
 
-    def get_topK(self):
-        return self.topK
-
-    def get_shrink(self):
-        return self.shrink
-
     def get_similarity_matrix(self, similarity='cosine'):
         # Similarity on URM_train.transpose()
-        similarity_object = Compute_Similarity_Cython(self.URM_train.T, self.shrink, self.topK, True, similarity=similarity)
+        similarity_object = Compute_Similarity_Cython(self.URM_train.T,
+                                                      self.shrink,
+                                                      self.topK,
+                                                      normalize=True,
+                                                      tversky_alpha=1.0,
+                                                      tversky_beta=1.0,
+                                                      similarity=similarity)
         return similarity_object.compute_similarity()
 
     def fit(self, URM_train):
@@ -60,8 +60,8 @@ class UserBasedCollaborativeFiltering(object):
 
     def evaluate_MAP(self, URM_test):
         result = evaluate_MAP(URM_test, self)
-        print("UserCF -> MAP: {:.4f} with TopK = {} & Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
+        print("UserCF -> MAP: {:.4f} with TopK = {} & Shrink = {}\t".format(result, self.topK, self.shrink))
 
     def evaluate_MAP_target(self, URM_test, target_user_list):
         result = evaluate_MAP_target_users(URM_test, self, target_user_list)
-        print("UserCF -> MAP: {:.4f} with TopK = {} & Shrink = {}\t".format(result, self.get_topK(), self.get_shrink()))
+        print("UserCF -> MAP: {:.4f} with TopK = {} & Shrink = {}\t".format(result, self.topK, self.shrink))

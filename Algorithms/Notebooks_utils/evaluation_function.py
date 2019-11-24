@@ -8,7 +8,7 @@ Created on 21/10/2018
 
 import numpy as np
 import scipy.sparse as sps
-import time
+from tqdm import tqdm
 
 
 def precision(is_relevant, relevant_items):
@@ -33,6 +33,7 @@ def MAP(is_relevant, relevant_items):
     # Cumulative sum: precision at 1, at 2, at 3 ...
     p_at_k = is_relevant * np.cumsum(is_relevant, dtype=np.float32) / (1 + np.arange(is_relevant.shape[0]))
 
+    # Sum of average precision
     map_score = np.sum(p_at_k) / np.min([relevant_items.shape[0], is_relevant.shape[0]])
 
     return map_score
@@ -96,18 +97,10 @@ def evaluate_algorithm(URM_test, recommender_object, at=10):
 
 def evaluate_MAP(URM_test, recommender_object, at=10, verbose=False):
     cumulative_MAP = 0.0
-
-    num_eval = 0
-
     URM_test = sps.csr_matrix(URM_test)
-
     n_users = URM_test.shape[0]
 
-    if verbose:
-        printProgressBar(0, n_users, prefix='Evaluation:', suffix='Complete', length=50)
-    for user_id in range(n_users):
-        if verbose:
-            printProgressBar(user_id, n_users, prefix = 'Evaluation:', suffix = 'Complete', length = 50)
+    for user_id in tqdm(n_users):
 
         start_pos = URM_test.indptr[user_id]
         end_pos = URM_test.indptr[user_id + 1]
@@ -116,25 +109,21 @@ def evaluate_MAP(URM_test, recommender_object, at=10, verbose=False):
             relevant_items = URM_test.indices[start_pos:end_pos]
 
             recommended_items = recommender_object.recommend(user_id, at)
-            num_eval += 1
 
             is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
 
             cumulative_MAP += MAP(is_relevant, relevant_items)
 
-    cumulative_MAP /= num_eval
+    cumulative_MAP /= n_users
 
     return cumulative_MAP
 
 def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10, verbose=True):
     cumulative_MAP = 0.0
     num_eval = 0
+    n_users = URM_test.shape[0]
 
-    if verbose:
-        printProgressBar(0, max(target_users), prefix='Evaluation:', suffix='Complete', length=50)
-    for user_id in target_users:
-        if verbose:
-            printProgressBar(user_id, max(target_users), prefix = 'Evaluation:', suffix = 'Complete', length = 50)
+    for user_id in tqdm(target_users):
 
         start_pos = URM_test.indptr[user_id]
         end_pos = URM_test.indptr[user_id + 1]
@@ -149,6 +138,6 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10,
 
             cumulative_MAP += MAP(is_relevant, relevant_items)
 
-    cumulative_MAP /= num_eval
+    cumulative_MAP /= n_users
 
     return cumulative_MAP

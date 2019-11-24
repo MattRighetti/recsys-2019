@@ -1,5 +1,5 @@
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users
-from Utils.Toolkit import TestGen, DataReader
+from Utils.Toolkit import TestGen, DataReader, get_data
 from Utils.Toolkit import TestSplit
 from CF.item_cf import ItemBasedCollaborativeFiltering
 from CF.user_cf import UserBasedCollaborativeFiltering
@@ -7,16 +7,14 @@ from Utils.OutputWriter import write_output
 
 import numpy as np
 
-URM_all_CSR = DataReader().URM_CSR()
-target_users = DataReader().targetUsersList
+data = get_data()
+URM_all_CSR = data['URM_all'].tocsr()
+target_users = data['target_users']
+URM_train = data['train']
+URM_test = data['test']
 
-lou_matrices = TestGen(URM_all_CSR, TestSplit.LEAVE_ONE_OUT)
-
-URM_train = lou_matrices.URM_train
-URM_test = lou_matrices.URM_test
-
-topK_collection = np.arange(5, 11, 5)
-shrink_collection = np.arange(20, 26, 1)
+topK_collection = [31]
+shrink_collection = [27]
 max_map = 0
 max_topK = 0
 max_shrink = 0

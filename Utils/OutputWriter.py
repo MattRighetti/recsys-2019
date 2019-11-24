@@ -17,6 +17,7 @@ def write_output(fittedRecommender, target_user_list):
         file.write(f'{user_id},{array_string}\n')
 
     file.close()
+    print("Success")
 
 def create_unique_file():
     """

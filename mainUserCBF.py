@@ -1,7 +1,6 @@
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users
 from Utils.Toolkit import TestGen, DataReader
 from Utils.Toolkit import TestSplit
-from CBF.item_CBF import ItemContentBasedRecommender
 from CBF.user_CBF import UserContentBasedRecommender
 
 URM_all_CSR = DataReader().URM_CSR()

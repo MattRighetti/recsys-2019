@@ -21,7 +21,7 @@ class UserWiseHybridRecommender(object):
         self.itemCF.fit(URM_train.copy().tocsr())
         self.user_profile_lengths = np.ediff1d(URM_train.indptr)
 
-    def recommend(self, user_id, at=10):
+    def recommend(self, user_id):
         if self.user_profile_lengths[user_id] < 1:
             return self.TopPop.recommend(user_id)
         else:
