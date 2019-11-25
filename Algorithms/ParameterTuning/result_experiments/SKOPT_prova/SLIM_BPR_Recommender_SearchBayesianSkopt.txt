@@ -27,3 +27,151 @@ CUTOFF: 5 - ROC_AUC: 0.0351037, PRECISION: 0.0098110, PRECISION_RECALL_MIN_DEN: 
 CUTOFF: 10 - ROC_AUC: 0.0460833, PRECISION: 0.0060393, PRECISION_RECALL_MIN_DEN: 0.0603926, RECALL: 0.0603926, MAP: 0.0336635, MRR: 0.0336635, NDCG: 0.0400344, F1: 0.0109805, HIT_RATE: 0.0603926, ARHR: 0.0336635, RMSE: 0.9998712, NOVELTY: 0.0068196, AVERAGE_POPULARITY: 0.1990614, DIVERSITY_MEAN_INTER_LIST: 0.9013351, DIVERSITY_HERFINDAHL: 0.9901302, COVERAGE_ITEM: 0.4082184, COVERAGE_USER: 0.8817250, DIVERSITY_GINI: 0.1556311, SHANNON_ENTROPY: 9.3851141, 
 
 SearchBayesianSkopt: Search complete. Best config is 7: {'topK': 5, 'epochs': 130, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 1e-05, 'lambda_j': 1e-05, 'learning_rate': 0.0001}
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 77, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.004255630273895884, 'lambda_j': 0.005389084857004995, 'learning_rate': 0.00035427673991570303} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/SLIM_BPR/Cython/SLIM_BPR_Cython.py", line 167, in fit
+    **earlystopping_kwargs)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Incremental_Training_Early_Stopping.py", line 192, in _train_with_early_stopping
+    results_run, results_run_string = evaluator_object.evaluateRecommender(self)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 397, in evaluateRecommender
+    results_dict, n_users_evaluated = self._run_evaluation_on_selected_users(recommender_object, self.usersToEvaluate)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 275, in _run_evaluation_on_selected_users
+    self.diversity_object)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 78, in create_empty_metrics_dict
+    empty_dict[metric.value] = MAP()
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/metrics.py", line 92, in __init__
+    data = get_data(dir_path='../../../')
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Utils/Toolkit.py", line 126, in get_data
+    UCM_region = dataReader.UCM_region_COO()
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Utils/Toolkit.py", line 59, in UCM_region_COO
+    df = pd.read_csv(self.user_region_file_path)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 685, in parser_f
+    return _read(filepath_or_buffer, kwds)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 457, in _read
+    parser = TextFileReader(fp_or_buf, **kwds)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 895, in __init__
+    self._make_engine(self.engine)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 1135, in _make_engine
+    self._engine = CParserWrapper(self.f, **self.options)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 1917, in __init__
+    self._reader = parsers.TextReader(src, **kwds)
+  File "pandas/_libs/parsers.pyx", line 382, in pandas._libs.parsers.TextReader.__cinit__
+  File "pandas/_libs/parsers.pyx", line 689, in pandas._libs.parsers.TextReader._setup_parser_source
+FileNotFoundError: [Errno 2] File b'../../../data/data_UCM_region.csv' does not exist: b'../../../data/data_UCM_region.csv'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 281, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.002029586258592896, 'lambda_j': 9.581265291087736e-05, 'learning_rate': 0.00011359153988682851} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/SLIM_BPR/Cython/SLIM_BPR_Cython.py", line 167, in fit
+    **earlystopping_kwargs)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Incremental_Training_Early_Stopping.py", line 192, in _train_with_early_stopping
+    results_run, results_run_string = evaluator_object.evaluateRecommender(self)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 397, in evaluateRecommender
+    results_dict, n_users_evaluated = self._run_evaluation_on_selected_users(recommender_object, self.usersToEvaluate)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 275, in _run_evaluation_on_selected_users
+    self.diversity_object)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 78, in create_empty_metrics_dict
+    empty_dict[metric.value] = MAP()
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/metrics.py", line 92, in __init__
+    data = get_data(dir_path='../../../')
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Utils/Toolkit.py", line 126, in get_data
+    UCM_region = dataReader.UCM_region_COO()
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Utils/Toolkit.py", line 59, in UCM_region_COO
+    df = pd.read_csv(self.user_region_file_path)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 685, in parser_f
+    return _read(filepath_or_buffer, kwds)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 457, in _read
+    parser = TextFileReader(fp_or_buf, **kwds)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 895, in __init__
+    self._make_engine(self.engine)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 1135, in _make_engine
+    self._engine = CParserWrapper(self.f, **self.options)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 1917, in __init__
+    self._reader = parsers.TextReader(src, **kwds)
+  File "pandas/_libs/parsers.pyx", line 382, in pandas._libs.parsers.TextReader.__cinit__
+  File "pandas/_libs/parsers.pyx", line 689, in pandas._libs.parsers.TextReader._setup_parser_source
+FileNotFoundError: [Errno 2] File b'../../../data/data_UCM_region.csv' does not exist: b'../../../data/data_UCM_region.csv'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 555, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.00020037727425621668, 'lambda_j': 0.009860417587291169, 'learning_rate': 0.04192972146479952} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/SLIM_BPR/Cython/SLIM_BPR_Cython.py", line 167, in fit
+    **earlystopping_kwargs)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Incremental_Training_Early_Stopping.py", line 192, in _train_with_early_stopping
+    results_run, results_run_string = evaluator_object.evaluateRecommender(self)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 397, in evaluateRecommender
+    results_dict, n_users_evaluated = self._run_evaluation_on_selected_users(recommender_object, self.usersToEvaluate)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 275, in _run_evaluation_on_selected_users
+    self.diversity_object)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 78, in create_empty_metrics_dict
+    empty_dict[metric.value] = MAP()
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/metrics.py", line 92, in __init__
+    data = get_data(dir_path='../../../')
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Utils/Toolkit.py", line 126, in get_data
+    UCM_region = dataReader.UCM_region_COO()
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Utils/Toolkit.py", line 59, in UCM_region_COO
+    df = pd.read_csv(self.user_region_file_path)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 685, in parser_f
+    return _read(filepath_or_buffer, kwds)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 457, in _read
+    parser = TextFileReader(fp_or_buf, **kwds)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 895, in __init__
+    self._make_engine(self.engine)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 1135, in _make_engine
+    self._engine = CParserWrapper(self.f, **self.options)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 1917, in __init__
+    self._reader = parsers.TextReader(src, **kwds)
+  File "pandas/_libs/parsers.pyx", line 382, in pandas._libs.parsers.TextReader.__cinit__
+  File "pandas/_libs/parsers.pyx", line 689, in pandas._libs.parsers.TextReader._setup_parser_source
+FileNotFoundError: [Errno 2] File b'../../../data/data_UCM_region.csv' does not exist: b'../../../data/data_UCM_region.csv'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 458, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 2.6418925261836885e-05, 'lambda_j': 1.5484506705451814e-05, 'learning_rate': 0.06039847257334632} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/SLIM_BPR/Cython/SLIM_BPR_Cython.py", line 167, in fit
+    **earlystopping_kwargs)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Incremental_Training_Early_Stopping.py", line 192, in _train_with_early_stopping
+    results_run, results_run_string = evaluator_object.evaluateRecommender(self)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 397, in evaluateRecommender
+    results_dict, n_users_evaluated = self._run_evaluation_on_selected_users(recommender_object, self.usersToEvaluate)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 275, in _run_evaluation_on_selected_users
+    self.diversity_object)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 78, in create_empty_metrics_dict
+    empty_dict[metric.value] = MAP()
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/metrics.py", line 92, in __init__
+    data = get_data(dir_path='../../../')
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Utils/Toolkit.py", line 126, in get_data
+    UCM_region = dataReader.UCM_region_COO()
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Utils/Toolkit.py", line 59, in UCM_region_COO
+    df = pd.read_csv(self.user_region_file_path)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 685, in parser_f
+    return _read(filepath_or_buffer, kwds)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 457, in _read
+    parser = TextFileReader(fp_or_buf, **kwds)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 895, in __init__
+    self._make_engine(self.engine)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 1135, in _make_engine
+    self._engine = CParserWrapper(self.f, **self.options)
+  File "/Users/mattiarighetti/.conda/envs/recsys/lib/python3.7/site-packages/pandas/io/parsers.py", line 1917, in __init__
+    self._reader = parsers.TextReader(src, **kwds)
+  File "pandas/_libs/parsers.pyx", line 382, in pandas._libs.parsers.TextReader.__cinit__
+  File "pandas/_libs/parsers.pyx", line 689, in pandas._libs.parsers.TextReader._setup_parser_source
+FileNotFoundError: [Errno 2] File b'../../../data/data_UCM_region.csv' does not exist: b'../../../data/data_UCM_region.csv'
+

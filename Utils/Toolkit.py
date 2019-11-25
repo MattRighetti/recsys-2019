@@ -13,11 +13,8 @@ class DataReader(object):
     """
     This class will read the URM_train and the Target_users files and will generate every URM that we'll need
     """
-    def __init__(self, test=True):
-        if test:
-            dir_file = "../"
-        else:
-            dir_file = "./"
+    def __init__(self, dir_path='./'):
+        dir_file = dir_path
         self.data_train_file_path = dir_file + "data/data_train.csv"
         self.user_target_file_path = dir_file + "data/alg_sample_submission.csv"
         self.item_subclass_file_path = dir_file + "data/data_ICM_sub_class.csv"
@@ -124,8 +121,8 @@ def get_URM_TFIDF(URM):
     URM_tfidf = feature_extraction.text.TfidfTransformer().fit_transform(URM)
     return URM_tfidf.tocsr()
 
-def get_data(split_kind=None, test=False):
-    dataReader = DataReader(test=test)
+def get_data(split_kind=None, dir_path=None):
+    dataReader = DataReader(dir_path=dir_path)
     UCM_region = dataReader.UCM_region_COO()
     UCM_age = dataReader.UCM_age_COO()
     URM_all = dataReader.URM_COO()

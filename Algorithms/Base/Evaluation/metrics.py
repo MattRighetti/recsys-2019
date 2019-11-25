@@ -9,6 +9,9 @@
 import numpy as np
 import unittest
 
+from Utils.Toolkit import get_data
+
+
 class Metrics_Object(object):
     """
     Abstract class that should be used as superclass of all metrics requiring an object, therefore a state, to be computed
@@ -86,13 +89,14 @@ class MAP(Metrics_Object):
     """
 
     def __init__(self):
+        data = get_data(dir_path='../../')
+        URM_all = data['URM_all']
         super(MAP, self).__init__()
         self.cumulative_AP = 0.0
-        self.n_users = 0
+        self.n_users = URM_all.shape[0]
 
     def add_recommendations(self, is_relevant, pos_items):
         self.cumulative_AP += average_precision(is_relevant, pos_items)
-        self.n_users += 1
 
     def get_metric_value(self):
         return self.cumulative_AP/self.n_users

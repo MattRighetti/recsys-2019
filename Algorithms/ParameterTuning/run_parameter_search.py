@@ -582,7 +582,7 @@ def read_data_split_and_search():
         - A _best_result_test file which contains a dictionary with the results, on the test set, of the best solution chosen using the validation set
     """
 
-    data = get_data(test=True)
+    data = get_data(dir_path='../../')
     URM_test = data['test']
     URM_train = data['train']
     URM_train, URM_validation = train_test_holdout(URM_train)
