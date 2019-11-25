@@ -1,18 +1,6 @@
-SearchSingleCase: Config 0 Exception. Config: {} - Exception: Traceback (most recent call last):
-  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
-    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
-  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchSingleCase.py", line 60, in _evaluate_on_validation
-    return super(SearchSingleCase, self)._evaluate_on_validation(current_fit_parameters)
-  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 272, in _evaluate_on_validation
-    result_dict, _ = self.evaluator_validation.evaluateRecommender(recommender_instance)
-  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 356, in evaluateRecommender
-    self.usersToEvaluate)
-  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 249, in _run_evaluation_on_selected_users
-    return_scores=True
-  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/BaseRecommender.py", line 128, in recommend
-    scores_batch = self._compute_item_score(user_id_array, items_to_compute=items_to_compute)
-  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/NonPersonalizedRecommender.py", line 41, in _compute_item_score
-    item_scores = self._compute_item_score_postprocess_for_cold_items(item_scores)
-AttributeError: 'TopPop' object has no attribute '_compute_item_score_postprocess_for_cold_items'
+SearchSingleCase: New best config found. Config 0: {} - results: ROC_AUC: 0.0217792, PRECISION: 0.0084574, PRECISION_RECALL_MIN_DEN: 0.0135878, RECALL: 0.0115086, MAP: 0.0064684, MRR: 0.0197903, NDCG: 0.0097409, F1: 0.0097498, HIT_RATE: 0.0422868, ARHR: 0.0201109, RMSE: 153.4453660, NOVELTY: 0.0024042, AVERAGE_POPULARITY: 0.9480388, DIVERSITY_MEAN_INTER_LIST: 0.0572012, DIVERSITY_HERFINDAHL: 0.8114396, COVERAGE_ITEM: 0.0007029, COVERAGE_USER: 0.6020834, DIVERSITY_GINI: 0.4424741, SHANNON_ENTROPY: 2.4721103, 
+SearchSingleCase: Best config evaluated with evaluator_test. Config: {} - results:
+CUTOFF: 5 - ROC_AUC: 0.0071913, PRECISION: 0.0025683, PRECISION_RECALL_MIN_DEN: 0.0128417, RECALL: 0.0128417, MAP: 0.0062790, MRR: 0.0062790, NDCG: 0.0079001, F1: 0.0042806, HIT_RATE: 0.0128417, ARHR: 0.0062790, RMSE: 131.5010090, NOVELTY: 0.0024040, AVERAGE_POPULARITY: 0.9485340, DIVERSITY_MEAN_INTER_LIST: 0.0434943, DIVERSITY_HERFINDAHL: 0.8086985, COVERAGE_ITEM: 0.0007029, COVERAGE_USER: 0.8817250, DIVERSITY_GINI: 0.4388657, SHANNON_ENTROPY: 2.4430027, 
+CUTOFF: 10 - ROC_AUC: 0.0130741, PRECISION: 0.0025316, PRECISION_RECALL_MIN_DEN: 0.0253165, RECALL: 0.0253165, MAP: 0.0078915, MRR: 0.0078915, NDCG: 0.0118806, F1: 0.0046030, HIT_RATE: 0.0253165, ARHR: 0.0078915, RMSE: 131.5010090, NOVELTY: 0.0048463, AVERAGE_POPULARITY: 0.9040021, DIVERSITY_MEAN_INTER_LIST: 0.0412387, DIVERSITY_HERFINDAHL: 0.9041237, COVERAGE_ITEM: 0.0012976, COVERAGE_USER: 0.8817250, DIVERSITY_GINI: 0.4504700, SHANNON_ENTROPY: 3.4308693, 
 
-SearchSingleCase: Search complete. Best config is None: None
+SearchSingleCase: Search complete. Best config is 0: {}

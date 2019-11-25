@@ -7,8 +7,11 @@ Created on 16/09/2017
 """
 
 from Algorithms.Base.BaseRecommender import BaseRecommender
+from Algorithms.KNN.ItemKNNCustomSimilarityRecommender import ItemKNNCustomSimilarityRecommender
+from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Base.DataIO import DataIO
 import numpy as np
+import scipy.sparse as sps
 
 
 
@@ -23,9 +26,6 @@ class BaseMatrixFactorizationRecommender(BaseRecommender):
     def __init__(self, URM_train, verbose=True):
         super(BaseMatrixFactorizationRecommender, self).__init__(URM_train, verbose=verbose)
 
-        self.ITEM_bias = None
-        self.ITEM_factors = None
-        self.USER_factors = None
         self.use_bias = False
 
     #########################################################################################################

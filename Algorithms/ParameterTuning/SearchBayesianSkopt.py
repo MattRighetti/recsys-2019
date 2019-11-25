@@ -282,3 +282,4 @@ class SearchBayesianSkopt(SearchAbstractClass):
         current_fit_parameters_dict = dict(zip(self.hyperparams_names, current_fit_parameters_list_of_values))
 
         return self._objective_function(current_fit_parameters_dict)
+

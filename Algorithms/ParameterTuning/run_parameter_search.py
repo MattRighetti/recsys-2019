@@ -23,7 +23,7 @@ from Algorithms.GraphBased.RP3betaRecommender import RP3betaRecommender
 
 # KNN machine learning
 from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
-from SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
+from Algorithms.SLIM_BPR.Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import SLIMElasticNetRecommender
 
 # Matrix Factorization
@@ -583,10 +583,9 @@ def read_data_split_and_search():
     """
 
     data = get_data(test=True)
-
+    URM_test = data['test']
     URM_train = data['train']
-    URM_validation, URM_test = train_test_holdout(URM_train, 0.9)
-
+    URM_train, URM_validation = train_test_holdout(URM_train)
 
     output_folder_path = "result_experiments/SKOPT_prova/"
 
@@ -595,23 +594,17 @@ def read_data_split_and_search():
     if not os.path.exists(output_folder_path):
         os.makedirs(output_folder_path)
 
-
-
-
-
-
-
     collaborative_algorithm_list = [
-        #Random,
-        #TopPop,
-        #P3alphaRecommender,
-        #RP3betaRecommender,
-        #ItemKNNCFRecommender,
-        #UserKNNCFRecommender,
+        Random,
+        TopPop,
+        # P3alphaRecommender,
+        # RP3betaRecommender,
+        ItemKNNCFRecommender,
+        UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
         # PureSVDRecommender,
-        SLIM_BPR_Cython
+        # SLIM_BPR_Cython,
         # SLIMElasticNetRecommender
     ]
 

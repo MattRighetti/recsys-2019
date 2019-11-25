@@ -6,8 +6,8 @@
 """
 
 import numpy as np
-from Algorithms.Base.BaseRecommender import BaseRecommender
-from Algorithms.Base.Recommender_utils import check_matrix
+from Base.BaseRecommender import BaseRecommender
+from Base.Recommender_utils import check_matrix
 
 import scipy.sparse as sps
 
