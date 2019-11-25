@@ -61,3 +61,6 @@ target/
 .ipynb_checkpoints/
 output/*
 .DS_Store
+
+# Tuning output files
+result_experiments/
