@@ -1,6 +1,7 @@
 import numpy as np
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
+from Utils.Toolkit import get_data
 
 
 class UserBasedCollaborativeFiltering(object):
@@ -61,7 +62,39 @@ class UserBasedCollaborativeFiltering(object):
     def evaluate_MAP(self, URM_test):
         result = evaluate_MAP(URM_test, self)
         print("UserCF -> MAP: {:.4f} with TopK = {} & Shrink = {}\t".format(result, self.topK, self.shrink))
+        return result
 
     def evaluate_MAP_target(self, URM_test, target_user_list):
         result = evaluate_MAP_target_users(URM_test, self, target_user_list)
         print("UserCF -> MAP: {:.4f} with TopK = {} & Shrink = {}\t".format(result, self.topK, self.shrink))
+        return result
+
+
+################################################ Test ##################################################
+best_values = {'topK': 94, 'shrink': 19}
+max_map = 0
+data = get_data(test=True)
+
+for topK in range(90, 150, 2):
+    for shrink in range(1, 20, 2):
+
+        args = {
+            'topK':topK,
+            'shrink':shrink
+        }
+
+        userCF = UserBasedCollaborativeFiltering(args['topK'], args['shrink'])
+        userCF.fit(data['train'])
+        result = userCF.evaluate_MAP_target(data['test'], data['target_users'])
+
+        if result > max_map:
+            max_map = result
+            print(f'Best values {args}')
+
+#URM_final = data['train'] + data['test']
+#URM_final = URM_final.tocsr()
+
+#print(type(URM_final))
+#hyb.fit(URM_final)
+#write_output(hyb, target_user_list=data['target_users'])
+################################################ Test ##################################################

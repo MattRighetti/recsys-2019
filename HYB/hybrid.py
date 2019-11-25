@@ -107,7 +107,7 @@ class HybridRecommender(object):
 
 ################################################ Test ##################################################
 max_map = 0
-data = get_data()
+data = get_data(test=True)
 
 userCF_args = {
     'topK' : 102,
@@ -119,14 +119,14 @@ itemCF_args = {
     'shrink' : 27
 }
 
-hyb = HybridRecommender(weights={'user_cf':0.23, 'item_cf':0.77}, userCF_args=userCF_args, itemCF_args=itemCF_args)
+hyb = HybridRecommender(weights={'user_cf':0.28, 'item_cf':0.72}, userCF_args=userCF_args, itemCF_args=itemCF_args)
 hyb.fit(data['train'])
 result = hyb.evaluate_MAP_target(data['test'], data['target_users'])
 
-URM_final = data['train'] + data['test']
-URM_final = URM_final.tocsr()
+#URM_final = data['train'] + data['test']
+#URM_final = URM_final.tocsr()
 
-print(type(URM_final))
-hyb.fit(URM_final)
-write_output(hyb, target_user_list=data['target_users'])
+#print(type(URM_final))
+#hyb.fit(URM_final)
+#write_output(hyb, target_user_list=data['target_users'])
 ################################################ Test ##################################################

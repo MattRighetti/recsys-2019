@@ -1,6 +1,8 @@
 import numpy as np
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
+from Utils.Toolkit import get_URM_TFIDF, normalize_matrix, get_data
+
 
 class ItemBasedCollaborativeFiltering(object):
     """
@@ -13,7 +15,7 @@ class ItemBasedCollaborativeFiltering(object):
         self.SM_item = None
         self.RM = None
 
-    def get_similarity_matrix(self, similarity='tanimoto'):
+    def get_similarity_matrix(self, similarity='tversky'):
         similarity_object = Compute_Similarity_Cython(self.URM_train,
                                                       self.shrink,
                                                       self.topK,
@@ -61,13 +63,42 @@ class ItemBasedCollaborativeFiltering(object):
 
     def evaluate_MAP(self, URM_test):
         result = evaluate_MAP(URM_test, self)
-        print("UserCF -> MAP: {:.4f} with TopK = {} "
+        print("ItemCF -> MAP: {:.4f} with TopK = {} "
               "& Shrink = {}\t".format(result, self.topK, self.shrink))
         return result
 
     def evaluate_MAP_target(self, URM_test, target_user_list):
         result = evaluate_MAP_target_users(URM_test, self, target_user_list)
-        print("UserCF -> MAP: {:.4f} with TopK = {} "
+        print("ItemCF -> MAP: {:.4f} with TopK = {} "
               "& Shrink = {}\t".format(result, self.topK, self.shrink))
         return result
 
+
+################################################ Test ##################################################
+best_values = {'topK': 26, 'shrink': 20}
+max_map = 0
+data = get_data(test=True)
+
+for topK in range(20, 51, 2):
+    for shrink in range(20, 41, 2):
+
+        args = {
+            'topK':topK,
+            'shrink':shrink
+        }
+
+        itemCF = ItemBasedCollaborativeFiltering(args['topK'], args['shrink'])
+        itemCF.fit(data['train'])
+        result = itemCF.evaluate_MAP_target(data['test'], data['target_users'])
+
+        if result > max_map:
+            max_map = result
+            print(f'Best values {args}')
+
+#URM_final = data['train'] + data['test']
+#URM_final = URM_final.tocsr()
+
+#print(type(URM_final))
+#hyb.fit(URM_final)
+#write_output(hyb, target_user_list=data['target_users'])
+################################################ Test ##################################################

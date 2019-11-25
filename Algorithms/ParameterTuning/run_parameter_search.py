@@ -14,6 +14,7 @@ Created on 22/11/17
 from Algorithms.Base.NonPersonalizedRecommender import GlobalEffects, Random, TopPop
 from Algorithms.KNN.UserKNNCFRecommender import UserKNNCFRecommender
 from Algorithms.KNN.ItemKNNCFRecommender import ItemKNNCFRecommender
+from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
 from Algorithms.SLIM_BPR.Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import SLIMElasticNetRecommender
 from Algorithms.GraphBased.P3alphaRecommender import P3alphaRecommender
@@ -479,17 +480,16 @@ def read_data_split_and_search():
     """
 
 
-    from Algorithms.Data_manager.DataSplitter_k_fold import DataSplitter_Warm_k_fold
     from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
     from Algorithms.Utils.PoolWithSubprocess import PoolWithSubprocess
+    from Utils.Toolkit import get_data
 
-    dataset_object = DataReader()
+    data = get_data(test=True)
 
-    dataSplitter = DataSplitter_Warm_k_fold(dataset_object)
+    URM_train = data['train']
+    URM_test = data['test']
 
-    dataSplitter.load_data()
-
-    URM_train, URM_validation, URM_test = dataSplitter.get_holdout_split()
+    URM_train, URM_validation = train_test_holdout(URM_train, train_perc=0.9)
 
     output_folder_path = "result_experiments/SKOPT_prova/"
 
@@ -498,12 +498,12 @@ def read_data_split_and_search():
         os.makedirs(output_folder_path)
 
     collaborative_algorithm_list = [
-        Random,
-        TopPop,
-        #P3alphaRecommender,
-        #RP3betaRecommender,
-        ItemKNNCFRecommender,
-        UserKNNCFRecommender,
+        # Random,
+        # TopPop,
+        # P3alphaRecommender,
+        # RP3betaRecommender,
+        # ItemKNNCFRecommender,
+        # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
         # PureSVDRecommender,
@@ -525,7 +525,7 @@ def read_data_split_and_search():
 
 
 
-    pool = PoolWithSubprocess(processes=int(multiprocessing.cpu_count()), maxtasksperchild=1)
+    pool = PoolWithSubprocess(8, maxtasksperchild=1)
     resultList = pool.map(runParameterSearch_Collaborative_partial, collaborative_algorithm_list)
     pool.close()
     pool.join()

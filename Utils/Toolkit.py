@@ -13,14 +13,18 @@ class DataReader(object):
     """
     This class will read the URM_train and the Target_users files and will generate every URM that we'll need
     """
-    def __init__(self):
-        self.data_train_file_path = "../data/data_train.csv"
-        self.user_target_file_path = "../data/alg_sample_submission.csv"
-        self.item_subclass_file_path = "../data/data_ICM_sub_class.csv"
-        self.item_assets_file_path = "../data/data_ICM_asset.csv"
-        self.item_price_file_path = "../data/data_ICM_price.csv"
-        self.user_age_file_path = "../data/data_UCM_age.csv"
-        self.user_region_file_path = "../data/data_UCM_region.csv"
+    def __init__(self, test=False):
+        if test:
+            dir_file = "../"
+        else:
+            dir_file = "./"
+        self.data_train_file_path = dir_file + "data/data_train.csv"
+        self.user_target_file_path = dir_file + "data/alg_sample_submission.csv"
+        self.item_subclass_file_path = dir_file + "data/data_ICM_sub_class.csv"
+        self.item_assets_file_path = dir_file + "data/data_ICM_asset.csv"
+        self.item_price_file_path = dir_file + "data/data_ICM_price.csv"
+        self.user_age_file_path = dir_file + "data/data_UCM_age.csv"
+        self.user_region_file_path = dir_file + "data/data_UCM_region.csv"
 
     def target_users(self):
         target_df = pd.read_csv(self.user_target_file_path)
@@ -120,8 +124,8 @@ def get_URM_TFIDF(URM):
     URM_tfidf = feature_extraction.text.TfidfTransformer().fit_transform(URM)
     return URM_tfidf.tocsr()
 
-def get_data(split_kind=None):
-    dataReader = DataReader()
+def get_data(split_kind=None, test=False):
+    dataReader = DataReader(test=test)
     UCM_region = dataReader.UCM_region_COO()
     UCM_age = dataReader.UCM_age_COO()
     URM_all = dataReader.URM_COO()
