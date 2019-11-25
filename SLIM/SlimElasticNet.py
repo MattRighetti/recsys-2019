@@ -6,6 +6,10 @@ import numpy as np
 import scipy.sparse as sps
 from sklearn.linear_model import ElasticNet
 
+from helper import Helper
+from run import Runner
+
+
 class SLIMElasticNetRecommender(object):
     """
     Train a Sparse Linear Methods (SLIM) item similarity model.
@@ -22,7 +26,7 @@ class SLIMElasticNetRecommender(object):
         http://glaros.dtc.umn.edu/gkhome/fetch/papers/SLIM2011icdm.pdf
     """
     def __init__(self, alpha=1e-4, l1_ratio=0.1, fit_intercept=False, copy_X=False, precompute=False, selection='random',
-                max_iter=100, tol=1e-4, topK=100, positive_only=True, workers=multiprocessing.cpu_count()):
+                max_iter=100, tol=1e-4, topK=100, positive_only=True, workers=multiprocessing.cpu_count(), use_tail_boost=False):
 
         self.analyzed_items = 0
         self.alpha = alpha
@@ -36,6 +40,7 @@ class SLIMElasticNetRecommender(object):
         self.topK = topK
         self.positive_only = positive_only
         self.workers = workers
+        self.use_tail_boost = use_tail_boost
 
     """ 
         Fit given to each pool thread, to fit the W_sparse 
@@ -80,6 +85,10 @@ class SLIMElasticNetRecommender(object):
     def fit(self, URM):
 
         self.URM_train = sps.csc_matrix(URM)
+
+        if self.use_tail_boost:
+            helper = Helper()
+            self.URM = helper.tail_boost(self.URM)
 
         n_items = self.URM_train.shape[1]
         print("Iterating for " + str(n_items) + "times")

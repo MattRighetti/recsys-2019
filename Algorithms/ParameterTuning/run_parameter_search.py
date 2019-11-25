@@ -595,8 +595,8 @@ def read_data_split_and_search():
         os.makedirs(output_folder_path)
 
     collaborative_algorithm_list = [
-        Random,
-        TopPop,
+        # Random,
+        # TopPop,
         # P3alphaRecommender,
         # RP3betaRecommender,
         # ItemKNNCFRecommender,
@@ -612,8 +612,8 @@ def read_data_split_and_search():
 
     from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 
-    evaluator_validation = EvaluatorHoldout(URM_validation, cutoff_list=[5])
-    evaluator_test = EvaluatorHoldout(URM_test, cutoff_list=[5, 10])
+    evaluator_validation = EvaluatorHoldout(URM_validation, cutoff_list=[10])
+    evaluator_test = EvaluatorHoldout(URM_test, cutoff_list=[10])
 
 
     runParameterSearch_Collaborative_partial = partial(runParameterSearch_Collaborative,

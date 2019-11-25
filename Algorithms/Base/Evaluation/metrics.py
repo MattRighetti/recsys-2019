@@ -83,7 +83,6 @@ class Coverage_User(Metrics_Object):
 class MAP(Metrics_Object):
     """
     Mean Average Precision, defined as the mean of the AveragePrecision over all users
-
     """
 
     def __init__(self):
