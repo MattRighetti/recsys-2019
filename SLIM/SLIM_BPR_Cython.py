@@ -18,10 +18,10 @@ from Utils.Toolkit import get_data
 
 class SLIM_BPR_Cython(object):
 
-    def __init__(self, positive_threshold=1, recompile_cython=False, final_model_sparse_weights=True,
+    def __init__(self, positive_threshold=None, recompile_cython=False, final_model_sparse_weights=True,
                  train_with_sparse_weights=False, symmetric=True, epochs = 400,
-                batch_size = 1, lambda_i = 0.6, lambda_j = 1, learning_rate = 0.01, topK = 30,
-                sgd_mode = 'adagrad', gamma = 0.995, beta_1 = 0.9, beta_2 = 0.999):
+                batch_size = 1000, lambda_i = 0.6, lambda_j = 1, learning_rate = 1e-4, topK = 30,
+                sgd_mode = 'adagrad', gamma=0.995, beta_1=0.9, beta_2=0.999):
 
         #### Retreiving parameters for fitting #######
         self.epochs = epochs
@@ -66,8 +66,9 @@ class SLIM_BPR_Cython(object):
 
         self.URM_mask = self.URM_train.copy()
 
-        self.URM_mask.data = self.URM_mask.data >= self.positive_threshold
-        self.URM_mask.eliminate_zeros()
+        if self.positive_threshold is not None:
+            self.URM_mask.data = self.URM_mask.data >= self.positive_threshold
+            self.URM_mask.eliminate_zeros()
 
         assert self.URM_mask.nnz > 0, "MatrixFactorization_Cython: URM_train_positive is empty, positive threshold is too high"
 
@@ -84,9 +85,9 @@ class SLIM_BPR_Cython(object):
 
 
         #### Actual fitting from here
-
-        URM_train_positive.data = URM_train_positive.data >= self.positive_threshold
-        URM_train_positive.eliminate_zeros()
+        if self.positive_threshold is not None:
+            URM_train_positive.data = URM_train_positive.data >= self.positive_threshold
+            URM_train_positive.eliminate_zeros()
 
         from SLIM.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
         self.cythonEpoch = SLIM_BPR_Cython_Epoch(self.URM_mask,
