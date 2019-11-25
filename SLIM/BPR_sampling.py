@@ -14,6 +14,11 @@ class BPR_Sampling(object):
 
     def __init__(self):
         super(BPR_Sampling, self).__init__()
+        self.n_users = None
+        self.URM_train = None
+        self.n_items = None
+        self.eligibleUsers = None
+        self.batch_size = None
 
 
     def sampleUser(self):
@@ -21,12 +26,12 @@ class BPR_Sampling(object):
         Sample a user that has viewed at least one and not all items
         :return: user_id
         """
-        while (True):
+        while True:
 
             user_id = np.random.randint(0, self.n_users)
             numSeenItems = self.URM_train[user_id].nnz
 
-            if (numSeenItems > 0 and numSeenItems < self.n_items):
+            if 0 < numSeenItems < self.n_items:
                 return user_id
 
 
@@ -41,11 +46,11 @@ class BPR_Sampling(object):
 
         pos_item_id = userSeenItems[np.random.randint(0, len(userSeenItems))]
 
-        while (True):
+        while True:
 
             neg_item_id = np.random.randint(0, self.n_items)
 
-            if (neg_item_id not in userSeenItems):
+            if neg_item_id not in userSeenItems:
                 return pos_item_id, neg_item_id
 
 
@@ -72,7 +77,7 @@ class BPR_Sampling(object):
 
         for user_id in range(self.n_users):
 
-            if (URM_train_positive[user_id].nnz > 0):
+            if URM_train_positive[user_id].nnz > 0:
                 self.eligibleUsers.append(user_id)
                 self.userSeenItems[user_id] = URM_train_positive[user_id].indices
 
@@ -80,7 +85,7 @@ class BPR_Sampling(object):
 
 
     def sampleBatch(self):
-        user_id_list = np.random.choice(self.eligibleUsers, size=(self.batch_size))
+        user_id_list = np.random.choice(self.eligibleUsers, size=self.batch_size)
         pos_item_id_list = [None]*self.batch_size
         neg_item_id_list = [None]*self.batch_size
 
@@ -93,10 +98,10 @@ class BPR_Sampling(object):
 
             # It's faster to just try again then to build a mapping of the non-seen items
             # for every user
-            while (not negItemSelected):
+            while not negItemSelected:
                 neg_item_id = np.random.randint(0, self.n_items)
 
-                if (neg_item_id not in self.userSeenItems[user_id]):
+                if neg_item_id not in self.userSeenItems[user_id]:
                     negItemSelected = True
                     neg_item_id_list[sample_index] = neg_item_id
 

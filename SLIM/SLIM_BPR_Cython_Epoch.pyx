@@ -341,18 +341,18 @@ cdef class SLIM_BPR_Cython_Epoch:
                 self.S_sparse.rebalance_tree(TopK=self.topK)
 
 
-            if((numCurrentBatch%printStep==0 and not numCurrentBatch==0) or numCurrentBatch==totalNumberOfBatch-1):
-                print("Processed {} ( {:.2f}% ) in {:.2f} seconds. BPR loss is {:.2E}. Sample per second: {:.0f}".format(
-                    numCurrentBatch*self.batch_size,
-                    100.0* float(numCurrentBatch*self.batch_size)/self.numPositiveIteractions,
-                    time.time() - start_time_batch,
-                    loss/(numCurrentBatch*self.batch_size + 1),
-                    float(numCurrentBatch*self.batch_size + 1) / (time.time() - start_time_epoch)))
+            #if((numCurrentBatch%printStep==0 and not numCurrentBatch==0) or numCurrentBatch==totalNumberOfBatch-1):
+                #print("Processed {} ( {:.2f}% ) in {:.2f} seconds. BPR loss is {:.2E}. Sample per second: {:.0f}".format(
+                    #numCurrentBatch*self.batch_size,
+                    #100.0* float(numCurrentBatch*self.batch_size)/self.numPositiveIteractions,
+                    #time.time() - start_time_batch,
+                    #loss/(numCurrentBatch*self.batch_size + 1),
+                    #float(numCurrentBatch*self.batch_size + 1) / (time.time() - start_time_epoch)))
 
-                sys.stdout.flush()
-                sys.stderr.flush()
+                #sys.stdout.flush()
+                #sys.stderr.flush()
 
-                start_time_batch = time.time()
+                #start_time_batch = time.time()
 
 
 

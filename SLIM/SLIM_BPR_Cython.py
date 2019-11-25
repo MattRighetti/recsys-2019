@@ -21,7 +21,7 @@ class SLIM_BPR_Cython(object):
     def __init__(self, positive_threshold=None, recompile_cython=False, final_model_sparse_weights=True,
                  train_with_sparse_weights=False, symmetric=True, epochs = 400,
                 batch_size = 1000, lambda_i = 0.6, lambda_j = 1, learning_rate = 1e-4, topK = 30,
-                sgd_mode = 'adagrad', gamma=0.995, beta_1=0.9, beta_2=0.999):
+                sgd_mode = 'sgd', gamma=0.995, beta_1=0.9, beta_2=0.999):
 
         #### Retreiving parameters for fitting #######
         self.epochs = epochs
@@ -80,8 +80,8 @@ class SLIM_BPR_Cython(object):
             if self.symmetric:
                 requiredGB /= 2
 
-            print("SLIM_BPR_Cython: Estimated memory required for similarity matrix of {} items is {:.2f} MB".format(
-                n_items, requiredGB))
+            #print("SLIM_BPR_Cython: Estimated memory required for similarity matrix of {} items is {:.2f} MB".format(
+                #n_items, requiredGB))
 
 
         #### Actual fitting from here
@@ -205,8 +205,18 @@ class SLIM_BPR_Cython(object):
 max_map = 0
 data = get_data(test=True)
 
-recommender = SLIM_BPR_Cython()
-#recommender.runCompilationScript()
+args = {
+    'topK': 150,
+    'lambda_i': 5,
+    'lambda_j': 7,
+    'epochs': 5000
+}
+
+recommender = SLIM_BPR_Cython(epochs=args['epochs'],
+                              topK=args['topK'],
+                              lambda_i=args['lambda_i'],
+                              lambda_j=args['lambda_j'], positive_threshold=1)
+recommender.runCompilationScript()
 recommender.fit(data['train'])
 result = evaluate_MAP_target_users(data['test'], recommender, data['target_users'])
 print(result)
