@@ -15,7 +15,7 @@ class DataReader(object):
     """
     def __init__(self, test=True):
         if test:
-            dir_file = "../../../"
+            dir_file = "../../"
         else:
             dir_file = "../../"
         self.data_train_file_path = dir_file + "data/data_train.csv"

@@ -1,0 +1,18 @@
+SearchSingleCase: Config 0 Exception. Config: {} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchSingleCase.py", line 60, in _evaluate_on_validation
+    return super(SearchSingleCase, self)._evaluate_on_validation(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 272, in _evaluate_on_validation
+    result_dict, _ = self.evaluator_validation.evaluateRecommender(recommender_instance)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 356, in evaluateRecommender
+    self.usersToEvaluate)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 249, in _run_evaluation_on_selected_users
+    return_scores=True
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/BaseRecommender.py", line 128, in recommend
+    scores_batch = self._compute_item_score(user_id_array, items_to_compute=items_to_compute)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/NonPersonalizedRecommender.py", line 41, in _compute_item_score
+    item_scores = self._compute_item_score_postprocess_for_cold_items(item_scores)
+AttributeError: 'TopPop' object has no attribute '_compute_item_score_postprocess_for_cold_items'
+
+SearchSingleCase: Search complete. Best config is None: None

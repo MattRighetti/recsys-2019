@@ -1,0 +1,15 @@
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 289, 'alpha': 0.830423352632021, 'normalize_similarity': True} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 272, in _evaluate_on_validation
+    result_dict, _ = self.evaluator_validation.evaluateRecommender(recommender_instance)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 356, in evaluateRecommender
+    self.usersToEvaluate)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 249, in _run_evaluation_on_selected_users
+    return_scores=True
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/BaseRecommender.py", line 128, in recommend
+    scores_batch = self._compute_item_score(user_id_array, items_to_compute=items_to_compute)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/BaseRecommender.py", line 110, in _compute_item_score
+    raise NotImplementedError("BaseRecommender: compute_item_score not assigned for current recommender, unable to compute prediction scores")
+NotImplementedError: BaseRecommender: compute_item_score not assigned for current recommender, unable to compute prediction scores
+

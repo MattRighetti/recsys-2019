@@ -974,3 +974,948 @@ SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 902, 'epochs': 1500, '
     if self.train_with_sparse_weights:
 AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
 
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 53, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.001686187834523462, 'lambda_j': 0.0002504543698794245, 'learning_rate': 0.00468539338624871} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 42, in fit
+    if self.train_with_sparse_weights is not None:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 206, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0005228462595192483, 'lambda_j': 0.0001199650789836074, 'learning_rate': 0.0007904435693478609} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 42, in fit
+    if self.train_with_sparse_weights is not None:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 982, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.0003637317031943257, 'lambda_j': 0.000884019133958071, 'learning_rate': 0.0007187420980604478} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 42, in fit
+    if self.train_with_sparse_weights is not None:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 46, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.0002098533663264138, 'lambda_j': 0.00019248615212328122, 'learning_rate': 0.049145854668527354} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 42, in fit
+    if self.train_with_sparse_weights is not None:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 134, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.00015544689162985686, 'lambda_j': 1.097834731132599e-05, 'learning_rate': 0.0010720625942075455} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 42, in fit
+    if self.train_with_sparse_weights is not None:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 902, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 1.2243762778007937e-05, 'lambda_j': 0.006327125722157447, 'learning_rate': 0.08863906858390357} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 42, in fit
+    if self.train_with_sparse_weights is not None:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 950, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.004220333608702422, 'lambda_j': 1.4400449088541991e-05, 'learning_rate': 0.00013485642433305316} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 42, in fit
+    if self.train_with_sparse_weights is not None:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 7, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.008865850851413925, 'lambda_j': 0.003335617977223394, 'learning_rate': 0.00010900970587822799} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 42, in fit
+    if self.train_with_sparse_weights is not None:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Search complete. Best config is None: None
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 889, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.0004619212501514846, 'lambda_j': 6.63742627138677e-05, 'learning_rate': 0.021344040744291914} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 19, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 7.800457883216194e-05, 'lambda_j': 0.0016367979588071788, 'learning_rate': 0.00661136567113846} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 473, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.0016225969447263328, 'lambda_j': 0.00496468884633859, 'learning_rate': 0.015838350291864742} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 636, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1.5449611934716838e-05, 'lambda_j': 0.00025281900145220657, 'learning_rate': 0.03692142598230328} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 797, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 2.0442261003327405e-05, 'lambda_j': 0.0001904389188013934, 'learning_rate': 0.036193900352364465} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 87, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.007176136088475042, 'lambda_j': 1.9972084192021005e-05, 'learning_rate': 0.00010034708165141587} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 991, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 2.296175443142213e-05, 'lambda_j': 0.007801487688691083, 'learning_rate': 0.00010032156511491968} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 952, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.008988895804802322, 'lambda_j': 0.008863095668332915, 'learning_rate': 0.00022939839047306208} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Search complete. Best config is None: None
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 864, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 4.20949485788184e-05, 'lambda_j': 0.001211718466690806, 'learning_rate': 0.00038244208761837445} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 84, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 7.402047892401854e-05, 'lambda_j': 6.809124473814451e-05, 'learning_rate': 0.0001619189387053565} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 233, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.006773665833992552, 'lambda_j': 4.3615772306268134e-05, 'learning_rate': 0.05594055871914048} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 376, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.0008520297596070638, 'lambda_j': 6.308680255912846e-05, 'learning_rate': 0.03172871033979373} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 568, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 1.1048790826202853e-05, 'lambda_j': 9.111956945729499e-05, 'learning_rate': 0.0003725436207369854} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 971, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.0040650671397841264, 'lambda_j': 0.007201580111449357, 'learning_rate': 0.04815784351901176} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 44, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 2.7459868551922962e-05, 'lambda_j': 1.1630688543030508e-05, 'learning_rate': 0.00010777010009584996} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 943, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.0028627818385857573, 'lambda_j': 0.008660716555132307, 'learning_rate': 0.000106040663808368} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Search complete. Best config is None: None
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 207, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.0008297807851409977, 'lambda_j': 0.0002812978391753936, 'learning_rate': 0.00027499694879348514} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 722, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 2.0791878583090064e-05, 'lambda_j': 1.5082305084278398e-05, 'learning_rate': 0.0028717691894804935} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 905, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.005762017397547321, 'lambda_j': 0.00144490002759426, 'learning_rate': 0.0003983485336108783} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 719, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.00028604674299693934, 'lambda_j': 0.0002551786052434798, 'learning_rate': 0.001684347634386695} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 592, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 8.193904505885724e-05, 'lambda_j': 0.00021133195897950465, 'learning_rate': 0.02983433429591697} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 66, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.009237469590152661, 'lambda_j': 0.009542061671043295, 'learning_rate': 0.04538073350217582} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 45, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1.9516260187514455e-05, 'lambda_j': 0.008356243732775895, 'learning_rate': 0.0002905571911566069} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 922, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 1.9470903800733193e-05, 'lambda_j': 1.028609006354158e-05, 'learning_rate': 0.07585615487905291} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Search complete. Best config is None: None
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 52, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.00040313350154925316, 'lambda_j': 0.008271591779960666, 'learning_rate': 0.026983886552761436} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 926, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.00032653657989144307, 'lambda_j': 0.004131370853466591, 'learning_rate': 0.0037781748454652504} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 528, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 1.573181002101689e-05, 'lambda_j': 0.001403320227977999, 'learning_rate': 0.020978684145952314} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 876, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.0027060779187578245, 'lambda_j': 0.0006099267182989948, 'learning_rate': 0.000836833538854661} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 580, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.0005420045985024579, 'lambda_j': 0.0016580296872031686, 'learning_rate': 0.025540729309686993} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 34, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.007892293806014557, 'lambda_j': 3.71248472641262e-05, 'learning_rate': 0.00011551625052651866} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 38, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1.1769195625402852e-05, 'lambda_j': 1.0398271828974546e-05, 'learning_rate': 0.019835294289655966} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 954, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 1.1698524813915281e-05, 'lambda_j': 1.371274995408622e-05, 'learning_rate': 0.00018608819081864498} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Search complete. Best config is None: None
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 205, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.002164650941634068, 'lambda_j': 3.6979127312129554e-05, 'learning_rate': 0.005890502843809084} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 819, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.0004772083616116659, 'lambda_j': 3.751876258412424e-05, 'learning_rate': 0.001530540167309546} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 379, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.00017547906341731443, 'lambda_j': 4.586956991773946e-05, 'learning_rate': 0.001725259572724575} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 609, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.0003517518154296013, 'lambda_j': 0.00011643643923057192, 'learning_rate': 0.05869323301141579} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 269, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.003927846769971169, 'lambda_j': 4.8656117152014316e-05, 'learning_rate': 0.024856527557341534} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 797, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 2.5266565582460404e-05, 'lambda_j': 0.009489729014136371, 'learning_rate': 0.00013654691360718597} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 45, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 2.1751498885286813e-05, 'lambda_j': 0.00945162747488172, 'learning_rate': 0.0001385889340774138} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 41, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 2.647814590134942e-05, 'lambda_j': 0.009393287416712283, 'learning_rate': 0.08536461422312012} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 114, in fit
+    beta_2=self.beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 94, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: an integer is required
+
+SearchBayesianSkopt: Search complete. Best config is None: None
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 204, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0033277009398868574, 'lambda_j': 3.8258925498968667e-05, 'learning_rate': 0.037439027912997455} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 89, in fit
+    from SLIM_BPR.Cython.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/_pydev_bundle/pydev_import_hook.py", line 21, in do_import
+    module = self._system_import(name, *args, **kwargs)
+ModuleNotFoundError: No module named 'SLIM_BPR'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 235, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0002850836554463441, 'lambda_j': 0.0034625987599100137, 'learning_rate': 0.023732648069260676} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 89, in fit
+    from SLIM_BPR.Cython.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/_pydev_bundle/pydev_import_hook.py", line 21, in do_import
+    module = self._system_import(name, *args, **kwargs)
+ModuleNotFoundError: No module named 'SLIM_BPR'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 11, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 2.0085362273118972e-05, 'lambda_j': 0.007429841212254798, 'learning_rate': 0.007212550638962256} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 89, in fit
+    from SLIM_BPR.Cython.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/_pydev_bundle/pydev_import_hook.py", line 21, in do_import
+    module = self._system_import(name, *args, **kwargs)
+ModuleNotFoundError: No module named 'SLIM_BPR'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 535, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1.67736359613443e-05, 'lambda_j': 0.00027829124459552245, 'learning_rate': 0.05606621347269768} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 89, in fit
+    from SLIM_BPR.Cython.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/_pydev_bundle/pydev_import_hook.py", line 21, in do_import
+    module = self._system_import(name, *args, **kwargs)
+ModuleNotFoundError: No module named 'SLIM_BPR'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 537, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.00017724130624736576, 'lambda_j': 4.019736727884898e-05, 'learning_rate': 0.02237058680647817} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 89, in fit
+    from SLIM_BPR.Cython.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/_pydev_bundle/pydev_import_hook.py", line 21, in do_import
+    module = self._system_import(name, *args, **kwargs)
+ModuleNotFoundError: No module named 'SLIM_BPR'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 966, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.004378420979040997, 'lambda_j': 1.506614197871833e-05, 'learning_rate': 0.00011156053726674961} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 89, in fit
+    from SLIM_BPR.Cython.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/_pydev_bundle/pydev_import_hook.py", line 21, in do_import
+    module = self._system_import(name, *args, **kwargs)
+ModuleNotFoundError: No module named 'SLIM_BPR'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 1000, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 1e-05, 'lambda_j': 0.01, 'learning_rate': 0.0001} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 89, in fit
+    from SLIM_BPR.Cython.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/_pydev_bundle/pydev_import_hook.py", line 21, in do_import
+    module = self._system_import(name, *args, **kwargs)
+ModuleNotFoundError: No module named 'SLIM_BPR'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 98, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.008475579181969341, 'lambda_j': 1.4346921222500521e-05, 'learning_rate': 0.00012105101386428163} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 89, in fit
+    from SLIM_BPR.Cython.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
+  File "/Applications/PyCharm.app/Contents/helpers/pydev/_pydev_bundle/pydev_import_hook.py", line 21, in do_import
+    module = self._system_import(name, *args, **kwargs)
+ModuleNotFoundError: No module named 'SLIM_BPR'
+
+SearchBayesianSkopt: Search complete. Best config is None: None
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 685, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.002375641821328573, 'lambda_j': 0.00020674790968909, 'learning_rate': 0.0007116456231149702} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 147, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'verbose'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 751, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 9.29427711907455e-05, 'lambda_j': 0.0067924727606221225, 'learning_rate': 0.03168394436181807} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 147, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'verbose'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 116, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 4.95401313913508e-05, 'lambda_j': 3.372584142226323e-05, 'learning_rate': 0.007667696771219436} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 147, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'verbose'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 364, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0002491261375746986, 'lambda_j': 5.1676274817336976e-05, 'learning_rate': 0.0001775745909754205} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 147, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'verbose'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 759, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 3.285230625203879e-05, 'lambda_j': 0.00032661341214142717, 'learning_rate': 0.01210446527432451} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 147, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'verbose'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 81, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.008041016692820358, 'lambda_j': 0.008041165702049956, 'learning_rate': 0.037788600215069} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 147, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'verbose'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 851, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.007492432599154123, 'lambda_j': 1.0226130862263568e-05, 'learning_rate': 0.061873021699445495} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 147, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'verbose'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 16, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 1.437197404902428e-05, 'lambda_j': 0.00826172572917008, 'learning_rate': 0.0002453347590527522} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 147, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'verbose'
+
+SearchBayesianSkopt: Search complete. Best config is None: None
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 508, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.0028711988921148687, 'lambda_j': 0.0010518105746078017, 'learning_rate': 0.0004974720196076224} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 146, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'random_seed'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 945, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 7.258868457881191e-05, 'lambda_j': 1.791770507240344e-05, 'learning_rate': 0.025675404467704457} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 146, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'random_seed'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 882, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.00015277498851469555, 'lambda_j': 0.001390534706725014, 'learning_rate': 0.002392333136147692} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 146, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'random_seed'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 687, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 6.065259118185579e-05, 'lambda_j': 1.2896117888160781e-05, 'learning_rate': 0.019749240976924085} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 146, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'random_seed'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 224, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.0012945330095696548, 'lambda_j': 0.003552524760609304, 'learning_rate': 0.07604623420338297} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 146, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'random_seed'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 49, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 1.8012691808801668e-05, 'lambda_j': 0.00915480040833038, 'learning_rate': 0.00018915831823117615} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 146, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'random_seed'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 89, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.006267406947212016, 'lambda_j': 2.3333005583068823e-05, 'learning_rate': 0.0001288691281498262} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 146, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'random_seed'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 977, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.006417615746368368, 'lambda_j': 1.67176520702702e-05, 'learning_rate': 0.09763975922009616} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 146, in fit
+    beta_2=beta_2)
+  File "SLIM_BPR_Cython_Epoch.pyx", line 70, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.__init__
+TypeError: __init__() got an unexpected keyword argument 'random_seed'
+
+SearchBayesianSkopt: Search complete. Best config is None: None
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 267, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.007198668835222565, 'lambda_j': 7.310910213244583e-05, 'learning_rate': 0.09297935074700828} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 160, in fit
+    self.S_incremental = self.cythonEpoch.get_S()
+  File "SLIM_BPR_Cython_Epoch.pyx", line 406, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.get_S
+TypeError: similarityMatrixTopK() got an unexpected keyword argument 'forceSparseOutput'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 343, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.005888522980994762, 'lambda_j': 0.0002732550545678347, 'learning_rate': 0.008849667262469744} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 160, in fit
+    self.S_incremental = self.cythonEpoch.get_S()
+  File "SLIM_BPR_Cython_Epoch.pyx", line 406, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.get_S
+TypeError: similarityMatrixTopK() got an unexpected keyword argument 'forceSparseOutput'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 354, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.0034521222178968505, 'lambda_j': 0.00029665444321913753, 'learning_rate': 0.014646933490479063} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 160, in fit
+    self.S_incremental = self.cythonEpoch.get_S()
+  File "SLIM_BPR_Cython_Epoch.pyx", line 406, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.get_S
+TypeError: similarityMatrixTopK() got an unexpected keyword argument 'forceSparseOutput'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 735, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.0052864966327713925, 'lambda_j': 0.0007921840849547372, 'learning_rate': 0.00470397046050412} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 160, in fit
+    self.S_incremental = self.cythonEpoch.get_S()
+  File "SLIM_BPR_Cython_Epoch.pyx", line 406, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.get_S
+TypeError: similarityMatrixTopK() got an unexpected keyword argument 'forceSparseOutput'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 590, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.0007335089970127398, 'lambda_j': 4.26644673799492e-05, 'learning_rate': 0.0012056910339645263} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 160, in fit
+    self.S_incremental = self.cythonEpoch.get_S()
+  File "SLIM_BPR_Cython_Epoch.pyx", line 406, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.get_S
+TypeError: similarityMatrixTopK() got an unexpected keyword argument 'forceSparseOutput'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 757, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.00016250096855074185, 'lambda_j': 2.470141306401239e-05, 'learning_rate': 0.00595697513989707} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 160, in fit
+    self.S_incremental = self.cythonEpoch.get_S()
+  File "SLIM_BPR_Cython_Epoch.pyx", line 406, in SLIM_BPR_Cython_Epoch.SLIM_BPR_Cython_Epoch.get_S
+TypeError: similarityMatrixTopK() got an unexpected keyword argument 'forceSparseOutput'
+
