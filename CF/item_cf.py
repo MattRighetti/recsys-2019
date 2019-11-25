@@ -75,12 +75,14 @@ class ItemBasedCollaborativeFiltering(object):
 
 
 ################################################ Test ##################################################
-best_values = {'topK': 26, 'shrink': 20}
+best_values_3 = {'topK': 26, 'shrink': 20}
+best_values_2 = {'topK': 26, 'shrink': 10}
+best_values_1 = {'topK': 29, 'shrink': 5}
 max_map = 0
 data = get_data(test=True)
 
-for topK in range(20, 51, 2):
-    for shrink in range(20, 41, 2):
+for topK in [29, 26, 27, 28]:
+    for shrink in [1, 2, 3, 4, 5, 6]:
 
         args = {
             'topK':topK,
