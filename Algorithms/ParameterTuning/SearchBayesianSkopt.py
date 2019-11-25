@@ -183,6 +183,7 @@ class SearchBayesianSkopt(SearchAbstractClass):
         if self.recommender_input_args_last_test is not None:
             self._evaluate_on_test_with_data_last()
 
+    # TODO FIX THIS
     def _evaluate_on_validation(self, current_fit_parameters):
 
         start_time = time.time()

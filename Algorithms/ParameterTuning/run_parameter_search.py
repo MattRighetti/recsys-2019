@@ -15,7 +15,7 @@ from Algorithms.Base.NonPersonalizedRecommender import GlobalEffects, Random, To
 from Algorithms.KNN.UserKNNCFRecommender import UserKNNCFRecommender
 from Algorithms.KNN.ItemKNNCFRecommender import ItemKNNCFRecommender
 from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
-from Algorithms.SLIM_BPR.Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
+from SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import SLIMElasticNetRecommender
 from Algorithms.GraphBased.P3alphaRecommender import P3alphaRecommender
 from Algorithms.GraphBased.RP3betaRecommender import RP3betaRecommender
@@ -411,10 +411,22 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
             recommender_input_args = SearchInputRecommenderArgs(
                 CONSTRUCTOR_POSITIONAL_ARGS=[URM_train],
                 CONSTRUCTOR_KEYWORD_ARGS={},
-                FIT_POSITIONAL_ARGS=[],
-                FIT_KEYWORD_ARGS={**earlystopping_keywargs,
-                                  "positive_threshold_BPR": None,
-                                  'train_with_sparse_weights': None}
+                # TODO this is probably wrong
+                FIT_POSITIONAL_ARGS=[None,
+                                     True,
+                                     False,
+                                     hyperparameters_range_dictionary['symmetric'],
+                                     hyperparameters_range_dictionary['epochs'],
+                                     1,
+                                     hyperparameters_range_dictionary['lambda_i'],
+                                     hyperparameters_range_dictionary['lambda_j'],
+                                     hyperparameters_range_dictionary['learning_rate'],
+                                     hyperparameters_range_dictionary['topK'],
+                                     hyperparameters_range_dictionary["sgd_mode"],
+                                     0.995,
+                                     0.9,
+                                     0.999],
+                FIT_KEYWORD_ARGS={**earlystopping_keywargs}
             )
 
         ##########################################################################################################
@@ -484,7 +496,7 @@ def read_data_split_and_search():
     from Algorithms.Utils.PoolWithSubprocess import PoolWithSubprocess
     from Utils.Toolkit import get_data
 
-    data = get_data(test=True)
+    data = get_data()
 
     URM_train = data['train']
     URM_test = data['test']
@@ -511,8 +523,8 @@ def read_data_split_and_search():
         # SLIMElasticNetRecommender
     ]
 
-    evaluator_validation = EvaluatorHoldout(URM_validation, cutoff_list=[5])
-    evaluator_test = EvaluatorHoldout(URM_test, cutoff_list=[5, 10])
+    evaluator_validation = EvaluatorHoldout(URM_validation, cutoff_list=[10])
+    evaluator_test = EvaluatorHoldout(URM_test, cutoff_list=[10])
 
     runParameterSearch_Collaborative_partial = partial(runParameterSearch_Collaborative,
                                                        URM_train=URM_train,

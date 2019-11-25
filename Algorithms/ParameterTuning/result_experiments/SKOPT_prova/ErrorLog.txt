@@ -1,0 +1,18 @@
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'SearchBayesianSkopt' object has no attribute 'best_solution_parameters'
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'bool' object is not iterable
+On recommender <class 'SLIM.SLIM_BPR_Cython.SLIM_BPR_Cython'> Exception 'bool' object is not iterable

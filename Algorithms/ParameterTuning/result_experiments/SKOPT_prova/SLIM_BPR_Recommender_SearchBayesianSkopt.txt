@@ -1,0 +1,976 @@
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 738, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.0007476998476521319, 'lambda_j': 0.0003768746309167722, 'learning_rate': 0.00021078060149607716} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() takes 1 positional argument but 11 were given
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 82, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 1.4558716316565683e-05, 'lambda_j': 0.00011239628040985412, 'learning_rate': 0.0827820954695568} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() takes 1 positional argument but 11 were given
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 719, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0003360765008644236, 'lambda_j': 0.0032957838681504908, 'learning_rate': 0.03698352962608809} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() takes 1 positional argument but 11 were given
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 372, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.005454713636153425, 'lambda_j': 6.704950689927002e-05, 'learning_rate': 0.003605961312328886} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() takes 1 positional argument but 11 were given
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 831, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 6.391713050370432e-05, 'lambda_j': 1.4249575275357455e-05, 'learning_rate': 0.0003718092498368711} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() takes 1 positional argument but 11 were given
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 69, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 1.3764823688478678e-05, 'lambda_j': 0.0031483656321919574, 'learning_rate': 0.00010653331433486993} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() takes 1 positional argument but 11 were given
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 24, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.009313516789612546, 'lambda_j': 0.004580526100029707, 'learning_rate': 0.03523224949056003} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() takes 1 positional argument but 11 were given
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 948, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.007984326831890324, 'lambda_j': 1e-05, 'learning_rate': 0.04157297134745008} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() takes 1 positional argument but 11 were given
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 342, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.0002499891115986968, 'lambda_j': 0.0003012590331267563, 'learning_rate': 0.021194960020289377} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 193, in _evaluate_on_validation
+    **self.recommender_input_args.CONSTRUCTOR_KEYWORD_ARGS)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 31, in __init__
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 778, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0006548702509886023, 'lambda_j': 0.001781679133715292, 'learning_rate': 0.0004393913836952598} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 193, in _evaluate_on_validation
+    **self.recommender_input_args.CONSTRUCTOR_KEYWORD_ARGS)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 31, in __init__
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 405, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0004509426655174265, 'lambda_j': 3.475100568825734e-05, 'learning_rate': 0.0008639619339550374} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 193, in _evaluate_on_validation
+    **self.recommender_input_args.CONSTRUCTOR_KEYWORD_ARGS)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 31, in __init__
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 959, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 5.713948855378455e-05, 'lambda_j': 1.2325464368324148e-05, 'learning_rate': 0.0016895339758690787} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 193, in _evaluate_on_validation
+    **self.recommender_input_args.CONSTRUCTOR_KEYWORD_ARGS)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 31, in __init__
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 746, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.0039757760730303356, 'lambda_j': 0.0009871370703521574, 'learning_rate': 0.0016940588100932863} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 193, in _evaluate_on_validation
+    **self.recommender_input_args.CONSTRUCTOR_KEYWORD_ARGS)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 31, in __init__
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 53, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 1.259504123205866e-05, 'lambda_j': 1.2478003879731414e-05, 'learning_rate': 0.09819285398330173} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 193, in _evaluate_on_validation
+    **self.recommender_input_args.CONSTRUCTOR_KEYWORD_ARGS)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 31, in __init__
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 994, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.006653011623376673, 'lambda_j': 0.007908078213349191, 'learning_rate': 0.0004007575944922034} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 193, in _evaluate_on_validation
+    **self.recommender_input_args.CONSTRUCTOR_KEYWORD_ARGS)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 31, in __init__
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 33, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.00620731757631368, 'lambda_j': 0.006241441247205483, 'learning_rate': 0.05289652164392666} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 193, in _evaluate_on_validation
+    **self.recommender_input_args.CONSTRUCTOR_KEYWORD_ARGS)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 31, in __init__
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 586, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 1.5696288583570977e-05, 'lambda_j': 1.8321924656757205e-05, 'learning_rate': 0.05919125031427318} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 939, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 4.6836518766071716e-05, 'lambda_j': 4.12634252644597e-05, 'learning_rate': 0.015148667277989383} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 444, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.00010058756408971807, 'lambda_j': 0.0007323415439673577, 'learning_rate': 0.00011863493566733295} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 743, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.0002662193865304954, 'lambda_j': 0.0011067637739536373, 'learning_rate': 0.013256081140219528} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 376, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 3.450549247156068e-05, 'lambda_j': 0.00011285189357561111, 'learning_rate': 0.0018739641368040122} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 26, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.008083321122811543, 'lambda_j': 0.004315044835176321, 'learning_rate': 0.05003570348227704} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 1000, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.01, 'lambda_j': 1e-05, 'learning_rate': 0.0001} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 155, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1.0894766147127212e-05, 'lambda_j': 0.009653560960053082, 'learning_rate': 0.0001176740231845109} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 245, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.0001172063129359849, 'lambda_j': 2.455206935822484e-05, 'learning_rate': 0.014087140860995648} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 71, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.00592802015033007, 'lambda_j': 3.512227210883026e-05, 'learning_rate': 0.00014729709139881683} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 708, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.0004083980589602743, 'lambda_j': 0.0008331005277500307, 'learning_rate': 0.002620302514720966} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 186, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 1.601830103599256e-05, 'lambda_j': 6.319911711151165e-05, 'learning_rate': 0.0010824909750615937} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 642, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.0029658185450971964, 'lambda_j': 0.0067753885332387685, 'learning_rate': 0.00020216305063346587} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 1000, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 2.060212138678663e-05, 'lambda_j': 0.005769476437689327, 'learning_rate': 0.0713448283464017} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 883, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.008047793762694265, 'lambda_j': 1.1692423133782111e-05, 'learning_rate': 0.07363509568463016} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 9, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.00740379463226117, 'lambda_j': 0.007005974584736481, 'learning_rate': 0.06833640893236369} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 38, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.0002860855104914449, 'lambda_j': 6.080947937530647e-05, 'learning_rate': 0.001875613838167464} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 55, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 4.980727677162711e-05, 'lambda_j': 0.0006973231348073521, 'learning_rate': 0.019150798662028932} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 87, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.0009736530111133263, 'lambda_j': 2.8894510627579172e-05, 'learning_rate': 0.0007665996203358925} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 838, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 3.7012890589761176e-05, 'lambda_j': 0.0028772837052306426, 'learning_rate': 0.027313147883254927} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 175, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 5.3090044927033436e-05, 'lambda_j': 0.003476388499426915, 'learning_rate': 0.016564730038877252} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 959, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.009548317841558237, 'lambda_j': 0.009276888195809699, 'learning_rate': 0.00014474408758451533} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 961, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.00677955763984265, 'lambda_j': 1.5651251290225346e-05, 'learning_rate': 0.00010597294885240569} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 996, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 1.1700080510615313e-05, 'lambda_j': 2.7569124943942846e-05, 'learning_rate': 0.07884565206462711} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 14, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.00011958556369034611, 'lambda_j': 1.692650616829586e-05, 'learning_rate': 0.0002173658553260206} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 161, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 3.2932860316128066e-05, 'lambda_j': 0.00014187237676550313, 'learning_rate': 0.0008574655497752269} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 872, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.006100118208037136, 'lambda_j': 0.00010945206732143317, 'learning_rate': 0.00423027632364929} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 231, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.0023556806419864833, 'lambda_j': 0.0005399864090095681, 'learning_rate': 0.054947349749628} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 376, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.00015490165300205316, 'lambda_j': 0.0005013377706638947, 'learning_rate': 0.0009403843790925257} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 989, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.006686911895074694, 'lambda_j': 0.006219117207418817, 'learning_rate': 0.0001028400533525017} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 870, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 1.3378292634249584e-05, 'lambda_j': 1.2421969491547618e-05, 'learning_rate': 0.09624205324677136} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 985, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1.1277557808312575e-05, 'lambda_j': 0.00815220725439426, 'learning_rate': 0.06581511943733434} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 694, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.00020797250867131038, 'lambda_j': 0.00023058328465176017, 'learning_rate': 0.001897680905113049} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'topK'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 105, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.0021393717092656624, 'lambda_j': 0.0010351450592540649, 'learning_rate': 0.0001557530325695023} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'topK'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 815, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.0010267433232414407, 'lambda_j': 0.0001468305528499586, 'learning_rate': 0.048955981849204445} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'topK'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 613, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0002473436290316384, 'lambda_j': 0.0006561340315585302, 'learning_rate': 0.00019696134648857056} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'topK'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 498, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.0006196021810174532, 'lambda_j': 2.7718607650527133e-05, 'learning_rate': 0.04684857960576743} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'topK'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 69, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 1.0659478331814274e-05, 'lambda_j': 0.00781032743744179, 'learning_rate': 0.06983359062550303} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'topK'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 851, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 1.0345208304393415e-05, 'lambda_j': 1.0009150615239458e-05, 'learning_rate': 0.0003010620684450932} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'topK'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 9, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.007553487562573668, 'lambda_j': 0.0054636232316022, 'learning_rate': 0.00011069799007149613} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'topK'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 93, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.0010190990197648134, 'lambda_j': 0.0016236459926198545, 'learning_rate': 0.002716941989549822} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 35, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.008313140130569347, 'lambda_j': 8.10329938206988e-05, 'learning_rate': 0.0004165815060396979} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 900, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 8.808779747633697e-05, 'lambda_j': 0.00047820273219087103, 'learning_rate': 0.002710932590942949} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 506, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0026583255436188483, 'lambda_j': 0.006123947583160806, 'learning_rate': 0.02512093563624478} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 588, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.006096323907258978, 'lambda_j': 0.0016595076443089573, 'learning_rate': 0.00736918650363515} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 901, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 1.0781213298342124e-05, 'lambda_j': 1.1062759128934301e-05, 'learning_rate': 0.00045620021130387406} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 6, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 1.5303192462135763e-05, 'lambda_j': 0.009799190988577953, 'learning_rate': 0.09243893949942372} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 18, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 1.346767296133098e-05, 'lambda_j': 1.7881160399824814e-05, 'learning_rate': 0.00014278621339650424} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 510, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 2.82028543109804e-05, 'lambda_j': 0.0004802528400562359, 'learning_rate': 0.0001303893496594213} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 45, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1.687482690310344e-05, 'lambda_j': 7.864812224876083e-05, 'learning_rate': 0.03781874405329575} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 892, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0055937023599666085, 'lambda_j': 1.2046961540500943e-05, 'learning_rate': 0.0072740690128538805} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 762, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.001842918331544828, 'lambda_j': 0.00034433411888933426, 'learning_rate': 0.00017567305358450039} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 820, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.0026866275909279915, 'lambda_j': 3.0315596515230688e-05, 'learning_rate': 0.0003172500733829134} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 5, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.01, 'lambda_j': 0.01, 'learning_rate': 0.1} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 997, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 2.6645033461653624e-05, 'lambda_j': 0.009722082567307172, 'learning_rate': 0.032722607213221865} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 29, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 1.6038107146942843e-05, 'lambda_j': 2.1920988689735093e-05, 'learning_rate': 0.00014793988434679255} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 281, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1.4742863285757413e-05, 'lambda_j': 0.0038657653458804174, 'learning_rate': 0.0003893124857366611} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 334, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.009113966894411553, 'lambda_j': 0.002320321421287177, 'learning_rate': 0.045970362019758786} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 311, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 1.938628082926771e-05, 'lambda_j': 0.0007902877496488417, 'learning_rate': 0.09867181048889519} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 859, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.008905938628695145, 'lambda_j': 0.00018054397692810056, 'learning_rate': 0.03831727532164313} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 783, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 1.030414351206364e-05, 'lambda_j': 0.00012093945282767606, 'learning_rate': 0.0002485535869367228} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 203, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.006060558700206611, 'lambda_j': 1.006470875138032e-05, 'learning_rate': 0.00014707264582477914} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 992, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 1.731249840238987e-05, 'lambda_j': 0.009928276451336647, 'learning_rate': 0.04002746297024359} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 985, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.002430970592201844, 'lambda_j': 1.2057697584740977e-05, 'learning_rate': 0.09342654269696853} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 328, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 7.065223210500309e-05, 'lambda_j': 1.908420464831609e-05, 'learning_rate': 0.0025392696305720636} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 875, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 7.35255936047711e-05, 'lambda_j': 0.008325401639113201, 'learning_rate': 0.07116589170988807} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 946, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 1.2703266102197349e-05, 'lambda_j': 0.0005108593830125431, 'learning_rate': 0.02976257483818963} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 985, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.0016833182738462634, 'lambda_j': 0.0001450187039230718, 'learning_rate': 0.0007822492264304752} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 932, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 6.342855188208519e-05, 'lambda_j': 0.006947164941771716, 'learning_rate': 0.02441417932269358} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 9, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.0007725527866329111, 'lambda_j': 1.1763723855565856e-05, 'learning_rate': 0.00011215774957804147} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 15, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.007287581508470828, 'lambda_j': 0.007140414901094382, 'learning_rate': 0.07734962518247349} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 27, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.008700372481122287, 'lambda_j': 0.009340272204087768, 'learning_rate': 0.00018237111092101404} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 592, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 1.0438504633575812e-05, 'lambda_j': 0.00015353280714441669, 'learning_rate': 0.0016173962610851222} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 154, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.000414008636271182, 'lambda_j': 0.0004869575694375204, 'learning_rate': 0.015615319625442494} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 314, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.0017224250555246377, 'lambda_j': 1.123233635182212e-05, 'learning_rate': 0.00018162822611944275} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 128, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.0015905670858581081, 'lambda_j': 0.0011797987998624342, 'learning_rate': 0.00024861094364145867} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 738, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 7.423150445240488e-05, 'lambda_j': 0.00482401594027522, 'learning_rate': 0.016034235091881906} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 975, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.009094748017132157, 'lambda_j': 1.1185576969461945e-05, 'learning_rate': 0.035341743594810945} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 11, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.0054823809259024105, 'lambda_j': 0.009946304157740901, 'learning_rate': 0.08128665406916849} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 869, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 1.0004488284166094e-05, 'lambda_j': 0.008252475278644473, 'learning_rate': 0.00013427739654249155} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 531, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 2.6460624906615238e-05, 'lambda_j': 1.065229186276684e-05, 'learning_rate': 0.004081602628744818} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 235, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 3.3601905130180156e-05, 'lambda_j': 8.709923775129557e-05, 'learning_rate': 0.0016978162103339597} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 959, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.0003751410494975089, 'lambda_j': 0.002167205671477709, 'learning_rate': 0.00815900104159286} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 591, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 1.2903508237459313e-05, 'lambda_j': 0.0008476595919001969, 'learning_rate': 0.01753889593639537} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 593, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 4.0075354077750415e-05, 'lambda_j': 0.0032518590464860725, 'learning_rate': 0.004358257274716118} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 57, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.00824000768598667, 'lambda_j': 1.9761161601701546e-05, 'learning_rate': 0.00013597132717433963} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 34, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1.1843260789979255e-05, 'lambda_j': 0.009719466475863385, 'learning_rate': 0.0800871646640393} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 962, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.008549491883778095, 'lambda_j': 1.0414024887439778e-05, 'learning_rate': 0.00010087162760453166} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+TypeError: fit() got multiple values for argument 'epochs'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 918, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 5.4165712126029377e-05, 'lambda_j': 0.0001937466023885588, 'learning_rate': 0.00012112493798279238} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 722, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 6.55314819250602e-05, 'lambda_j': 0.00021119835015372796, 'learning_rate': 0.0009979359870496492} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 976, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.003156807951028555, 'lambda_j': 7.96016205746231e-05, 'learning_rate': 0.00019336590213060132} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 620, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.00020781685449641622, 'lambda_j': 0.0018310317194295295, 'learning_rate': 0.001991814015387895} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 800, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.0006707096323033931, 'lambda_j': 0.0005284323222280445, 'learning_rate': 0.00024297925706214844} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 99, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 1.2515625095348252e-05, 'lambda_j': 0.008144271614381608, 'learning_rate': 0.05144086153671917} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 238, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.009652495274571807, 'lambda_j': 1.1536407478602387e-05, 'learning_rate': 0.06939672336450603} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 42, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 1.1277484130170195e-05, 'lambda_j': 1.1772637441691411e-05, 'learning_rate': 0.048624875423799285} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 198, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 7.798452372351335e-05, 'lambda_j': 0.004217615183535619, 'learning_rate': 0.005750369107925198} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 884, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 0.000531666765530229, 'lambda_j': 7.892354984891579e-05, 'learning_rate': 0.0003321190746421796} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 769, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1.1637137243137779e-05, 'lambda_j': 0.006723043675738754, 'learning_rate': 0.001596665017935699} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 246, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 6.844755569366192e-05, 'lambda_j': 0.00026969853416861295, 'learning_rate': 0.002432509679692558} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 784, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.003792299286997191, 'lambda_j': 1.7282091108213477e-05, 'learning_rate': 0.0007437469231084604} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 96, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.00865245084971216, 'lambda_j': 0.003354237015547308, 'learning_rate': 0.06287758574914105} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 957, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 1.136917719174234e-05, 'lambda_j': 1.5090520349539342e-05, 'learning_rate': 0.02280515845527095} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 884, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.00904848382447323, 'lambda_j': 1.0243971726341687e-05, 'learning_rate': 0.00011132033781782868} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 804, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.00013152342669139745, 'lambda_j': 0.008036341010533726, 'learning_rate': 0.00031968668979776607} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 71, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.0011494040573741926, 'lambda_j': 0.0002862781136318013, 'learning_rate': 0.0032385996967739996} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 855, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.006223339134378685, 'lambda_j': 9.427092042357726e-05, 'learning_rate': 0.042517828232843564} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 371, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 1.2436128293679622e-05, 'lambda_j': 0.0016515597635367886, 'learning_rate': 0.003787150925947874} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 4 Exception. Config: {'topK': 583, 'epochs': 1500, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 0.00877789113183279, 'lambda_j': 0.000241038377365263, 'learning_rate': 0.000270150587030964} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 5 Exception. Config: {'topK': 867, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1.0720939355565106e-05, 'lambda_j': 1.1334964411262054e-05, 'learning_rate': 0.0990857694390093} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 6 Exception. Config: {'topK': 5, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.01, 'lambda_j': 0.01, 'learning_rate': 0.0001} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+
+SearchBayesianSkopt: Config 7 Exception. Config: {'topK': 902, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.009584277433196104, 'lambda_j': 1.0314637125291623e-05, 'learning_rate': 0.04215702428079284} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 280, in _objective_function
+    current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchBayesianSkopt.py", line 199, in _evaluate_on_validation
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/SLIM/SLIM_BPR_Cython.py", line 41, in fit
+    if self.train_with_sparse_weights:
+AttributeError: 'SLIM_BPR_Cython' object has no attribute 'train_with_sparse_weights'
+

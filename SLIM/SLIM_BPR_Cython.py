@@ -11,17 +11,37 @@ import os, sys
 
 import numpy as np
 
+from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseItemSimilarityMatrixRecommender
 from Algorithms.Base.Recommender_utils import similarityMatrixTopK
-from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users
+from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
+from Algorithms.Base.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
 from Utils.Toolkit import get_data
 
 
-class SLIM_BPR_Cython(object):
+class SLIM_BPR_Cython(BaseItemSimilarityMatrixRecommender, Incremental_Training_Early_Stopping):
 
-    def __init__(self, positive_threshold=None, recompile_cython=False, final_model_sparse_weights=True,
+    RECOMMENDER_NAME = "SLIM_BPR_Recommender"
+
+    def __init__(self, URM_train, recompile_cython=False):
+
+        super().__init__(URM_train)
+        self.URM_train = URM_train
+
+        self.normalize = False
+
+        if recompile_cython:
+            print("Compiling in Cython")
+            self.runCompilationScript()
+            print("Compilation Complete")
+
+    def fit(self, positive_threshold=None, final_model_sparse_weights=True,
                  train_with_sparse_weights=False, symmetric=True, epochs = 400,
-                batch_size = 1000, lambda_i = 0.6, lambda_j = 1, learning_rate = 1e-4, topK = 30,
-                sgd_mode = 'sgd', gamma=0.995, beta_1=0.9, beta_2=0.999):
+                batch_size = 1, lambda_i = 0.6, lambda_j = 1, learning_rate = 1e-4, topK = 30,
+                sgd_mode = 'sgd', gamma=0.995, beta_1=0.9, beta_2=0.999, **earlystopping_kwargs):
+
+        if self.train_with_sparse_weights is not None:
+            if self.train_with_sparse_weights:
+                self.sparse_weights = True
 
         #### Retreiving parameters for fitting #######
         self.epochs = epochs
@@ -37,30 +57,17 @@ class SLIM_BPR_Cython(object):
         self.symmetric = symmetric
         #############################################
 
-        self.normalize = False
         self.positive_threshold = positive_threshold
 
         self.train_with_sparse_weights = train_with_sparse_weights
         self.sparse_weights = final_model_sparse_weights
 
-
-        if self.train_with_sparse_weights:
-            self.sparse_weights = True
-
-
-        if recompile_cython:
-            print("Compiling in Cython")
-            self.runCompilationScript()
-            print("Compilation Complete")
-
-    def fit(self, URM_train):
-
         ### Stuff to adapt code to general structure
 
-        self.URM_train = URM_train
 
-        self.n_users = URM_train.shape[0]
-        self.n_items = URM_train.shape[1]
+
+        self.n_users = self.URM_train.shape[0]
+        self.n_items = self.URM_train.shape[1]
 
         URM_train_positive = self.URM_train.copy()
 
@@ -74,7 +81,7 @@ class SLIM_BPR_Cython(object):
 
         if not self.train_with_sparse_weights:
 
-            n_items = URM_train.shape[1]
+            n_items = self.URM_train.shape[1]
             requiredGB = 8 * n_items ** 2 / 1e+06
 
             if self.symmetric:
@@ -120,7 +127,20 @@ class SLIM_BPR_Cython(object):
         sys.stdout.flush()
 
         self.RECS = self.URM_train.dot(self.W_sparse)
-        self.W_sparse = None  # TODO ADDED TO save Memory, adjust
+        self.W_sparse = None
+
+        self._train_with_early_stopping(self.epochs,
+                                        algorithm_name=self.RECOMMENDER_NAME,
+                                        **earlystopping_kwargs)
+
+        self.get_S_incremental_and_set_W()
+
+        self.cythonEpoch._dealloc()
+
+        sys.stdout.flush()
+
+    def _prepare_model_for_validation(self):
+        self.get_S_incremental_and_set_W()
 
     def _initialize_incremental_model(self):
         self.S_incremental = self.cythonEpoch.get_S()
@@ -201,23 +221,52 @@ class SLIM_BPR_Cython(object):
         ranking = ranking[unseen_items_mask]
         return ranking[:at]
 
+    def evaluate_MAP(self, URM_test, args_used):
+        result = evaluate_MAP(URM_test, self)
+        print("SLIM_BPR -> MAP: {:.4f} with data {}".format(result, args_used))
+        return result
+
+    def evaluate_MAP_target(self, URM_test, target_user_list, args_used):
+        result = evaluate_MAP_target_users(URM_test, self, target_user_list)
+        print("SLIM_BPR -> MAP: {:.4f} with data {}".format(result, args_used))
+        return result
+
 ################################################ Test ##################################################
-max_map = 0
-data = get_data(test=True)
-
-args = {
-    'topK': 150,
-    'lambda_i': 5,
-    'lambda_j': 7,
-    'epochs': 5000
-}
-
-recommender = SLIM_BPR_Cython(epochs=args['epochs'],
-                              topK=args['topK'],
-                              lambda_i=args['lambda_i'],
-                              lambda_j=args['lambda_j'], positive_threshold=1)
-recommender.runCompilationScript()
-recommender.fit(data['train'])
-result = evaluate_MAP_target_users(data['test'], recommender, data['target_users'])
-print(result)
+# max_map = 0
+# data = get_data(test=True)
+#
+# args = {
+#     'topK': 25,
+#     'lambda_i': 0.03,
+#     'lambda_j': 0.9,
+#     'epochs': 3800,
+#     'learning_rate' : 1e-3,
+#     'sgd_mode' : 'adagrad'
+# }
+#
+# # These are set by default (no need to add them)
+# advanced = {
+#     'train_with_sparse_weights' : False,
+#     'final_model_sparse_weights' : True,
+#     'batch_size' : 1000,
+#     'symmetric' : True,
+#     'gamma' : 0.995,
+#     'beta_1' : 0.9,
+#     'beta_2' : 0.999,
+#     'positive_threshold' : 1
+# }
+#
+# recommender = SLIM_BPR_Cython(epochs=args['epochs'],
+#                               topK=args['topK'],
+#                               lambda_i=args['lambda_i'],
+#                               lambda_j=args['lambda_j'],
+#                               positive_threshold=advanced['positive_threshold'],
+#                               sgd_mode=args['sgd_mode'],
+#                               learning_rate=args['learning_rate'],
+#                               batch_size=advanced['batch_size'],
+#                               train_with_sparse_weights=advanced['train_with_sparse_weights'])
+#
+# #recommender.runCompilationScript()
+# recommender.fit(data['train'])
+# recommender.evaluate_MAP_target(data['test'], data['target_users'], args)
 ################################################ Test ##################################################

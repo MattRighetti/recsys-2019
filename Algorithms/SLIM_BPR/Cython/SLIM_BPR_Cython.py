@@ -60,7 +60,7 @@ class SLIM_BPR_Cython(BaseItemSimilarityMatrixRecommender, Incremental_Training_
 
         super(SLIM_BPR_Cython, self).__init__(URM_train, verbose = verbose)
 
-        assert free_mem_threshold>=0.0 and free_mem_threshold<=1.0, "SLIM_BPR_Recommender: free_mem_threshold must be between 0.0 and 1.0, provided was '{}'".format(free_mem_threshold)
+        assert 0.0 <= free_mem_threshold <= 1.0, "SLIM_BPR_Recommender: free_mem_threshold must be between 0.0 and 1.0, provided was '{}'".format(free_mem_threshold)
 
         self.n_users, self.n_items = self.URM_train.shape
 
@@ -149,7 +149,7 @@ class SLIM_BPR_Cython(BaseItemSimilarityMatrixRecommender, Incremental_Training_
 
 
 
-        if(topK != False and topK<1):
+        if topK != False and topK<1:
             raise ValueError("TopK not valid. Acceptable values are either False or a positive integer value. Provided value was '{}'".format(topK))
         self.topK = topK
 

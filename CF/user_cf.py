@@ -71,25 +71,25 @@ class UserBasedCollaborativeFiltering(object):
 
 
 ################################################ Test ##################################################
-best_values = {'topK': 94, 'shrink': 19}
-max_map = 0
-data = get_data(test=True)
-
-for topK in range(90, 150, 2):
-    for shrink in range(1, 20, 2):
-
-        args = {
-            'topK':topK,
-            'shrink':shrink
-        }
-
-        userCF = UserBasedCollaborativeFiltering(args['topK'], args['shrink'])
-        userCF.fit(data['train'])
-        result = userCF.evaluate_MAP_target(data['test'], data['target_users'])
-
-        if result > max_map:
-            max_map = result
-            print(f'Best values {args}')
+# best_values = {'topK': 94, 'shrink': 19}
+# max_map = 0
+# data = get_data(test=True)
+#
+# for topK in range(90, 150, 2):
+#     for shrink in range(1, 20, 2):
+#
+#         args = {
+#             'topK':topK,
+#             'shrink':shrink
+#         }
+#
+#         userCF = UserBasedCollaborativeFiltering(args['topK'], args['shrink'])
+#         userCF.fit(data['train'])
+#         result = userCF.evaluate_MAP_target(data['test'], data['target_users'])
+#
+#         if result > max_map:
+#             max_map = result
+#             print(f'Best values {args}')
 
 #URM_final = data['train'] + data['test']
 #URM_final = URM_final.tocsr()

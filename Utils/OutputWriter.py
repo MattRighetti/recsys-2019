@@ -1,7 +1,7 @@
 import os
 import datetime
 
-def write_output(fittedRecommender, target_user_list):
+def write_output(fittedRecommender, target_user_list, test=True):
     """
     Create a new file and writes to it
     :param fittedRecommender: recommender already fitted
@@ -19,13 +19,16 @@ def write_output(fittedRecommender, target_user_list):
     file.close()
     print("Success")
 
-def create_unique_file():
+def create_unique_file(test=True):
     """
     Creates filename
     :return: New random filename file_out_day_hour_minute_second.csv
     """
     current_date = datetime.datetime.now()
-    folder_path = "./output"
+    if test:
+        folder_path = "../output"
+    else:
+        folder_path = "./output"
 
     file_name = f'file_out_{current_date.day}_{current_date.hour}_{current_date.minute}_{current_date.second}.csv'
 
