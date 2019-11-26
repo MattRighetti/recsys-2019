@@ -68,34 +68,34 @@ class ItemContentBasedRecommender(object):
 
 
 ################################################ Test ##################################################
-max_map = 0
-data = get_data(test=True)
-
-for topK_price in range(90, 101, 2):
-    for shrink_price in range(1, 20, 2):
-
-        args = {
-            'topK_price':topK_price,
-            'shrink_price':shrink_price,
-            'topK_asset': topK_price,
-            'shrink_asset': shrink_price,
-            'topK_subclass': topK_price,
-            'shrink_subclass': shrink_price,
-            'weight_subclass' : 0.5
-        }
-
-        userCF = ItemContentBasedRecommender(args['topK_asset'],
-                                             args['topK_subclass'],
-                                             args['shrink_asset'],
-                                             args['shrink_subclass'],
-                                             args['weight_subclass'])
-
-        userCF.fit(data['train'], data['ICM_asset'], data['ICM_subclass'])
-        result = userCF.evaluate_MAP_target(data['test'], data['target_users'])
-
-        if result > max_map:
-            max_map = result
-            print(f'Best values {args}')
+# max_map = 0
+# data = get_data(dir_path='../')
+#
+# for topK_price in range(90, 101, 2):
+#     for shrink_price in range(1, 20, 2):
+#
+#         args = {
+#             'topK_price':topK_price,
+#             'shrink_price':shrink_price,
+#             'topK_asset': topK_price,
+#             'shrink_asset': shrink_price,
+#             'topK_subclass': topK_price,
+#             'shrink_subclass': shrink_price,
+#             'weight_subclass' : 0.5
+#         }
+#
+#         userCF = ItemContentBasedRecommender(args['topK_asset'],
+#                                              args['topK_subclass'],
+#                                              args['shrink_asset'],
+#                                              args['shrink_subclass'],
+#                                              args['weight_subclass'])
+#
+#         userCF.fit(data['train'], data['ICM_asset'], data['ICM_subclass'])
+#         result = userCF.evaluate_MAP_target(data['test'], data['target_users'])
+#
+#         if result > max_map:
+#             max_map = result
+#             print(f'Best values {args}')
 
 #URM_final = data['train'] + data['test']
 #URM_final = URM_final.tocsr()

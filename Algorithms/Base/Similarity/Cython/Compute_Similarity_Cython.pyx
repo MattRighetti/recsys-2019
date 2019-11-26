@@ -579,8 +579,9 @@ cdef class Compute_Similarity_Cython:
 
                 if current_time - last_print_time > 30  or processedItems==end_col_local:
 
-                    print("Similarity column {} ( {:2.0f} % ), {:.2f} column/sec, elapsed time {:.2f} min".format(
-                        processedItems, processedItems*1.0/(end_col_local-start_col_local)*100, itemPerSec, (time.time()-start_time) / 60))
+
+                    #print("\rSimilarity column {} ( {:2.0f} % ), {:.2f} column/sec, elapsed time {:.2f} min".format(
+                     #   processedItems, processedItems*1.0/(end_col_local-start_col_local)*100, itemPerSec, (time.time()-start_time) / 60), end="\r")
 
                     last_print_time = current_time
 

@@ -33,7 +33,7 @@ class UserContentBasedRecommender(object):
 
     def fit(self, URM_train, UCM_age, UCM_region):
         # PRICE IS NOT INCLUDED INTENTIONALLY
-        self.URM_train = URM_train
+        self.URM_train = URM_train.copy()
         self.UCM_age = UCM_age
         #self.UCM_age = get_URM_BM_25(self.UCM_age)
         self.UCM_region = UCM_region

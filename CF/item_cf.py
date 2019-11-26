@@ -15,7 +15,7 @@ class ItemBasedCollaborativeFiltering(object):
         self.SM_item = None
         self.RM = None
 
-    def get_similarity_matrix(self, similarity='tversky'):
+    def get_similarity_matrix(self, similarity='tanimoto'):
         similarity_object = Compute_Similarity_Cython(self.URM_train,
                                                       self.shrink,
                                                       self.topK,

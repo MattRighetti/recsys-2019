@@ -120,7 +120,7 @@ def run_KNNRecommender_on_similarity_type(similarity_type, parameterSearch,
 
 def runParameterSearch_Content(recommender_class, URM_train, ICM_object, ICM_name, URM_train_last_test = None,
                                n_cases = 30, n_random_starts = 5, resume_from_saved = False, save_model = "best",
-                             evaluator_validation= None, evaluator_test=None, metric_to_optimize = "PRECISION",
+                             evaluator_validation= None, evaluator_test=None, metric_to_optimize = "MAP",
                              output_folder_path ="result_experiments/", parallelizeKNN = False, allow_weighting = True,
                              similarity_type_list = None):
 
@@ -199,7 +199,7 @@ def runParameterSearch_Content(recommender_class, URM_train, ICM_object, ICM_nam
 
 
 
-def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_last_test = None, metric_to_optimize = "PRECISION",
+def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_last_test = None, metric_to_optimize = "MAP",
                                      evaluator_validation = None, evaluator_test = None, evaluator_validation_earlystopping = None,
                                      output_folder_path ="result_experiments/", parallelizeKNN = True,
                                      n_cases = 35, n_random_starts = 5, resume_from_saved = False, save_model = "best",
@@ -211,6 +211,8 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
     # If directory does not exist, create
     if not os.path.exists(output_folder_path):
         os.makedirs(output_folder_path)
+
+    # TODO CHANGE VALIDATION EVERY HERE
 
     earlystopping_keywargs = {"validation_every_n": 5,
                               "stop_on_validation": True,
@@ -599,12 +601,12 @@ def read_data_split_and_search():
         # TopPop,
         # P3alphaRecommender,
         # RP3betaRecommender,
-        # ItemKNNCFRecommender,
+        ItemKNNCFRecommender
         # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
         # PureSVDRecommender,
-         SLIM_BPR_Cython,
+        # SLIM_BPR_Cython,
         # SLIMElasticNetRecommender
     ]
 

@@ -32,8 +32,8 @@ class SearchBayesianSkopt(SearchAbstractClass):
                           n_random_starts = 20,
                           n_points = 10000,
                           n_jobs = 1,
-                          # noise = 'gaussian',
-                          noise = 1e-5,
+                          noise = 'gaussian',
+                          #noise = 1e-3,
                           acq_func = 'gp_hedge',
                           acq_optimizer = 'auto',
                           random_state = None,
@@ -282,4 +282,3 @@ class SearchBayesianSkopt(SearchAbstractClass):
         current_fit_parameters_dict = dict(zip(self.hyperparams_names, current_fit_parameters_list_of_values))
 
         return self._objective_function(current_fit_parameters_dict)
-

@@ -73,14 +73,14 @@ class UserBasedCollaborativeFiltering(object):
 ################################################ Test ##################################################
 # best_values = {'topK': 94, 'shrink': 19}
 # max_map = 0
-# data = get_data(test=True)
+# data = get_data(dir_path='../')
 #
-# for topK in range(90, 150, 2):
-#     for shrink in range(1, 20, 2):
+# for topK in range(204, 205):
+#     for shrink in range(500, 700, 50):
 #
 #         args = {
-#             'topK':topK,
-#             'shrink':shrink
+#             'topK' : topK,
+#             'shrink' : 1000
 #         }
 #
 #         userCF = UserBasedCollaborativeFiltering(args['topK'], args['shrink'])
