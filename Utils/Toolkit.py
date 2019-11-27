@@ -13,7 +13,7 @@ class DataReader(object):
     """
     This class will read the URM_train and the Target_users files and will generate every URM that we'll need
     """
-    def __init__(self, dir_path='./'):
+    def __init__(self, dir_path='../'):
         dir_file = dir_path
         self.data_train_file_path = dir_file + "data/data_train.csv"
         self.user_target_file_path = dir_file + "data/alg_sample_submission.csv"
@@ -43,31 +43,50 @@ class DataReader(object):
 
     def ICM_asset_COO(self):
         df = pd.read_csv(self.item_assets_file_path)
-        icm_items_list = list(df['row'])
-        asset_list = list(df['col'])
-        item_asset_list = list(df['data'])
-        return sps.coo_matrix((item_asset_list, (icm_items_list, asset_list)), dtype=np.float64)
+
+        # transform floats in int labels
+        label_list = get_label_list(df['data'])
+        df['col'] = 1
+        features = np.ones(len(df['col']))
+        items = list(df['row'])
+        return sps.coo_matrix((features, (items, label_list)), dtype=np.float64)
 
     def ICM_price_COO(self):
         df = pd.read_csv(self.item_price_file_path)
-        icm_items_list = list(df['row'])
-        price_list = list(df['col'])
-        item_price_list = list(df['data'])
-        return sps.coo_matrix((item_price_list, (icm_items_list, price_list)), dtype=np.float64)
+
+        # transform floats in int labels
+        label_list = get_label_list(df['data'])
+        df['col'] = 1
+        features = np.ones(len(df['col']))
+        items = list(df['row'])
+        return sps.coo_matrix((features, (items, label_list)), dtype=np.float64)
 
     def UCM_region_COO(self):
         df = pd.read_csv(self.user_region_file_path)
         ucm_user_list = list(df['row'])
         region_list = list(df['col'])
         user_region_list = list(df['data'])
-        return sps.coo_matrix((user_region_list, (ucm_user_list, region_list)), dtype=np.float64)
+        return sps.coo_matrix((user_region_list, (ucm_user_list, region_list)), shape=(30911, 8), dtype=np.float64)
 
     def UCM_age_COO(self):
         df = pd.read_csv(self.user_age_file_path)
         ucm_user_list = list(df['row'])
         age_list = list(df['col'])
         user_age_list = list(df['data'])
-        return sps.coo_matrix((user_age_list, (ucm_user_list, age_list)), dtype=np.float64)
+        return sps.coo_matrix((user_age_list, (ucm_user_list, age_list)), shape=(30911, 11), dtype=np.float64)
+
+    def ICM_total(self):
+        icm_asset = self.ICM_asset_COO()
+        icm_price = self.ICM_price_COO()
+        icm_subclass = self.ICM_price_COO()
+        icm_total = sps.hstack((icm_asset, icm_subclass, icm_price))
+        return icm_total
+
+    def UCM_total(self):
+        ucm_age = self.UCM_age_COO()
+        ucm_region = self.UCM_region_COO()
+        ucm_total = sps.hstack((ucm_age, ucm_region))
+        return ucm_total
 
 class TestSplit(Enum):
     LEAVE_ONE_OUT = 1
@@ -92,23 +111,22 @@ class TestGen(object):
     def get_k_fold_matrices(self):
         return self.Matrices
 
-class Tuner(object):
-    @staticmethod
-    def tune(recommender, split_kind=None, at=10):
-        print(f'Running {recommender.NAME}...')
-
-        if split_kind is None:
-            data = get_data()
-        else:
-            data = get_data(split_kind)
-
-        score = global_evaluate_single(recommender)
-        print(f'Evaluation score: {score}')
-
 
 #########################################################################################################
 #                                               UTILITIES                                               #
 #########################################################################################################
+
+def get_label_list(float_array):
+    set_unique_prices = set(float_array)
+    list_unique_prices = np.asarray(list(set_unique_prices), dtype=np.float64)
+
+    label_list = []
+
+    for value in float_array:
+        label = np.where(list_unique_prices == value)[0]
+        label_list.extend(label)
+
+    return label_list
 
 def get_URM_BM_25(URM):
     return okapi_BM_25(URM)
@@ -122,13 +140,15 @@ def get_URM_TFIDF(URM):
     return URM_tfidf.tocsr()
 
 def get_data(split_kind=None, dir_path=None):
-    dataReader = DataReader(dir_path=dir_path)
+    dataReader = DataReader(dir_path='./')
     UCM_region = dataReader.UCM_region_COO()
     UCM_age = dataReader.UCM_age_COO()
     URM_all = dataReader.URM_COO()
     ICM_price = dataReader.ICM_price_COO()
     ICM_asset = dataReader.ICM_price_COO()
     ICM_subclass = dataReader.ICM_subclass_COO()
+    ICM = dataReader.ICM_total()
+    UCM = dataReader.UCM_total()
     target_users = dataReader.target_users()
 
     if split_kind is None:
@@ -145,7 +165,9 @@ def get_data(split_kind=None, dir_path=None):
         'UCM_age': UCM_age,
         'ICM_price': ICM_price,
         'ICM_asset': ICM_asset,
-        'ICM_subclass': ICM_subclass
+        'ICM_subclass': ICM_subclass,
+        'ICM' : ICM,
+        'UCM' : UCM
     }
 
     return data

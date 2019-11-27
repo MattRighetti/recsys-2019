@@ -63,26 +63,26 @@ class ItemContentBasedRecommender(object):
 
 
 ################################################ Test ##################################################
-max_map = 0
-data = get_data(dir_path='../')
-
-for topK in range(1):
-    for shrink in range(1):
-
-        args = {
-            'topK':topK,
-            'shrink':shrink
-        }
-
-        userCF = ItemContentBasedRecommender(900,
-                                             100)
-
-        userCF.fit(data['train'], data['ICM_subclass'])
-        result = userCF.evaluate_MAP_target(data['test'], data['target_users'])
-
-        if result > max_map:
-            max_map = result
-            print(f'Best values {args}')
+# max_map = 0
+# data = get_data(dir_path='../')
+#
+# for topK in range(1):
+#     for shrink in range(1):
+#
+#         args = {
+#             'topK':topK,
+#             'shrink':shrink
+#         }
+#
+#         userCF = ItemContentBasedRecommender(900,
+#                                              100)
+#
+#         userCF.fit(data['train'], data['ICM_subclass'])
+#         result = userCF.evaluate_MAP_target(data['test'], data['target_users'])
+#
+#         if result > max_map:
+#             max_map = result
+#             print(f'Best values {args}')
 
 #URM_final = data['train'] + data['test']
 #URM_final = URM_final.tocsr()
