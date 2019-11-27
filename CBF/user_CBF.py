@@ -7,21 +7,15 @@ from Utils.Toolkit import DataReader, normalize, get_URM_BM_25, get_URM_TFIDF, g
 
 class UserContentBasedRecommender(object):
 
-    def __init__(self, topK_age, topK_region, shrink_age, shrink_region, weight_region=0.5):
-        self.topK_age = topK_age
-        self.topK_region = topK_region
-        self.shrink_age = shrink_age
-        self.shrink_region = shrink_region
-        self.weight_region = weight_region
-
+    def __init__(self, topK, shrink):
+        self.topK = topK
+        self.shrink = shrink
         self.URM_train = None
-        self.UCM_age = None
-        self.UCM_region = None
-        self.SM_region = None
-        self.SM_age = None
+        self.UCM = None
+        self.SM = None
 
     def compute_similarity(self, UCM, topK, shrink):
-        similarity_object = Compute_Similarity_Cython(UCM.transpose(), shrink, topK, True, similarity='cosine')
+        similarity_object = Compute_Similarity_Cython(UCM, shrink, topK, True, similarity='cosine')
         return similarity_object.compute_similarity()
 
     def recommend(self, user_id, at=10):
@@ -31,63 +25,48 @@ class UserContentBasedRecommender(object):
         recommended_items = np.flip(np.argsort(expected_ratings), 0)
         return recommended_items[:at]
 
-    def fit(self, URM_train, UCM_age, UCM_region):
+    def fit(self, URM_train, UCM):
         # PRICE IS NOT INCLUDED INTENTIONALLY
         self.URM_train = URM_train.copy()
-        self.UCM_age = UCM_age
-        #self.UCM_age = get_URM_BM_25(self.UCM_age)
-        self.UCM_region = UCM_region
+        self.UCM = UCM
         #self.UCM_region = get_URM_TFIDF(self.UCM_region)
         #self.UCM_region = normalize(self.UCM_region)
 
-        self.SM_age = self.compute_similarity(self.UCM_age, self.topK_age, self.shrink_age)
-        self.SM_region = self.compute_similarity(self.UCM_region, self.topK_region, self.shrink_region)
+        self.SM = self.compute_similarity(self.UCM.T, self.topK, self.shrink)
 
     def get_expected_ratings(self, user_id):
-        user_id = int(user_id)
-        features = self.URM_train[user_id]
-        expected_ratings_age = features.dot(self.SM_age).toarray().ravel()
-        expected_ratings_region = features.dot(self.SM_region).toarray().ravel()
-
-        region_weight = self.weight_region
-        age_weight = 1 - region_weight
-        expected_ratings = (expected_ratings_age * age_weight) + (expected_ratings_region * region_weight)
+        features = self.URM_train.T[user_id]
+        expected_ratings = features.dot(self.SM).toarray().ravel()
         expected_ratings[features.indices] = -10
         return expected_ratings
 
     def evaluate_MAP(self, URM_test):
         result = evaluate_MAP(URM_test, self)
-        print("ItemCBF -> MAP: {:.4f}".format(result))
+        print("UserCBF -> MAP: {:.4f}".format(result))
         return result
 
     def evaluate_MAP_target(self, URM_test, target_user_list):
         result = evaluate_MAP_target_users(URM_test, self, target_user_list)
-        print("ItemCBF -> MAP: {:.4f}".format(result))
+        print("UserCBF -> MAP: {:.4f}".format(result))
         return result
 
 
 ################################################ Test ##################################################
 max_map = 0
-data = get_data(test=True)
+data = get_data(dir_path='../')
 
-for topK_age in range(90, 101, 2):
-    for shrink_age in range(1, 20, 2):
+for topK in range(90, 101, 2):
+    for shrink in range(1, 20, 2):
 
         args = {
-            'topK_age':topK_age,
-            'shrink_age':shrink_age,
-            'topK_region': topK_age,
-            'shrink_region': shrink_age,
-            'weight_region' : 0.5
+            'topK':topK,
+            'shrink':shrink
         }
 
-        userCF = UserContentBasedRecommender(args['topK_age'],
-                                             args['topK_region'],
-                                             args['shrink_age'],
-                                             args['shrink_region'],
-                                             args['weight_region'])
+        userCF = UserContentBasedRecommender(args['topK'],
+                                             args['topK'])
 
-        userCF.fit(data['train'], data['UCM_age'], data['UCM_region'])
+        userCF.fit(data['train'], data['UCM'])
         result = userCF.evaluate_MAP_target(data['test'], data['target_users'])
 
         if result > max_map:
