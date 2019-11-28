@@ -1,7 +1,7 @@
 import numpy as np
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
-from Utils.Toolkit import get_data
+from Utils.Toolkit import get_data, get_URM_TFIDF
 
 
 class UserBasedCollaborativeFiltering(object):
@@ -27,12 +27,14 @@ class UserBasedCollaborativeFiltering(object):
     def get_similarity_matrix(self, similarity='cosine'):
         # Similarity on URM_train.transpose()
         similarity_object = Compute_Similarity_Cython(self.URM_train.T,
-                                                      self.shrink,
-                                                      self.topK,
-                                                      normalize=True,
-                                                      tversky_alpha=1.0,
-                                                      tversky_beta=1.0,
-                                                      similarity=similarity)
+                                                      topK = self.topK,
+                                                      shrink=self.shrink,
+                                                      normalize = True,
+                                                      asymmetric_alpha = 0.5,
+                                                      tversky_alpha = 1.0,
+                                                      tversky_beta = 1.0,
+                                                      similarity = "cosine",
+                                                      row_weights = None)
         return similarity_object.compute_similarity()
 
     def fit(self, URM_train):
@@ -41,7 +43,8 @@ class UserBasedCollaborativeFiltering(object):
         :param URM_train: URM_train MUST BE IN CSR
         :return:
         """
-        self.URM_train = URM_train
+        self.URM_train = URM_train.copy()
+        self.URM_train = get_URM_TFIDF(self.URM_train)
         self.SM_users = self.get_similarity_matrix()
         self.RM = self.SM_users.dot(self.URM_train)
 
@@ -75,12 +78,12 @@ class UserBasedCollaborativeFiltering(object):
 # max_map = 0
 # data = get_data(dir_path='../')
 #
-# for topK in range(204, 205):
-#     for shrink in range(500, 700, 50):
+# for topK in range(1):
+#     for shrink in range(1):
 #
 #         args = {
-#             'topK' : topK,
-#             'shrink' : 1000
+#             'topK' : 902,
+#             'shrink' : 1111
 #         }
 #
 #         userCF = UserBasedCollaborativeFiltering(args['topK'], args['shrink'])

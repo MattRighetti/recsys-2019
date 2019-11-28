@@ -202,30 +202,30 @@ class SLIM_BPR_Cython(object):
         return ranking[:at]
 
 ################################################ Test ##################################################
-# max_map = 0
-# data = get_data(dir_path='../')
-#
-# args = {
-#     'topK': 25,
-#     'lambda_i': 0.0,
-#     'lambda_j': 0.0,
-#     'epochs': 3800,
-#     'learning_rate' : 1e-4,
-#     'sgd_mode' : 'adagrad'
-# }
-#
-# bayesian_args = {'topK': 547, 'epochs': 120, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 2.9288627980909483e-05, 'lambda_j': 0.0008452530534290479, 'learning_rate': 0.000730447099956657}
-# args = bayesian_args
-#
-# recommender = SLIM_BPR_Cython(epochs=args['epochs'],
-#                               topK=args['topK'],
-#                               lambda_i=args['lambda_i'],
-#                               lambda_j=args['lambda_j'],
-#                               positive_threshold=1,
-#                               sgd_mode=args['sgd_mode'],
-#                               symmetric=args['symmetric'],
-#                               learning_rate=args['learning_rate']
-#                               )
+max_map = 0
+data = get_data(dir_path='../')
+
+args = {
+    'topK': 25,
+    'lambda_i': 0.0,
+    'lambda_j': 0.0,
+    'epochs': 3800,
+    'learning_rate' : 1e-4,
+    'sgd_mode' : 'adagrad'
+}
+
+bayesian_args = {'topK': 547, 'epochs': 120, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 2.9288627980909483e-05, 'lambda_j': 0.0008452530534290479, 'learning_rate': 0.000730447099956657}
+args = bayesian_args
+
+recommender = SLIM_BPR_Cython(epochs=args['epochs'],
+                              topK=args['topK'],
+                              lambda_i=args['lambda_i'],
+                              lambda_j=args['lambda_j'],
+                              positive_threshold=1,
+                              sgd_mode=args['sgd_mode'],
+                              symmetric=args['symmetric'],
+                              learning_rate=args['learning_rate']
+                              )
 # #recommender.runCompilationScript()
 # recommender.fit(data['train'])
 # result = evaluate_MAP_target_users(data['test'], recommender, data['target_users'])

@@ -239,6 +239,7 @@ class Compute_Similarity_Python:
 
 
         # Compute sum of squared values to be used in normalization
+        # Along Column
         sumOfSquared = np.array(self.dataMatrix.power(2).sum(axis=0)).ravel()
 
         # Tanimoto does not require the square root to be applied
@@ -255,10 +256,10 @@ class Compute_Similarity_Python:
         start_col_local = 0
         end_col_local = self.n_columns
 
-        if start_col is not None and start_col>0 and start_col<self.n_columns:
+        if start_col is not None and 0 < start_col < self.n_columns:
             start_col_local = start_col
 
-        if end_col is not None and end_col>start_col_local and end_col<self.n_columns:
+        if end_col is not None and start_col_local < end_col < self.n_columns:
             end_col_local = end_col
 
 
@@ -278,6 +279,7 @@ class Compute_Similarity_Python:
 
 
             # All data points for a given item
+            # Prendi tutte le colonne nel range
             item_data = self.dataMatrix[:, start_col_block:end_col_block]
             item_data = item_data.toarray().squeeze()
 
@@ -299,10 +301,12 @@ class Compute_Similarity_Python:
                 if this_block_size == 1:
                     this_column_weights = this_block_weights
                 else:
+                    # Prendi una sola colonna all'index col_index_in_block
                     this_column_weights = this_block_weights[:,col_index_in_block]
 
-
+                # Ritorna sempre l'index della diagonale in questa colonna
                 columnIndex = col_index_in_block + start_col_block
+                # L'utente non deve sembrare come uguale a sé stesso
                 this_column_weights[columnIndex] = 0.0
 
                 # Apply normalization and shrinkage, ensure denominator != 0
@@ -343,6 +347,8 @@ class Compute_Similarity_Python:
                 # - Partition the data to extract the set of relevant items
                 # - Sort only the relevant items
                 # - Get the original item index
+
+                # Trova gli indici dei primi TopK con valori più alti e tieni solo i primi 10
                 relevant_items_partition = (-this_column_weights).argpartition(self.TopK-1)[0:self.TopK]
                 relevant_items_partition_sorting = np.argsort(-this_column_weights[relevant_items_partition])
                 top_k_idx = relevant_items_partition[relevant_items_partition_sorting]
@@ -353,24 +359,13 @@ class Compute_Similarity_Python:
 
                 values.extend(this_column_weights[top_k_idx][notZerosMask])
                 rows.extend(top_k_idx[notZerosMask])
+
+                # Dato che scorro colonna per colonna, nella sps.coo_matrix alla fine questa avrà sempre lo stesso index
                 cols.extend(np.ones(numNotZeros) * columnIndex)
 
 
             # Add previous block size
             processedItems += this_block_size
-
-
-            if time.time() - start_time_print_batch >= 30 or end_col_block==end_col_local:
-                columnPerSec = processedItems / (time.time() - start_time + 1e-9)
-
-                print("Similarity column {} ( {:2.0f} % ), {:.2f} column/sec, elapsed time {:.2f} min".format(
-                    processedItems, processedItems / (end_col_local - start_col_local) * 100, columnPerSec, (time.time() - start_time)/ 60))
-
-                sys.stdout.flush()
-                sys.stderr.flush()
-
-                start_time_print_batch = time.time()
-
 
             start_col_block += block_size
 

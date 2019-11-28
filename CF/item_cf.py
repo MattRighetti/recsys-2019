@@ -31,7 +31,7 @@ class ItemBasedCollaborativeFiltering(object):
         self.RM = self.URM_train.dot(self.SM_item)
 
     def recommend(self, user_id, at=10, exclude_seen=True):
-        expected_ratings = self.get_expected_recommendations(user_id)
+        expected_ratings = self.get_expected_ratings(user_id)
         recommended_items = np.flip(np.argsort(expected_ratings), 0)
 
         if exclude_seen:
@@ -40,7 +40,7 @@ class ItemBasedCollaborativeFiltering(object):
 
         return recommended_items[:at]
 
-    def get_expected_recommendations(self, user_id):
+    def get_expected_ratings(self, user_id):
         expected_recommendations = self.RM[user_id].todense()
         return np.squeeze(np.asarray(expected_recommendations))
 
@@ -79,7 +79,7 @@ class ItemBasedCollaborativeFiltering(object):
 # best_values_2 = {'topK': 26, 'shrink': 10}
 # best_values_1 = {'topK': 29, 'shrink': 5}
 # max_map = 0
-# data = get_data(test=True)
+# data = get_data(dir_path='../')
 #
 # for topK in [29, 26, 27, 28]:
 #     for shrink in [1, 2, 3, 4, 5, 6]:

@@ -349,7 +349,7 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
         if recommender_class is RP3betaRecommender:
 
             hyperparameters_range_dictionary = {}
-            hyperparameters_range_dictionary["topK"] = Integer(5, 1000)
+            hyperparameters_range_dictionary["topK"] = Integer(70, 500)
             hyperparameters_range_dictionary["alpha"] = Real(low = 0, high = 2, prior = 'uniform')
             hyperparameters_range_dictionary["beta"] = Real(low = 0, high = 2, prior = 'uniform')
             hyperparameters_range_dictionary["normalize_similarity"] = Categorical([True, False])
@@ -584,7 +584,7 @@ def read_data_split_and_search():
         - A _best_result_test file which contains a dictionary with the results, on the test set, of the best solution chosen using the validation set
     """
 
-    data = get_data(dir_path='../../')
+    data = get_data(dir_path='./')
     URM_test = data['test']
     URM_train = data['train']
     URM_train, URM_validation = train_test_holdout(URM_train)
@@ -601,11 +601,11 @@ def read_data_split_and_search():
         # TopPop,
         # P3alphaRecommender,
         # RP3betaRecommender,
-        ItemKNNCFRecommender
+        # ItemKNNCFRecommender
         # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
-        # PureSVDRecommender,
+        PureSVDRecommender,
         # SLIM_BPR_Cython,
         # SLIMElasticNetRecommender
     ]
@@ -621,7 +621,8 @@ def read_data_split_and_search():
     runParameterSearch_Collaborative_partial = partial(runParameterSearch_Collaborative,
                                                        URM_train = URM_train,
                                                        metric_to_optimize = "MAP",
-                                                       n_cases = 8,
+                                                       # TODO change num of iterations here
+                                                       n_cases = 30,
                                                        evaluator_validation_earlystopping = evaluator_validation,
                                                        evaluator_validation = evaluator_validation,
                                                        evaluator_test = evaluator_test,

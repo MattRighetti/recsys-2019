@@ -140,7 +140,7 @@ def get_URM_TFIDF(URM):
     return URM_tfidf.tocsr()
 
 def get_data(split_kind=None, dir_path=None):
-    dataReader = DataReader(dir_path='./')
+    dataReader = DataReader(dir_path=dir_path)
     UCM_region = dataReader.UCM_region_COO()
     UCM_age = dataReader.UCM_age_COO()
     URM_all = dataReader.URM_COO()
