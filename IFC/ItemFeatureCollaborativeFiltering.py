@@ -64,8 +64,8 @@ class ItemFeatureCollaborativeFiltering(object):
         return expected_ratings
 
     def get_boosted_RM(self, recommended_matrix, icm_matrix, user_feature_matrix):
-        booster = BoostSimilarityMatrix(recommended_matrix, icm_matrix, user_feature_matrix)
-        return booster.compute_boosted_matrix().tocsr()
+        booster = BoostSimilarityMatrix()
+        return booster.compute_boosted_matrix(recommended_matrix, icm_matrix, user_feature_matrix).tocsr()
 
     def recommend(self, user_id, at=10, exclude_seen=True):
         if self.feature_boost:
@@ -103,7 +103,7 @@ args = {
 }
 
 itemFeatureCF = ItemFeatureCollaborativeFiltering(args['topK'], args['shrink'], feature_boost=True)
-itemFeatureCF.fit(data['train'].copy().tocsr(), data['ICM_subclass'].copy().tocsr())
+itemFeatureCF.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr())
 itemFeatureCF.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
 
 ################################ TEST #######################################
