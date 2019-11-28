@@ -1,5 +1,5 @@
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
-from IFC.Cython.BoostSimilarityMatrix import BoostSimilarityMatrix
+from IFC.Cython.BoostSimilarityMatrix import Booster
 import scipy.sparse as sps
 import numpy as np
 
@@ -14,12 +14,13 @@ class ItemFeatureCollaborativeFiltering(object):
         self.shrink = shrink
         self.feature_boost = feature_boost
 
+        self.booster = None
+
         self.URM_train = None
         self.ICM = None
         self.SM_item = None
         self.SM_user_feature = None
         self.RM_item = None
-        self.RM_boosted = None
 
     def get_similarity_matrix(self, similarity='cosine'):
         similarity_object = Compute_Similarity_Cython(self.URM_train,
@@ -31,7 +32,6 @@ class ItemFeatureCollaborativeFiltering(object):
                                                       similarity='cosine')
         return similarity_object.compute_similarity().tocsr()
 
-
     def fit(self, URM_train, ICM):
         """
         PASS URM_TRAIN and ICM as CSR MATRICES
@@ -39,16 +39,17 @@ class ItemFeatureCollaborativeFiltering(object):
         :param ICM:
         :return:
         """
-        self.URM_train = URM_train
-        self.ICM = ICM
+        self.booster = Booster()
+
+        self.URM_train = URM_train.copy()
+        self.ICM = ICM.copy()
         self.SM_item = self.get_similarity_matrix(URM_train)
         self.RM_item = self.URM_train.dot(self.SM_item).tocsr()
-        self.SM_user_feature = sps.csr_matrix(self.URM_train.dot(self.ICM))
+        self.SM_user_feature = self.URM_train.dot(self.ICM).tocsr()
+
         self.SM_item = check_matrix(self.SM_item, format='csr')
         self.RM_item = check_matrix(self.RM_item, format='csr')
         self.SM_user_feature = check_matrix(self.SM_user_feature, format='csr')
-        self.RM_boosted = self.get_boosted_RM(self.RM_item, self.ICM, self.SM_user_feature)
-        self.RM_boosted = check_matrix(self.RM_boosted, format='csr')
 
     def get_expected_ratings(self, user_id):
         """
@@ -56,20 +57,24 @@ class ItemFeatureCollaborativeFiltering(object):
         :param user_id: ID of the User
         :return: 1D array of items containing each item rating
         """
-        expected_ratings = self.RM_boosted[user_id].toarray().ravel()
+        expected_ratings = self.RM_item[user_id].toarray().ravel()
         return np.squeeze(np.asarray(expected_ratings))
 
-    def get_boost_ratings(self, user_id):
-        expected_ratings = self.get_expected_ratings(user_id)
-        return expected_ratings
+    def apply_boost(self, expected_ratings, user_id):
+        boosted_ratings = self.booster.get_boosted_recommendations(expected_ratings,
+                                                                   user_id,
+                                                                   self.ICM,
+                                                                   self.SM_user_feature)
+        return boosted_ratings
 
-    def get_boosted_RM(self, recommended_matrix, icm_matrix, user_feature_matrix):
-        booster = BoostSimilarityMatrix()
-        return booster.compute_boosted_matrix(recommended_matrix, icm_matrix, user_feature_matrix).tocsr()
+    def get_boosted_ratings(self, user_id):
+        expected_ratings = self.get_expected_ratings(user_id)
+        boosted_ratings = self.apply_boost(expected_ratings, user_id)
+        return boosted_ratings
 
     def recommend(self, user_id, at=10, exclude_seen=True):
         if self.feature_boost:
-            expected_ratings = self.get_boost_ratings(user_id)
+            expected_ratings = self.get_boosted_ratings(user_id)
         else:
             expected_ratings = self.get_expected_ratings(user_id)
 
