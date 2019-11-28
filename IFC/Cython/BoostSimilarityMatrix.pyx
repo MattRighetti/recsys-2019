@@ -23,7 +23,7 @@ cdef class Booster:
     def __init__(self):
         super(Booster, self).__init__()
 
-    def get_boosted_recommendations(self, expected_ratings_array, user_id, icm_matrix, user_features_matrix):
+    def get_boosted_recommendations(self, expected_ratings_array, user_profile_indices, user_id, icm_matrix, user_features_matrix):
         """
         Applies feature boost to the RM
         1. Find item index
@@ -35,26 +35,36 @@ cdef class Booster:
         # Num of indexes of the array to be returned
         cdef int num_items = icm_matrix.shape[0]
         # Array to be returned
-        cdef float[:] boosted_ratings = np.zeros((num_items), dtype=np.float32,)
+        cdef double[:] boosted_ratings = np.zeros((num_items), dtype=np.double,)
         # User-Features array
-        cdef long[:] user_features_profile = user_features_matrix[user_id].toarray().ravel().astype(int)
+        cdef int user_startpos = user_features_matrix.indptr[user_id]
+        cdef int user_endpos = user_features_matrix.indptr[user_id + 1]
+        cdef float[:] user_features_profile = user_features_matrix.data[user_startpos:user_endpos]
+        cdef int[:] user_features_indices = user_features_matrix.indices[user_startpos:user_endpos]
         # Item-Features array
-        cdef long[:] item_features_profile
+        cdef int item_startpos = 0
+        cdef int item_endpos = 0
+        cdef int[:] item_features_indices
+        cdef double[:] item_features_profile
 
-        cdef int item_index, features_index
-        cdef double item_rating
+
+        cdef int item_index = 0
+        cdef int features_index = 0
+        cdef double item_rating = 0.0
         cdef double boost_value = 0.0
 
-        for item_index in range(len(expected_ratings)):
+        for item_index in user_profile_indices:
             item_rating = expected_ratings[item_index]
-            item_features_profile = icm_matrix[item_index].toarray().ravel().astype(int)
+            item_startpos = icm_matrix.indptr[item_index]
+            item_endpos = icm_matrix.indptr[item_index + 1]
+            item_features_profile = icm_matrix.data[item_startpos:item_endpos]
+            item_features_indices = icm_matrix.indices[item_startpos:item_endpos]
 
-            for feature_index in range(len(item_features_profile)):
-                if item_features_profile[feature_index] != 0 and user_features_profile[feature_index] != 0:
-                    boost_value += (user_features_profile[features_index]/1000)
+            for feature_index in item_features_indices:
+                boost_value += (user_features_profile[features_index]/1000)
 
-            final_rating = item_rating + boost_value
+            final_rating = item_rating
             boosted_ratings[item_index] = final_rating
 
-        boosted_ratings = np.array(boosted_ratings, dtype=np.float32)
+        boosted_ratings = np.array(boosted_ratings, dtype=np.double)
         return boosted_ratings

@@ -61,7 +61,11 @@ class ItemFeatureCollaborativeFiltering(object):
         return np.squeeze(np.asarray(expected_ratings))
 
     def apply_boost(self, expected_ratings, user_id):
+        startpos = self.RM_item.indptr[user_id]
+        endpos = self.RM_item.indptr[user_id + 1]
+        indices = self.RM_item.indices[startpos:endpos]
         boosted_ratings = self.booster.get_boosted_recommendations(expected_ratings,
+                                                                   indices,
                                                                    user_id,
                                                                    self.ICM,
                                                                    self.SM_user_feature)
