@@ -1,11 +1,13 @@
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users
-from NonPersonalized.top_pop import TopPop
-from CF.item_cf import ItemBasedCollaborativeFiltering
+from Recommenders.NonPersonalized.top_pop import TopPop
+from Recommenders.CF.item_cf import ItemBasedCollaborativeFiltering
+from Recommenders.BaseRecommender import BaseRecommender
 import numpy as np
 
 
-class UserWiseHybridRecommender(object):
+class UserWiseHybridRecommender(BaseRecommender):
     def __init__(self):
+        super().__init__()
         self.URM_train = None
         self.TopPop = TopPop()
         self.topK = 10
@@ -26,17 +28,3 @@ class UserWiseHybridRecommender(object):
             return self.TopPop.recommend(user_id)
         else:
             return self.itemCF.recommend(user_id, at=10)
-
-    def evaluate_MAP_target(self, URM_test, target_user_list):
-        result = evaluate_MAP_target_users(URM_test, self, target_user_list)
-        print("HybUserWise -> MAP: {:.4f}".format(result))
-        return result
-
-    def set_topK(self, topK):
-        self.topK = topK
-
-    def set_shrink(self, shrink):
-        self.shrink = shrink
-
-    def set_item_cf(self, itemCF):
-        self.itemCF = itemCF

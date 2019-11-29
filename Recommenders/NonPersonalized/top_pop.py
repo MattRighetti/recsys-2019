@@ -1,7 +1,10 @@
+from Recommenders.BaseRecommender import BaseRecommender
 import numpy as np
 
-class TopPop(object):
+
+class TopPop(BaseRecommender):
     def __init__(self):
+        super().__init__()
         self.URM_train = None
         self.popularItems = None
 

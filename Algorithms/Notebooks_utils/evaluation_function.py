@@ -9,6 +9,7 @@ Created on 21/10/2018
 import numpy as np
 import scipy.sparse as sps
 from tqdm import tqdm
+from Utils.Algorithm.Cython.Evaluate import MAP
 
 
 def precision(is_relevant, relevant_items):
@@ -27,7 +28,7 @@ def recall(is_relevant, relevant_items):
     return recall_score
 
 
-def MAP(is_relevant, relevant_items):
+def MAP_python(is_relevant, relevant_items):
     # is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
 
     # Cumulative sum: precision at 1, at 2, at 3 ...

@@ -1,17 +1,17 @@
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
 from Algorithms.GraphBased.P3alphaRecommender import P3alphaRecommender
-from CBF.item_CBF import ItemContentBasedRecommender
-from CF.user_cf import UserBasedCollaborativeFiltering
-from CF.item_cf import ItemBasedCollaborativeFiltering
-
-from NonPersonalized.top_pop import TopPop
-from SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
-from Utils.OutputWriter import write_output
-from Utils.Toolkit import get_data
+from Recommenders.BaseRecommender import BaseRecommender
+from Recommenders.CBF.item_CBF import ItemContentBasedRecommender
+from Recommenders.CF.user_cf import UserBasedCollaborativeFiltering
+from Recommenders.CF.item_cf import ItemBasedCollaborativeFiltering
+from Recommenders.NonPersonalized.top_pop import TopPop
+from Recommenders.SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
 
 
-class HybridRecommender(object):
-    def __init__(self, weights=None, userCF_args=None, itemCBF_args=None, itemCF_args=None, SLIM_BPR_args=None, P3Graph_args=None, with_top_pop=False):
+class HybridRecommender(BaseRecommender):
+    def __init__(self, weights=None, userCF_args=None, itemCBF_args=None, itemCF_args=None, SLIM_BPR_args=None,
+                 P3Graph_args=None, with_top_pop=False):
+        super().__init__()
         self.URM_train = None
         self.with_top_pop = with_top_pop
         ######################## DEFAULT VALUES ########################
@@ -133,19 +133,6 @@ class HybridRecommender(object):
         scores[user_profile] = -50
 
         return scores
-
-    def evaluate_MAP(self, URM_test):
-        result_map = evaluate_MAP(URM_test, self)
-        print("HYB -> MAP: {:.4f}"
-              .format(result_map))
-        return result_map
-
-    def evaluate_MAP_target(self, URM_test, target_user_list):
-        result_map = evaluate_MAP_target_users(URM_test, self, target_user_list)
-        print("HYB -> MAP: {:.4f}"
-              .format(result_map))
-        return result_map
-
 
 ################################################ Test ##################################################
 # max_map = 0

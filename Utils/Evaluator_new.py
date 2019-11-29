@@ -1,32 +1,61 @@
+from Utils.Algorithm.Cython.Evaluate import MAP
 from tqdm import tqdm
 import numpy as np
 
+def evaluate_MAP(URM_test, recommender_object, at=10, verbose=False):
+    cumulative_MAP = 0.0
+    URM_test = sps.csr_matrix(URM_test)
+    n_users = URM_test.shape[0]
 
-def MAP(recommended_items, relevant_items):
-    is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
+    for user_id in tqdm(n_users):
+
+        start_pos = URM_test.indptr[user_id]
+        end_pos = URM_test.indptr[user_id + 1]
+
+        if end_pos - start_pos > 0:
+            relevant_items = URM_test.indices[start_pos:end_pos]
+
+            recommended_items = recommender_object.recommend(user_id, at)
+
+            is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
+
+            cumulative_MAP += MAP(is_relevant, relevant_items)
+
+    cumulative_MAP /= n_users
+
+    return cumulative_MAP
+
+def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10, verbose=True):
+    cumulative_MAP = 0.0
+    num_eval = 0
+    n_users = URM_test.shape[0]
+
+    for user_id in tqdm(target_users):
+
+        start_pos = URM_test.indptr[user_id]
+        end_pos = URM_test.indptr[user_id + 1]
+
+        if end_pos - start_pos > 0:
+            relevant_items = URM_test.indices[start_pos:end_pos]
+
+            recommended_items = recommender_object.recommend(user_id, at)
+            num_eval += 1
+
+            is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
+
+            cumulative_MAP += MAP(is_relevant, relevant_items)
+
+    cumulative_MAP /= n_users
+
+    return cumulative_MAP
+
+def MAP_Python(is_relevant, relevant_items):
+    # is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
 
     # Cumulative sum: precision at 1, at 2, at 3 ...
-    p_at_k = is_relevant * np.cumsum(is_relevant, dtype=np.float32) / (1 + np.arange(len(is_relevant)))
-    map_score = np.sum(p_at_k) / np.min([len(relevant_items), len(is_relevant)])
+    p_at_k = is_relevant * np.cumsum(is_relevant, dtype=np.float32) / (1 + np.arange(is_relevant.shape[0]))
+
+    # Sum of average precision
+    map_score = np.sum(p_at_k) / np.min([relevant_items.shape[0], is_relevant.shape[0]])
+
     return map_score
-
-
-class Evaluator(object):
-    def __init__(self):
-        self.URM_train = None
-        self.URM_test = None
-        self.dict_test = None
-        self.target_users = None
-        self.at = 10
-
-    def global_evaluate_single(self, recommender):
-        MAP_final = 0
-        recommender.fit(self.URM_train)
-        for user_id in tqdm(self.target_users):
-            recommended_items = recommender.recommend(user_id)
-            MAP_final += self.evaluate(user_id, recommended_items)
-        MAP_final /= len(self.target_users)
-        return MAP_final
-
-    def evaluate(self, user_id, recommended_items):
-        return MAP(recommended_items, relevant_items)

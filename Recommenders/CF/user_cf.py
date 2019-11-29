@@ -1,10 +1,11 @@
 import numpy as np
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
+from Recommenders.BaseRecommender import BaseRecommender
 from Utils.Toolkit import get_data, get_URM_TFIDF
 
 
-class UserBasedCollaborativeFiltering(object):
+class UserBasedCollaborativeFiltering(BaseRecommender):
     """
     UserBasedCollaborativeFiltering recommender system
     """
@@ -18,6 +19,7 @@ class UserBasedCollaborativeFiltering(object):
         :param topK: topK Value
         :param shrink: shrink Value
         """
+        super().__init__()
         self.URM_train = None
         self.topK = topK
         self.shrink = shrink

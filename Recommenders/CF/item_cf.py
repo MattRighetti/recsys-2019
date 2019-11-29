@@ -1,14 +1,16 @@
-import numpy as np
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
+from Recommenders.BaseRecommender import BaseRecommender
 from Utils.Toolkit import get_URM_TFIDF, normalize_matrix, get_data
+import numpy as np
 
 
-class ItemBasedCollaborativeFiltering(object):
+class ItemBasedCollaborativeFiltering(BaseRecommender):
     """
     ItemBasedCollaborativeFiltering
     """
     def __init__(self, topK, shrink):
+        super().__init__()
         self.URM_train = None
         self.topK = topK
         self.shrink = shrink

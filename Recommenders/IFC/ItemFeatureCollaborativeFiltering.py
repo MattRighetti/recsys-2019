@@ -1,18 +1,19 @@
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
-from IFC.Cython.BoostSimilarityMatrix import Booster
-import scipy.sparse as sps
-import numpy as np
-
+from Recommenders.IFC.Cython.BoostSimilarityMatrix import Booster
 from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
-from Utils.Toolkit import get_data
+from Utils.Toolkit import get_data, normalize_matrix, get_URM_BM_25, get_URM_TFIDF
+from Recommenders.BaseRecommender import BaseRecommender
+import numpy as np
 
 
-class ItemFeatureCollaborativeFiltering(object):
-    def __init__(self, topK, shrink, feature_boost=True):
+class ItemFeatureCollaborativeFiltering(BaseRecommender):
+
+    def __init__(self, topK, shrink):
+        super().__init__()
         self.topK = topK
         self.shrink = shrink
-        self.feature_boost = feature_boost
+        self.feature_boost = False
 
         self.booster = None
 
@@ -29,23 +30,27 @@ class ItemFeatureCollaborativeFiltering(object):
                                                       normalize=True,
                                                       tversky_alpha=1.0,
                                                       tversky_beta=1.0,
-                                                      similarity='cosine')
+                                                      similarity='tanimoto')
         return similarity_object.compute_similarity().tocsr()
 
-    def fit(self, URM_train, ICM):
+    def fit(self, URM_train, ICM, feature_boost=True):
         """
         PASS URM_TRAIN and ICM as CSR MATRICES
         :param URM_train:
         :param ICM:
         :return:
         """
+        self.feature_boost = feature_boost
         self.booster = Booster()
 
         self.URM_train = URM_train.copy()
         self.ICM = ICM.copy()
+        #self.ICM = get_URM_BM_25(self.ICM)
         self.SM_item = self.get_similarity_matrix(URM_train)
         self.RM_item = self.URM_train.dot(self.SM_item).tocsr()
         self.SM_user_feature = self.URM_train.dot(self.ICM).tocsr()
+        self.ICM = get_URM_TFIDF(self.ICM)
+        self.ICM = normalize_matrix(self.ICM)
 
         self.SM_item = check_matrix(self.SM_item, format='csr')
         self.RM_item = check_matrix(self.RM_item, format='csr')
@@ -67,6 +72,7 @@ class ItemFeatureCollaborativeFiltering(object):
         boosted_ratings = self.booster.get_boosted_recommendations(expected_ratings,
                                                                    indices,
                                                                    user_id,
+                                                                   0.1,
                                                                    self.ICM,
                                                                    self.SM_user_feature)
         return boosted_ratings
@@ -90,29 +96,19 @@ class ItemFeatureCollaborativeFiltering(object):
 
         return recommended_items[:at]
 
-    def evaluate_MAP(self, URM_test):
-        result = evaluate_MAP(URM_test, self)
-        print("ItemCF -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\t".format(result, self.topK, self.shrink))
-        return result
-
-    def evaluate_MAP_target(self, URM_test, target_user_list):
-        result = evaluate_MAP_target_users(URM_test, self, target_user_list)
-        print("ItemCF -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\t".format(result, self.topK, self.shrink))
-        return result
-
 ################################ TEST #######################################
 
-data = get_data(dir_path='../')
+data = get_data(dir_path='../../')
 
 args = {
     'topK' : 29,
     'shrink' : 5
 }
 
-itemFeatureCF = ItemFeatureCollaborativeFiltering(args['topK'], args['shrink'], feature_boost=True)
-itemFeatureCF.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr())
+itemFeatureCF = ItemFeatureCollaborativeFiltering(args['topK'], args['shrink'])
+#itemFeatureCF.fit(data['train'].tocsr(), data['ICM'].tocsr(), feature_boost=False)
+#itemFeatureCF.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
+itemFeatureCF.fit(data['train'].tocsr(), data['ICM'].tocsr(), feature_boost=True)
 itemFeatureCF.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
 
 ################################ TEST #######################################

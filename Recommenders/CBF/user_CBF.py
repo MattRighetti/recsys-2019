@@ -1,12 +1,13 @@
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm, evaluate_MAP, evaluate_MAP_target_users
+from Utils.Toolkit import DataReader, normalize, get_URM_BM_25, get_URM_TFIDF, get_data
+from Recommenders.BaseRecommender import BaseRecommender
 import numpy as np
 import scipy.sparse as sps
 
-from Utils.Toolkit import DataReader, normalize, get_URM_BM_25, get_URM_TFIDF, get_data
 
 
-class UserContentBasedRecommender(object):
+class UserContentBasedRecommender(BaseRecommender):
     def __init__(self, topK, shrink):
         self.topK = topK
         self.shrink = shrink
@@ -50,16 +51,6 @@ class UserContentBasedRecommender(object):
         recommended_items = np.flip(np.argsort(expected_ratings), 0)
 
         return recommended_items[:10]
-
-    def evaluate_MAP(self, URM_test):
-        result = evaluate_MAP(URM_test, self)
-        print("UserCBF -> MAP: {:.4f}".format(result))
-        return result
-
-    def evaluate_MAP_target(self, URM_test, target_user_list):
-        result = evaluate_MAP_target_users(URM_test, self, target_user_list)
-        print("UserCBF -> MAP: {:.4f}".format(result))
-        return result
 
 
 ################################################ Test ##################################################

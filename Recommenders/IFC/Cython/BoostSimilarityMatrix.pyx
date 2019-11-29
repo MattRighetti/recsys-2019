@@ -23,7 +23,7 @@ cdef class Booster:
     def __init__(self):
         super(Booster, self).__init__()
 
-    def get_boosted_recommendations(self, expected_ratings_array, user_profile_indices, user_id, icm_matrix, user_features_matrix):
+    def get_boosted_recommendations(self, expected_ratings_array, user_profile_indices, user_id, weight, icm_matrix, user_features_matrix):
         """
         Applies feature boost to the RM
         1. Find item index
@@ -35,7 +35,7 @@ cdef class Booster:
         # Num of indexes of the array to be returned
         cdef int num_items = icm_matrix.shape[0]
         # Array to be returned
-        cdef double[:] boosted_ratings = np.zeros((num_items), dtype=np.double,)
+        boosted_ratings = np.zeros((num_items), dtype=np.double,)
         # User-Features array
         cdef int user_startpos = user_features_matrix.indptr[user_id]
         cdef int user_endpos = user_features_matrix.indptr[user_id + 1]
@@ -46,14 +46,16 @@ cdef class Booster:
         cdef int item_endpos = 0
         cdef int[:] item_features_indices
         cdef double[:] item_features_profile
+        cdef int w = weight
 
 
         cdef int item_index = 0
         cdef int features_index = 0
         cdef double item_rating = 0.0
-        cdef double boost_value = 0.0
+        cdef double boost_value
 
         for item_index in user_profile_indices:
+            boost_value = 0.0
             item_rating = expected_ratings[item_index]
             item_startpos = icm_matrix.indptr[item_index]
             item_endpos = icm_matrix.indptr[item_index + 1]
@@ -61,9 +63,13 @@ cdef class Booster:
             item_features_indices = icm_matrix.indices[item_startpos:item_endpos]
 
             for feature_index in item_features_indices:
-                boost_value += (user_features_profile[features_index]/1000)
+                boost_value += (user_features_profile[features_index] * item_features_profile[features_index])
 
-            final_rating = item_rating
+            if boost_value > 1:
+                boost_value /= (boost_value + 0.5)
+
+
+            final_rating = item_rating + boost_value
             boosted_ratings[item_index] = final_rating
 
         boosted_ratings = np.array(boosted_ratings, dtype=np.double)
