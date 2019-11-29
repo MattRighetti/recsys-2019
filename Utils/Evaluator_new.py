@@ -7,7 +7,7 @@ def evaluate_MAP(URM_test, recommender_object, at=10, verbose=False):
     URM_test = sps.csr_matrix(URM_test)
     n_users = URM_test.shape[0]
 
-    for user_id in tqdm(n_users):
+    for user_id in tqdm(n_users, desc="Evaluating MAP"):
 
         start_pos = URM_test.indptr[user_id]
         end_pos = URM_test.indptr[user_id + 1]
@@ -30,12 +30,10 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10)
     num_eval = 0
     n_users = URM_test.shape[0]
 
-    total_miss_groups = np.zeros(10, dtype=int)
-
     n_total_miss = 0
     total_guessed = 0
 
-    for user_id in tqdm(target_users, desc=f'Evaluating MAP target, total miss {n_total_miss}'):
+    for user_id in tqdm(target_users, desc="Evaluating MAP with target"):
 
         start_pos = URM_test.indptr[user_id]
         end_pos = URM_test.indptr[user_id + 1]

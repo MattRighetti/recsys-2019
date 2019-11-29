@@ -11,6 +11,8 @@ from tqdm import tqdm
 
 class ItemFeatureCollaborativeFiltering(BaseRecommender):
 
+    RECOMMENDER_NAME = "ItemFeatureCollaborativeFiltering"
+
     def __init__(self, topK, shrink):
         super().__init__()
         self.topK = topK
@@ -95,6 +97,7 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
         boosted_ratings, evaluated_correctly = self.booster.boost(recommended_items,
                                              recommended_items_ratings,
                                              user_id,
+                                             5,
                                              self.ICM,
                                              self.SM_user_feature)
         #print(f'Before:{recommended_items}, After: {boosted_ratings}')
@@ -130,6 +133,7 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
 ################################ TEST #######################################
 
 data = get_data(dir_path='../../')
+
 args = {
     'topK' : 31,
     'shrink' : 9

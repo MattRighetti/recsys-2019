@@ -14,16 +14,17 @@ import numpy as np
 from Algorithms.Base.Recommender_utils import similarityMatrixTopK
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users
 from Utils.Toolkit import get_data
+from Recommenders.BaseRecommender import BaseRecommender
 
 
-class SLIM_BPR_Cython(object):
+class SLIM_BPR_Cython(BaseRecommender):
 
     def __init__(self, positive_threshold=None, recompile_cython=False, final_model_sparse_weights=True,
-                 train_with_sparse_weights=False, symmetric=True, epochs = 400,
-                batch_size = 1000, lambda_i = 0.6, lambda_j = 1, learning_rate = 1e-4, topK = 30,
-                sgd_mode = 'sgd', gamma=0.995, beta_1=0.9, beta_2=0.999):
+                 train_with_sparse_weights=False, symmetric=True, epochs=400, batch_size=1000, lambda_i=0.6, lambda_j=1,
+                 learning_rate=1e-4, topK=30, sgd_mode='sgd', gamma=0.995, beta_1=0.9, beta_2=0.999):
 
         #### Retreiving parameters for fitting #######
+        super().__init__()
         self.epochs = epochs
         self.batch_size = batch_size
         self.lambda_i = lambda_i

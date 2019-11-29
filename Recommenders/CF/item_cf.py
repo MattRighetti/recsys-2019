@@ -6,9 +6,9 @@ import numpy as np
 
 
 class ItemBasedCollaborativeFiltering(BaseRecommender):
-    """
-    ItemBasedCollaborativeFiltering
-    """
+
+    RECOMMENDER_NAME = "ItemBasedCollaborativeFiltering"
+
     def __init__(self, topK, shrink):
         super().__init__()
         self.URM_train = None

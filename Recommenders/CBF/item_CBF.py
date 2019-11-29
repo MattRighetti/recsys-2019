@@ -8,6 +8,8 @@ import scipy.sparse as sps
 
 class ItemContentBasedRecommender(BaseRecommender):
 
+    RECOMMENDER_NAME = "ItemContentBasedRecommender"
+
     def __init__(self, topK, shrink):
         super().__init__()
         self.topK = topK

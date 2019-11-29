@@ -13,7 +13,7 @@ class DataReader(object):
     """
     This class will read the URM_train and the Target_users files and will generate every URM that we'll need
     """
-    def __init__(self, dir_path='../'):
+    def __init__(self, dir_path='./'):
         dir_file = dir_path
         self.data_train_file_path = dir_file + "data/data_train.csv"
         self.user_target_file_path = dir_file + "data/alg_sample_submission.csv"

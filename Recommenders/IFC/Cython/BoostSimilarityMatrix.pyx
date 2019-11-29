@@ -80,7 +80,7 @@ cdef class Booster:
 
 
 
-    def boost(self, recommended_item_indexes, recommended_item_ratings, user_id, icm_matrix, user_features_matrix):
+    def boost(self, recommended_item_indexes, recommended_item_ratings, user_id, min_interactions, icm_matrix, user_features_matrix):
         """
         Apply boost on the first 10 items
         :param recommended_item_indexes: Index of first 10 items
@@ -97,6 +97,7 @@ cdef class Booster:
         cdef double item_rating = 0.0
         cdef double boost_value
         cdef int counter = 0
+        cdef min_val = min_interactions
 
         cdef int user_startpos = user_features_matrix.indptr[user_id]
         cdef int user_endpos = user_features_matrix.indptr[user_id+1]
@@ -113,7 +114,7 @@ cdef class Booster:
 
         boosted_ratings = np.zeros((10), dtype=np.double,)
 
-        if len(user_features_indices) > 0:
+        if len(user_features_indices) > min_interactions:
             for i in range(len(recommended_item_indexes)):
                 boost_value = 0.0
                 features_weights = 0.0

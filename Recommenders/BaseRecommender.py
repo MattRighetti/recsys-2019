@@ -2,6 +2,9 @@ from Utils.Evaluator_new import evaluate_MAP_target_users, evaluate_MAP
 from tqdm import tqdm
 
 class BaseRecommender(object):
+
+    RECOMMENDER_NAME = "BaseRecommender"
+
     def __init__(self):
         super(BaseRecommender, self).__init__()
 
@@ -13,12 +16,20 @@ class BaseRecommender(object):
 
     def evaluate_MAP(self, URM_test):
         result = evaluate_MAP(URM_test, self)
-        print("ItemCF -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\t".format(result, self.topK, self.shrink))
+        print("{} -> MAP: {:.4f} with TopK = {} "
+              "& Shrink = {}\t".format(self.RECOMMENDER_NAME,
+                                       result,
+                                       self.topK,
+                                       self.shrink))
         return result
 
     def evaluate_MAP_target(self, URM_test, target_user_list):
         result = evaluate_MAP_target_users(URM_test, self, target_user_list)
-        print("ItemCF -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\tTOTAL MISS={}\tGUESSED={}".format(result['MAP'], self.topK, self.shrink, result['TOT_MISS'], result['TOT_GUESS']))
+        print("{} -> MAP: {:.4f} with TopK = {} "
+              "& Shrink = {}\tTOTAL MISS={}\tGUESSED={}".format(self.RECOMMENDER_NAME,
+                                                                result['MAP'],
+                                                                self.topK,
+                                                                self.shrink,
+                                                                result['TOT_MISS'],
+                                                                result['TOT_GUESS']))
         return result

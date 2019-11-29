@@ -9,6 +9,9 @@ from Recommenders.SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
 
 
 class HybridRecommender(BaseRecommender):
+
+    RECOMMENDER_NAME = "HYB"
+
     def __init__(self, weights=None, userCF_args=None, itemCBF_args=None, itemCF_args=None, SLIM_BPR_args=None,
                  P3Graph_args=None, with_top_pop=False):
         super().__init__()

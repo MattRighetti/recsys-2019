@@ -6,9 +6,8 @@ from Utils.Toolkit import get_data, get_URM_TFIDF
 
 
 class UserBasedCollaborativeFiltering(BaseRecommender):
-    """
-    UserBasedCollaborativeFiltering recommender system
-    """
+
+    RECOMMENDER_NAME = "UserBasedCollaborativeFiltering"
 
     def __init__(self, topK, shrink):
         """
