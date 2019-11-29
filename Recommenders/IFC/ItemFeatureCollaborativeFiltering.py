@@ -36,12 +36,16 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
 
             mask = self.URM_train.indices[u_start_pos:u_end_pos]
 
-            features_matrix = self.ICM[mask,:].sum(axis=0)
+            if len(mask) > 0:
+                features_matrix = self.ICM[mask,:].sum(axis=0)
+                user_features = np.squeeze(np.asarray(features_matrix))
+            else:
+                user_features = np.zeros(self.ICM.shape[1], dtype=int)
 
-            user_features = np.squeeze(np.asarray(features_matrix))
             SM_user_feature_matrix[user_id] = user_features
 
         SM_user_feature_matrix = sps.csr_matrix(SM_user_feature_matrix)
+        print(f'Generated UFM with shape {SM_user_feature_matrix.shape}')
         return SM_user_feature_matrix
 
     def get_similarity_matrix(self, similarity='cosine'):
@@ -132,8 +136,7 @@ args = {
 }
 
 itemFeatureCF = ItemFeatureCollaborativeFiltering(args['topK'], args['shrink'])
-itemFeatureCF.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr(), last_ten_boost=True)
-print(f'Took {end-start}')
+itemFeatureCF.fit(data['train'].tocsr(), data['ICM_asset'].tocsr(), last_ten_boost=True)
 itemFeatureCF.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
 
 ################################ TEST #######################################

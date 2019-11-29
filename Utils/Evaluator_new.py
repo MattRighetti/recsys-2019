@@ -25,12 +25,17 @@ def evaluate_MAP(URM_test, recommender_object, at=10, verbose=False):
 
     return cumulative_MAP
 
-def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10, verbose=True):
+def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10):
     cumulative_MAP = 0.0
     num_eval = 0
     n_users = URM_test.shape[0]
 
-    for user_id in tqdm(target_users):
+    total_miss_groups = np.zeros(10, dtype=int)
+
+    n_total_miss = 0
+    total_guessed = 0
+
+    for user_id in tqdm(target_users, desc=f'Evaluating MAP target, total miss {n_total_miss}'):
 
         start_pos = URM_test.indptr[user_id]
         end_pos = URM_test.indptr[user_id + 1]
@@ -43,11 +48,24 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10,
 
             is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
 
-            cumulative_MAP += MAP(is_relevant, relevant_items)
+            val = MAP(is_relevant, relevant_items)
+
+            if val == 0:
+                n_total_miss += 1
+            elif val == 0.1:
+                total_guessed += 1
+
+            cumulative_MAP += val
 
     cumulative_MAP /= n_users
 
-    return cumulative_MAP
+    results = {
+        'MAP' : cumulative_MAP,
+        'TOT_MISS' : n_total_miss,
+        'TOT_GUESS' : total_guessed
+    }
+
+    return results
 
 def MAP_Python(is_relevant, relevant_items):
     # is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
