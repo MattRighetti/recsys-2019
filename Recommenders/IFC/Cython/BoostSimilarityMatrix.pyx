@@ -120,9 +120,15 @@ cdef class Booster:
                 new_features = 0
                 not_new_features = 0
                 item_rating = recommended_item_ratings[i]
+
+
                 item_startpos = icm_matrix.indptr[recommended_item_indexes[i]]
                 item_endpos = icm_matrix.indptr[recommended_item_indexes[i] + 1]
+
+                # FEATURES DELLE ITEMS (ARRAY DI 1)
                 item_features_profile = icm_matrix.data[item_startpos:item_endpos]
+
+                # NUMERO DELLA FEATURE IN COLONNA (ARRAI DI NUMERI DI FEATURES)
                 item_features_indices = icm_matrix.indices[item_startpos:item_endpos]
 
                 inner_counter = 0
@@ -141,8 +147,8 @@ cdef class Booster:
                 else:
                     boost_value += (not_new_features / new_features) + features_weights
 
-                if boost_value > 5:
-                    print(f'Weight over 5!')
+                #if boost_value > 5:
+                    #print(f'Weight over 5!')
 
                 final_rating = item_rating + boost_value
                 boosted_ratings[counter] = final_rating
