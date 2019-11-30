@@ -80,7 +80,7 @@ cdef class Booster:
 
 
 
-    def boost(self, recommended_item_indexes, recommended_item_ratings, user_id, min_interactions, icm_matrix, user_features_matrix):
+    def boost(self, recommended_item_indexes, recommended_item_ratings, user_id, min_interactions, nov_weight, icm_matrix, user_features_matrix):
         """
         Apply boost on the first 10 items
         :param recommended_item_indexes: Index of first 10 items
@@ -98,6 +98,7 @@ cdef class Booster:
         cdef double boost_value
         cdef int counter = 0
         cdef min_val = min_interactions
+        cdef int n_items = len(recommended_item_ratings)
 
         cdef int user_startpos = user_features_matrix.indptr[user_id]
         cdef int user_endpos = user_features_matrix.indptr[user_id+1]
@@ -111,8 +112,9 @@ cdef class Booster:
         cdef int not_new_features
         cdef double features_weights
         cdef int feature_index, inner_counter
+        cdef float novelty_weight = nov_weight
 
-        boosted_ratings = np.zeros((10), dtype=np.double,)
+        boosted_ratings = np.zeros((n_items), dtype=np.double,)
 
         if len(user_features_indices) > min_interactions:
             for i in range(len(recommended_item_indexes)):
@@ -146,7 +148,7 @@ cdef class Booster:
                 if new_features == 0:
                     boost_value += features_weights
                 else:
-                    boost_value += (not_new_features / new_features) + features_weights
+                    boost_value += features_weights + (not_new_features / new_features * novelty_weight)
 
                 #if boost_value > 5:
                     #print(f'Weight over 5!')

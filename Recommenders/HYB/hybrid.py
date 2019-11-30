@@ -6,6 +6,7 @@ from Recommenders.CF.user_cf import UserBasedCollaborativeFiltering
 from Recommenders.CF.item_cf import ItemBasedCollaborativeFiltering
 from Recommenders.NonPersonalized.top_pop import TopPop
 from Recommenders.SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
+from Utils.Toolkit import get_data
 
 
 class HybridRecommender(BaseRecommender):
@@ -55,6 +56,11 @@ class HybridRecommender(BaseRecommender):
             'normalize_similarity': True
         }
 
+        self.ICF_args = {
+            'topK' : 29,
+            'shrink' : 5
+        }
+
         ######################## Weights ########################
         if weights is not None:
             self.weight = weights
@@ -83,6 +89,7 @@ class HybridRecommender(BaseRecommender):
                                learning_rate=self.SLIM_BPR_args['learning_rate'],
                                batch_size=1000)
         self.P3Graph = None
+        self.ICF = ItemFeatureCollaborativeFiltering(self.ICF_args['topK'], self.ICF_args['shrink'])
         self.topPop = TopPop()
 
         self.userCF_scores = None
@@ -97,6 +104,7 @@ class HybridRecommender(BaseRecommender):
         ########### FITTING ##########
         self.userCF.fit(self.URM_train.copy())
         self.itemCF.fit(self.URM_train.copy())
+        self.IFC.fit(URM_train.copy(), ICM.tocsr(), last_ten_boost=True)
         self.topPop.fit(self.URM_train.copy())
         self.SLIM_BPR.fit(self.URM_train.copy())
         self.itemCBF.fit(self.URM_train.copy(), ICM)
@@ -104,7 +112,7 @@ class HybridRecommender(BaseRecommender):
 
     def recommend(self, user_id, at=10, exclude_seen=True):
         self.userCF_scores = self.userCF.get_expected_recommendations(user_id)
-        self.itemCF_scores = self.itemCF.get_expected_recommendations(user_id)
+        self.itemCF_scores = self.itemCF.get_expected_ratings(user_id)
         self.SLIM_BPR_scores = self.SLIM_BPR.get_expected_ratings(user_id)
         self.itemCBF_scores = self.itemCBF.get_expected_ratings(user_id)
         # TODO get_expected_recommendations for TopPop
@@ -138,39 +146,39 @@ class HybridRecommender(BaseRecommender):
         return scores
 
 ################################################ Test ##################################################
-# max_map = 0
-# data = get_data(dir_path='../')
-#
-# userCF_args = {
-#     'topK' : 204,
-#     'shrink' : 850
-# }
-#
-# itemCF_args = {
-#     'topK' : 29,
-#     'shrink' : 5
-# }
-#
-# SLIM_BPR_args = {
-#     'topK': 20,
-#     'lambda_i': 5.0,
-#     'lambda_j': 7.0,
-#     'epochs': 5000,
-#     'learning_rate' : 1e-4,
-#     'sgd_mode' : 'adam'
-# }
-#
-# weights = {
-#     'user_cf' : 1,
-#     'item_cf' : 2,
-#     'SLIM_BPR' : 5,
-#     'item_cbf' : 0.3
-# }
-#
-# hyb = HybridRecommender(weights=weights, userCF_args=userCF_args, itemCF_args=itemCF_args, with_top_pop=True)
-# hyb.fit(data['train'].tocsr(), data['ICM'].tocsr())
-# result = hyb.evaluate_MAP_target(data['test'], data['target_users'])
-# print(weights)
+max_map = 0
+data = get_data(dir_path='../../')
+
+userCF_args = {
+    'topK' : 204,
+    'shrink' : 850
+}
+
+itemCF_args = {
+    'topK' : 29,
+    'shrink' : 5
+}
+
+SLIM_BPR_args = {
+    'topK': 20,
+    'lambda_i': 5.0,
+    'lambda_j': 7.0,
+    'epochs': 5000,
+    'learning_rate' : 1e-4,
+    'sgd_mode' : 'adam'
+}
+
+weights = {
+    'user_cf' : 1,
+    'item_cf' : 2,
+    'SLIM_BPR' : 5,
+    'item_cbf' : 0.3
+}
+
+hyb = HybridRecommender(weights=weights, userCF_args=userCF_args, itemCF_args=itemCF_args, with_top_pop=True)
+hyb.fit(data['train'].tocsr(), data['ICM'].tocsr())
+result = hyb.evaluate_MAP_target(data['test'], data['target_users'])
+print(weights)
 #
 #URM_final = data['train'] + data['test']
 #URM_final = URM_final.tocsr()

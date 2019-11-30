@@ -26,10 +26,10 @@ class BaseRecommender(object):
     def evaluate_MAP_target(self, URM_test, target_user_list):
         result = evaluate_MAP_target_users(URM_test, self, target_user_list)
         print("{} -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\tTOTAL MISS={}\tGUESSED={}".format(self.RECOMMENDER_NAME,
+              "& Shrink = {}\tTOTAL MISS={}\tRelevant={}".format(self.RECOMMENDER_NAME,
                                                                 result['MAP'],
-                                                                self.topK,
-                                                                self.shrink,
-                                                                result['TOT_MISS'],
-                                                                result['TOT_GUESS']))
+                                                                0,
+                                                                0,
+                                                                 result['TOT_MISS'],
+                                                                 result['RELEVANT']))
         return result

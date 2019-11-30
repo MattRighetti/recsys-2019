@@ -40,8 +40,8 @@ class UserWiseHybridRecommender(BaseRecommender):
             return self.itemCF.recommend(user_id, at=at)
 
 ################################################ Test ##################################################
-data = get_data(dir_path='../../')
-hyb = UserWiseHybridRecommender(29, 5, 750, 700)
-hyb.fit(data['train'], data['UCM'])
-hyb.evaluate_MAP_target(data['test'], data['target_users'])
+# data = get_data(dir_path='../../')
+# hyb = UserWiseHybridRecommender(29, 5, 750, 1000)
+# hyb.fit(data['train'], data['UCM'])
+# hyb.evaluate_MAP_target(data['test'], data['target_users'])
 ################################################ Test ##################################################

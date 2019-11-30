@@ -4,6 +4,7 @@ from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
 from Utils.Toolkit import get_data, normalize_matrix, get_URM_BM_25, get_URM_TFIDF
 from Recommenders.BaseRecommender import BaseRecommender
+from Utils.OutputWriter import write_output
 import numpy as np
 import scipy.sparse as sps
 from tqdm import tqdm
@@ -50,7 +51,7 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
         print(f'Generated UFM with shape {SM_user_feature_matrix.shape}')
         return SM_user_feature_matrix
 
-    def get_similarity_matrix(self, similarity='cosine'):
+    def get_similarity_matrix(self, similarity='tanimoto'):
         similarity_object = Compute_Similarity_Cython(self.URM_train,
                                                       self.shrink,
                                                       self.topK,
@@ -76,15 +77,17 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
         self.RM_item = self.URM_train.dot(self.SM_item).tocsr()
         self.SM_user_feature = self.generate_SM_user_feature_matrix().tocsr()
         #self.ICM = get_URM_BM_25(self.ICM)
-        #self.ICM = get_URM_TFIDF(self.ICM)
-        #self.ICM = normalize_matrix(self.ICM)
+        self.ICM = get_URM_TFIDF(self.ICM)
+        self.ICM = normalize_matrix(self.ICM)
+        #self.SM_user_feature = get_URM_TFIDF(self.SM_user_feature)
+        self.SM_user_feature = normalize_matrix(self.SM_user_feature)
 
         self.SM_item = check_matrix(self.SM_item, format='csr')
         self.RM_item = check_matrix(self.RM_item, format='csr')
         self.SM_user_feature = check_matrix(self.SM_user_feature, format='csr')
         self.ICM = check_matrix(self.ICM, format='csr')
 
-    def get_expected_ratings(self, user_id):
+    def get_expected_ratings_pre_boost(self, user_id):
         """
         Returns the ratings of the corresponding user
         :param user_id: ID of the User
@@ -97,35 +100,65 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
         boosted_ratings, evaluated_correctly = self.booster.boost(recommended_items,
                                              recommended_items_ratings,
                                              user_id,
-                                             5,
+                                             1, 1.25,
                                              self.ICM,
                                              self.SM_user_feature)
         #print(f'Before:{recommended_items}, After: {boosted_ratings}')
         return boosted_ratings, evaluated_correctly
 
-    def recommend(self, user_id, at=10, exclude_seen=True):
-        expected_ratings = self.get_expected_ratings(user_id)
-
+    def get_expected_ratings(self, user_id, exclude_seen=True):
+        """
+        CONVENIENCE METHOD FOR HYBRID
+        :param user_id:
+        :param at:
+        :param exclude_seen:
+        :return:
+        """
+        expected_ratings = self.get_expected_ratings_pre_boost(user_id)
         # Index items con rating più alto
         recommended_items = np.flip(np.argsort(expected_ratings), 0)
         # Corrispondenti rating delle items sopra
         recommended_items_ratings = expected_ratings[recommended_items]
-
-        # TODO remove seen of above
+        # remove seen of above
         if exclude_seen:
-            unseen_items_mask = np.in1d(recommended_items, self.URM_train[user_id].indices, assume_unique=True, invert=True)
-            recommended_items = recommended_items[unseen_items_mask][:10]
-            recommended_items_ratings = recommended_items_ratings[unseen_items_mask][:10]
-            #print(f'Before {recommended_items[:10]}')
+            unseen_items_mask = np.in1d(recommended_items, self.URM_train[user_id].indices, assume_unique=True,
+                                        invert=True)
+            recommended_items = recommended_items[unseen_items_mask]
+            recommended_items_ratings = recommended_items_ratings[unseen_items_mask]
 
         if self.last_ten_boost:
-            recommended_items_boost, evaluated_correctly = self.get_last_ten_boost(recommended_items, recommended_items_ratings, user_id)
+            recommended_items_boost, evaluated_correctly = self.get_last_ten_boost(recommended_items,
+                                                                                   recommended_items_ratings, user_id)
             if evaluated_correctly:
-                # TODO reorder
+                # reorder
                 order_mask = np.flip(np.argsort(recommended_items_boost), 0)
                 recommended_items = recommended_items[order_mask]
 
-            #print(f'After {recommended_items}')
+            return recommended_items
+        else:
+            return recommended_items
+
+    def recommend(self, user_id, at=5000, exclude_seen=True):
+        expected_ratings = self.get_expected_ratings_pre_boost(user_id)
+        # Index items con rating più alto
+        recommended_items = np.flip(np.argsort(expected_ratings), 0)
+        # Corrispondenti rating delle items sopra
+        recommended_items_ratings = expected_ratings[recommended_items]
+        # remove seen of above
+        if exclude_seen:
+            unseen_items_mask = np.in1d(recommended_items, self.URM_train[user_id].indices, assume_unique=True,
+                                        invert=True)
+            recommended_items = recommended_items[unseen_items_mask][:at]
+            recommended_items_ratings = recommended_items_ratings[unseen_items_mask][:at]
+
+        if self.last_ten_boost:
+            recommended_items_boost, evaluated_correctly = self.get_last_ten_boost(recommended_items,
+                                                                                   recommended_items_ratings, user_id)
+            if evaluated_correctly:
+                # reorder
+                order_mask = np.flip(np.argsort(recommended_items_boost), 0)
+                recommended_items = recommended_items[order_mask]
+
             return recommended_items
         else:
             return recommended_items
@@ -135,12 +168,16 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
 data = get_data(dir_path='../../')
 
 args = {
-    'topK' : 31,
+    'topK' : 29,
     'shrink' : 9
 }
 
-itemFeatureCF = ItemFeatureCollaborativeFiltering(args['topK'], args['shrink'])
-itemFeatureCF.fit(data['train'].tocsr(), data['ICM_asset'].tocsr(), last_ten_boost=True)
-itemFeatureCF.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
+ICM_final = sps.hstack((data['ICM_asset'], data['ICM_subclass']))
+URM_final = data['train'] + data['test']
 
+itemFeatureCF = ItemFeatureCollaborativeFiltering(args['topK'], args['shrink'])
+itemFeatureCF.fit(data['train'].tocsr(), ICM_final.tocsr(), last_ten_boost=True)
+itemFeatureCF.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
+itemFeatureCF.fit(URM_final.tocsr(), ICM_final.tocsr(), last_ten_boost=True)
+write_output(itemFeatureCF, data['target_users'])
 ################################ TEST #######################################

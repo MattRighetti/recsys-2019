@@ -31,7 +31,7 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10)
     n_users = URM_test.shape[0]
 
     n_total_miss = 0
-    total_guessed = 0
+    n_relevant = 0
 
     for user_id in tqdm(target_users, desc="Evaluating MAP with target"):
 
@@ -50,8 +50,9 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10)
 
             if val == 0:
                 n_total_miss += 1
-            elif val == 0.1:
-                total_guessed += 1
+            else:
+                n_relevant += 1
+
 
             cumulative_MAP += val
 
@@ -60,7 +61,7 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10)
     results = {
         'MAP' : cumulative_MAP,
         'TOT_MISS' : n_total_miss,
-        'TOT_GUESS' : total_guessed
+        'RELEVANT' : n_relevant
     }
 
     return results
