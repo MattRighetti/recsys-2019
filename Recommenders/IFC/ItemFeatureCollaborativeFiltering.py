@@ -1,13 +1,13 @@
+from Utils.Toolkit import get_data, normalize_matrix, get_URM_BM_25, get_URM_TFIDF, generate_SM_user_feature_matrix
+from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 from Recommenders.IFC.Cython.BoostSimilarityMatrix import Booster
 from Algorithms.Base.Recommender_utils import check_matrix
-from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
-from Utils.Toolkit import get_data, normalize_matrix, get_URM_BM_25, get_URM_TFIDF
 from Recommenders.BaseRecommender import BaseRecommender
 from Utils.OutputWriter import write_output
-import numpy as np
 import scipy.sparse as sps
 from tqdm import tqdm
+import numpy as np
 
 
 class ItemFeatureCollaborativeFiltering(BaseRecommender):
@@ -27,29 +27,6 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
         self.SM_item = None
         self.SM_user_feature = None
         self.RM_item = None
-
-    def generate_SM_user_feature_matrix(self):
-
-        # Matrix will be a USER x ITEMFEATURES
-        SM_user_feature_matrix = np.zeros((self.URM_train.shape[0], self.ICM.shape[1]), dtype=int)
-
-        for user_id in tqdm(range(self.URM_train.shape[0]), desc="Evaluating SM_user_feature_matrix"):
-            u_start_pos = self.URM_train.indptr[user_id]
-            u_end_pos = self.URM_train.indptr[user_id + 1]
-
-            mask = self.URM_train.indices[u_start_pos:u_end_pos]
-
-            if len(mask) > 0:
-                features_matrix = self.ICM[mask,:].sum(axis=0)
-                user_features = np.squeeze(np.asarray(features_matrix))
-            else:
-                user_features = np.zeros(self.ICM.shape[1], dtype=int)
-
-            SM_user_feature_matrix[user_id] = user_features
-
-        SM_user_feature_matrix = sps.csr_matrix(SM_user_feature_matrix)
-        print(f'Generated UFM with shape {SM_user_feature_matrix.shape}')
-        return SM_user_feature_matrix
 
     def get_similarity_matrix(self, similarity='tanimoto'):
         similarity_object = Compute_Similarity_Cython(self.URM_train,
@@ -73,9 +50,10 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
 
         self.URM_train = URM_train.copy()
         self.ICM = ICM.copy()
+
         self.SM_item = self.get_similarity_matrix()
         self.RM_item = self.URM_train.dot(self.SM_item).tocsr()
-        self.SM_user_feature = self.generate_SM_user_feature_matrix().tocsr()
+        self.SM_user_feature = generate_SM_user_feature_matrix(URM_train, ICM).tocsr()
         #self.ICM = get_URM_BM_25(self.ICM)
         self.ICM = get_URM_TFIDF(self.ICM)
         self.ICM = normalize_matrix(self.ICM)

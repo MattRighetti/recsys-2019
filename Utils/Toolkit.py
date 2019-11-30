@@ -1,12 +1,13 @@
-from enum import Enum
-import numpy as np
-import pandas as pd
-import scipy.sparse as sps
-from sklearn import feature_extraction
-
 from Algorithms.Base.IR_feature_weighting import okapi_BM_25
-from Utils.DataSplitter import DataSplitter
 from sklearn.preprocessing import normalize
+from Utils.DataSplitter import DataSplitter
+from sklearn import feature_extraction
+import scipy.sparse as sps
+from tqdm import tqdm
+from enum import Enum
+import pandas as pd
+import numpy as np
+
 
 
 class DataReader(object):
@@ -132,12 +133,48 @@ def get_URM_BM_25(URM):
     return okapi_BM_25(URM)
 
 def normalize_matrix(URM, axis=0):
+    """
+    Matrix normalization
+    :param URM:
+    :param axis:
+    :return: Normalized matrix
+    """
     n_matrix = normalize(URM, 'l2', axis)
     return n_matrix.tocsr()
 
 def get_URM_TFIDF(URM):
+    """
+    Applies TF-IDF weighting to the passed matrix
+    :param URM:
+    :return:
+    """
     URM_tfidf = feature_extraction.text.TfidfTransformer().fit_transform(URM)
     return URM_tfidf.tocsr()
+
+def generate_SM_user_feature_matrix(URM_train, ICM):
+    """
+    Generates a UFM matrix, the dot product looked incorrect
+    :return: UFM matrix ( USER x ITEMFEATURES )
+    """
+    SM_user_feature_matrix = np.zeros((URM_train.shape[0], ICM.shape[1]), dtype=int)
+
+    for user_id in tqdm(range(URM_train.shape[0]), desc="Evaluating SM_user_feature_matrix"):
+        u_start_pos = URM_train.indptr[user_id]
+        u_end_pos = URM_train.indptr[user_id + 1]
+
+        mask = URM_train.indices[u_start_pos:u_end_pos]
+
+        if len(mask) > 0:
+            features_matrix = ICM[mask,:].sum(axis=0)
+            user_features = np.squeeze(np.asarray(features_matrix))
+        else:
+            user_features = np.zeros(ICM.shape[1], dtype=int)
+
+        SM_user_feature_matrix[user_id] = user_features
+
+    SM_user_feature_matrix = sps.csr_matrix(SM_user_feature_matrix)
+    print(f'Generated UFM with shape {SM_user_feature_matrix.shape}')
+    return SM_user_feature_matrix
 
 def get_data(split_kind=None, dir_path=None):
     dataReader = DataReader(dir_path=dir_path)
