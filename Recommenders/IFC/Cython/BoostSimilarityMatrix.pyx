@@ -17,147 +17,63 @@ from Algorithms.Base.Recommender_utils import check_matrix
 @cython.initializedcheck(False)
 @cython.nonecheck(False)
 @cython.cdivision(True)
-@cython.overflowcheck(True)
+@cython.overflowcheck(False)
 cdef class Booster:
 
-    def __init__(self):
-        super(Booster, self).__init__()
+    cdef int n_cols
+    cdef int n_rows
+    cdef int n_features
+    cdef double novelty_weight
 
-    def get_boosted_recommendations(self, expected_ratings_array, user_profile_indices, user_id, weight, icm_matrix, user_features_matrix):
-        """
-        Applies feature boost to the RM
-        1. Find item index
-        :return: Boosted RM
-        """
+    def __init__(self, RM, ICM, UFM, double weight_novelty):
+        ICM_matrix = ICM.copy()
+        UFM_matrix = UFM.copy()
+        R_matrix = RM.copy()
+        self.n_cols = ICM_matrix.shape[0]
+        self.n_features = ICM_matrix.shape[1]
+        self.n_rows = RM.shape[0]
+        self.novelty_weight = weight_novelty
 
-        # Expected ratings
-        cdef float[:] expected_ratings = expected_ratings_array.copy()
-        # Num of indexes of the array to be returned
-        cdef int num_items = icm_matrix.shape[0]
-        # Array to be returned
-        boosted_ratings = np.zeros((num_items), dtype=np.double,)
-        # User-Features array
-        cdef int user_startpos = user_features_matrix.indptr[user_id]
-        cdef int user_endpos = user_features_matrix.indptr[user_id + 1]
-        cdef float[:] user_features_profile = user_features_matrix.data[user_startpos:user_endpos]
-        cdef int[:] user_features_indices = user_features_matrix.indices[user_startpos:user_endpos]
-        # Item-Features array
-        cdef int item_startpos = 0
-        cdef int item_endpos = 0
-        cdef int[:] item_features_indices
-        cdef double[:] item_features_profile
-        cdef int w = weight
+    def apply_boost(self, R_matrix, ICM_matrix, UFM_matrix):
+        cdef int user_id = 0
 
+        cdef int item_RM_index = 0
+        cdef int feature_index = 0
 
-        cdef int item_index = 0
-        cdef int features_index = 0
-        cdef double item_rating = 0.0
-        cdef double boost_value
+        cdef int new_features = 0
+        cdef int not_new_features = 0
+        cdef double feature_weight = 0.0
+        cdef double final_weight = 0.0
 
-        for item_index in user_profile_indices:
-            boost_value = 0.0
-            item_rating = expected_ratings[item_index]
-            item_startpos = icm_matrix.indptr[item_index]
-            item_endpos = icm_matrix.indptr[item_index + 1]
-            item_features_profile = icm_matrix.data[item_startpos:item_endpos]
-            item_features_indices = icm_matrix.indices[item_startpos:item_endpos]
+        cdef user_profile = R_matrix[user_id].toarray().ravel()
+        cdef item_profile
+        cdef user_feature_profile
 
-            # TODO fix errors
-            for feature_index in item_features_indices:
-                boost_value += (user_features_profile[features_index] * item_features_profile[features_index])
+        print(type(R_matrix))
+        while user_id < self.n_rows:
+            print(user_id)
+            user_feature_profile = UFM_matrix[user_id].toarray().ravel()
+            # Scorri tutte le item
+            while item_RM_index < self.n_cols:
+                if user_profile[item_RM_index] != 0:
+                    item_profile = ICM_matrix[item_RM_index].toarray().ravel()
 
-            if boost_value > 1:
-                boost_value /= (boost_value + 0.5)
+                    # Scorri tutte le feature dell'item
+                    while feature_index < self.n_features:
+                        if item_profile[feature_index] != 0:
+                            if user_feature_profile[feature_index] != 0:
+                                not_new_features += 1
+                                feature_weight += (item_profile[feature_index] * user_feature_profile[feature_index])
+                            else:
+                                new_features += 1
 
+                        feature_index += 1
 
-            final_rating = item_rating + boost_value
-            boosted_ratings[item_index] = final_rating
+                    final_weight = (not_new_features / new_features * self.novelty_weight) + feature_weight
+                    R_matrix[user_id, item_RM_index] += final_weight
 
-        boosted_ratings = np.array(boosted_ratings, dtype=np.double)
-        return boosted_ratings
+                item_RM_index += 1
+            user_id += 1
 
-
-
-
-
-    def boost(self, recommended_item_indexes, recommended_item_ratings, user_id, min_interactions, nov_weight, icm_matrix, user_features_matrix):
-        """
-        Apply boost on the first 10 items
-        :param recommended_item_indexes: Index of first 10 items
-        :param recommended_item_ratings: Ratings of first 10 items
-        :param user_id: User ID
-        :param icm_matrix: ICM
-        :param user_features_matrix: UFM
-        :return:
-        """
-
-        cdef int user_ID = user_id
-        cdef int i = 0
-        cdef int features_index = 0
-        cdef double item_rating = 0.0
-        cdef double boost_value
-        cdef int counter = 0
-        cdef min_val = min_interactions
-        cdef int n_items = len(recommended_item_ratings)
-
-        cdef int user_startpos = user_features_matrix.indptr[user_id]
-        cdef int user_endpos = user_features_matrix.indptr[user_id+1]
-        cdef int item_startpos, item_endpos
-        # TODO why float?
-        cdef double[:] user_features_profile_row = user_features_matrix[user_id].toarray().ravel()
-        #cdef float[:] user_features_profile = user_features_matrix.data[user_startpos:user_endpos]
-        cdef int[:] user_features_indices = user_features_matrix.indices[user_startpos:user_endpos]
-
-        cdef int new_features
-        cdef int not_new_features
-        cdef double features_weights
-        cdef int feature_index, inner_counter
-        cdef float novelty_weight = nov_weight
-
-        boosted_ratings = np.zeros((n_items), dtype=np.double,)
-
-        if len(user_features_indices) > min_interactions:
-            for i in range(len(recommended_item_indexes)):
-                boost_value = 0.0
-                features_weights = 0.0
-                new_features = 0
-                not_new_features = 0
-                item_rating = recommended_item_ratings[i]
-
-
-                item_startpos = icm_matrix.indptr[recommended_item_indexes[i]]
-                item_endpos = icm_matrix.indptr[recommended_item_indexes[i] + 1]
-
-                # FEATURES DELLE ITEMS (ARRAY DI 1)
-                item_features_profile = icm_matrix.data[item_startpos:item_endpos]
-
-                # NUMERO DELLA FEATURE IN COLONNA (ARRAI DI NUMERI DI FEATURES)
-                item_features_indices = icm_matrix.indices[item_startpos:item_endpos]
-
-                inner_counter = 0
-                for feature_index in item_features_indices:
-                    if user_features_profile_row[feature_index] != 0:
-                        not_new_features += 1
-                        # TODO could be a bad thing if the user_features_profile takes all features of the matrix in consideration
-                        features_weights += (item_features_profile[inner_counter] * user_features_matrix[user_id, feature_index])
-                        inner_counter += 1
-                    else:
-                        new_features += 1
-                        inner_counter += 1
-
-                if new_features == 0:
-                    boost_value += features_weights
-                else:
-                    boost_value += features_weights + (not_new_features / new_features * novelty_weight)
-
-                #if boost_value > 5:
-                    #print(f'Weight over 5!')
-
-                final_rating = item_rating + boost_value
-                boosted_ratings[counter] = final_rating
-                counter += 1
-
-            boosted_ratings = np.array(boosted_ratings, dtype=np.double)
-            return boosted_ratings
-        else:
-            return recommended_item_ratings
+        RM_boosted = R_matrix
+        return RM_boosted
