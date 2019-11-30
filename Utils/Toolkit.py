@@ -113,6 +113,40 @@ class TestGen(object):
         return self.Matrices
 
 
+from Recommenders.IFC.Cython.BoostSimilarityMatrix import Booster
+class BoosterObject(object):
+
+    def __init__(self, URM, ICM):
+        self.URM = URM
+        self.ICM = ICM
+        self.UFM = generate_SM_user_feature_matrix(URM, ICM)
+        self.booster = Booster()
+
+        # self.ICM = get_URM_BM_25(self.ICM)
+        self.ICM = get_URM_TFIDF(self.ICM)
+        self.ICM = normalize_matrix(self.ICM)
+        # self.SM_user_feature = get_URM_TFIDF(self.SM_user_feature)
+        self.UFM = normalize_matrix(self.UFM)
+
+    def boost_ratings_ICM(self, recommended_items, recommended_items_ratings, user_id):
+        """
+        Use after reordering the first recommended items
+        :param recommended_items: Items recommended ( index of higher score first )
+        :param recommended_items_ratings: Ratings of each Item
+        :param user_id: User ID
+        :return: New ICM weighted
+        If detected COLD user returns the same dataset
+        """
+        boosted_ratings = self.booster.boost(recommended_items,
+                                            recommended_items_ratings,
+                                            user_id,
+                                            1, 1.25,
+                                            self.ICM,
+                                            self.UFM)
+
+        return boosted_ratings
+
+
 #########################################################################################################
 #                                               UTILITIES                                               #
 #########################################################################################################

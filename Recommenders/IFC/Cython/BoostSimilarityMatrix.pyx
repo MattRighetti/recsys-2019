@@ -104,7 +104,7 @@ cdef class Booster:
         cdef int user_endpos = user_features_matrix.indptr[user_id+1]
         cdef int item_startpos, item_endpos
         # TODO why float?
-        cdef float[:] user_features_profile_row = user_features_matrix[user_id].toarray().ravel()
+        cdef double[:] user_features_profile_row = user_features_matrix[user_id].toarray().ravel()
         #cdef float[:] user_features_profile = user_features_matrix.data[user_startpos:user_endpos]
         cdef int[:] user_features_indices = user_features_matrix.indices[user_startpos:user_endpos]
 
@@ -158,6 +158,6 @@ cdef class Booster:
                 counter += 1
 
             boosted_ratings = np.array(boosted_ratings, dtype=np.double)
-            return boosted_ratings, True
+            return boosted_ratings
         else:
-            return recommended_item_ratings, False
+            return recommended_item_ratings
