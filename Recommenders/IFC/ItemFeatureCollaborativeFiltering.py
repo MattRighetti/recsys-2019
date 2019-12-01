@@ -21,8 +21,6 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
         self.shrink = shrink
         self.last_ten_boost = False
 
-        self.booster = None
-
         self.URM_train = None
         self.ICM = None
         self.SM_item = None
@@ -51,14 +49,16 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
         self.URM_train = URM_train.copy()
         self.ICM = ICM.copy()
 
-        self.booster = BoosterObject(self.URM_train, self.ICM)
-
         self.SM_item = self.get_similarity_matrix()
         self.RM_item = self.URM_train.dot(self.SM_item).tocsr()
 
-        self.SM_item = check_matrix(self.SM_item, format='csr')
-        self.RM_item = check_matrix(self.RM_item, format='csr')
-        self.ICM = check_matrix(self.ICM, format='csr')
+        self.SM_user_feature = generate_SM_user_feature_matrix(self.URM_train, self.ICM)
+        self.ICM = get_URM_TFIDF(self.ICM)
+        self.ICM = normalize_matrix(self.ICM)
+        self.SM_user_feature = normalize_matrix(self.SM_user_feature)
+        self.RM_item = Booster(self.RM_item, self.ICM, self.SM_user_feature, 0).apply_boost(self.RM_item, self.ICM, self.SM_user_feature)
+        print(type(self.RM_item))
+        print("Done")
 
     def get_expected_ratings_pre_boost(self, user_id):
         """
@@ -69,58 +69,31 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
         expected_ratings = self.RM_item[user_id].toarray().ravel()
         return np.squeeze(np.asarray(expected_ratings))
 
-    def get_expected_ratings(self, user_id, exclude_seen=True):
+    def get_expected_ratings(self, user_id):
         """
         CONVENIENCE METHOD FOR HYBRID
         :param user_id:
         :param at:
-        :param exclude_seen:
         :return:
         """
         expected_ratings = self.get_expected_ratings_pre_boost(user_id)
-        recommended_items = np.flip(np.argsort(expected_ratings), 0)
-        recommended_items_ratings = expected_ratings[recommended_items]
+        return expected_ratings
 
-        if exclude_seen:
-            unseen_items_mask = np.in1d(recommended_items, self.URM_train[user_id].indices, assume_unique=True, invert=True)
-            recommended_items = recommended_items[unseen_items_mask]
-            recommended_items_ratings = recommended_items_ratings[unseen_items_mask]
 
-        if self.boost:
-            # CHECK IF COLD (USELESS TO BOOST)
-            if recommended_items_ratings[0] != 0:
-                recommended_items_boost, recommended_items = boost_ratings_ICM(recommended_items,
-                                                                             recommended_items_ratings,
-                                                                             user_id)
-                return recommended_items
-        else:
-            return recommended_items
-
-    def recommend(self, user_id, at=5000, exclude_seen=True):
-        expected_ratings = self.get_expected_ratings_pre_boost(user_id)
+    def recommend(self, user_id, at=10, exclude_seen=True):
+        expected_ratings = self.get_expected_ratings(user_id)
         # Index items con rating più alto
         recommended_items = np.flip(np.argsort(expected_ratings), 0)
         # Corrispondenti rating delle items sopra
-        recommended_items_ratings = expected_ratings[recommended_items]
+
         # remove seen of above
         if exclude_seen:
             unseen_items_mask = np.in1d(recommended_items, self.URM_train[user_id].indices, assume_unique=True,
                                         invert=True)
             recommended_items = recommended_items[unseen_items_mask][:at]
-            recommended_items_ratings = recommended_items_ratings[unseen_items_mask][:at]
 
-        if self.boost:
-            # CHECK IF COLD (USELESS TO BOOST)
-            if recommended_items_ratings[0] != 0:
-                recommended_items_boost = self.booster.boost_ratings_ICM(recommended_items,
-                                                                               recommended_items_ratings,
-                                                                               user_id)
-                # Reorder elements and indexes
-                order_mask = np.flip(np.argsort(recommended_items_boost), 0)
-                recommended_items = recommended_items[order_mask]
-                return recommended_items
-        else:
-            return recommended_items
+        return recommended_items
+
 
 ################################ TEST #######################################
 

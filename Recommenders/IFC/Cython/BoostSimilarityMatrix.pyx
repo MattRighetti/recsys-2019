@@ -30,7 +30,7 @@ cdef class Booster:
         UFM_matrix = UFM.copy()
         R_matrix = RM.copy()
         self.n_cols = ICM_matrix.shape[0]
-        self.n_features = ICM_matrix.shape[1]
+        self.n_features = 1
         self.n_rows = RM.shape[0]
         self.novelty_weight = weight_novelty
 
@@ -45,32 +45,33 @@ cdef class Booster:
         cdef double feature_weight = 0.0
         cdef double final_weight = 0.0
 
-        cdef user_profile = R_matrix[user_id].toarray().ravel()
+        cdef user_profile
         cdef item_profile
         cdef user_feature_profile
 
+        cdef int start_pos
+        cdef int end_pos
+
         print(type(R_matrix))
         while user_id < self.n_rows:
-            print(user_id)
+            if user_id % 1000 == 0:
+                print(user_id)
+            user_profile = R_matrix[user_id].toarray().ravel()
+            item_RM_index = 0
             user_feature_profile = UFM_matrix[user_id].toarray().ravel()
             # Scorri tutte le item
             while item_RM_index < self.n_cols:
-                if user_profile[item_RM_index] != 0:
-                    item_profile = ICM_matrix[item_RM_index].toarray().ravel()
+                if user_profile[item_RM_index] > 0:
+                    start_pos = ICM_matrix.indptr[item_RM_index]
+                    end_pos = ICM_matrix.indptr[item_RM_index + 1]
+                    item_profile = ICM_matrix.indices[start_pos:end_pos]
 
-                    # Scorri tutte le feature dell'item
-                    while feature_index < self.n_features:
-                        if item_profile[feature_index] != 0:
-                            if user_feature_profile[feature_index] != 0:
-                                not_new_features += 1
-                                feature_weight += (item_profile[feature_index] * user_feature_profile[feature_index])
-                            else:
-                                new_features += 1
+                    feature_weight = 0
+                    item_feature_weight = ICM_matrix[item_RM_index, item_profile[0]]
+                    if user_feature_profile[item_profile[0]] != 0:
+                        feature_weight += (ICM_matrix[item_RM_index, item_profile[0]] * user_feature_profile[item_profile[0]])
 
-                        feature_index += 1
-
-                    final_weight = (not_new_features / new_features * self.novelty_weight) + feature_weight
-                    R_matrix[user_id, item_RM_index] += final_weight
+                    R_matrix[user_id, item_RM_index] += feature_weight
 
                 item_RM_index += 1
             user_id += 1
