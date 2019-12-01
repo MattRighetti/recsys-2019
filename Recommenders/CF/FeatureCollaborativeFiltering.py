@@ -45,11 +45,12 @@ class FeatureCollaborativeFiltering(BaseRecommender):
         expected_recommendations = self.RM[user_id].todense()
         return np.squeeze(np.asarray(expected_recommendations))
 
-    def get_features_ratings(self):
+    def get_features_ratings(self, at=10):
         data = []
 
         for i in range(self.RM.shape[0]):
             recommended_features = np.flip(np.argsort(self.RM[i].toarray().ravel()), 0)
             data.append(recommended_features)
 
-        return sps.csr_matrix(data)
+        data_csr = sps.csr_matrix(data)
+        return data_csr[:, :at]
