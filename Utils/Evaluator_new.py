@@ -4,10 +4,9 @@ import numpy as np
 
 def evaluate_MAP(URM_test, recommender_object, at=10, verbose=False):
     cumulative_MAP = 0.0
-    URM_test = sps.csr_matrix(URM_test)
     n_users = URM_test.shape[0]
 
-    for user_id in tqdm(n_users, desc="Evaluating MAP"):
+    for user_id in tqdm(range(n_users), desc="Evaluating MAP"):
 
         start_pos = URM_test.indptr[user_id]
         end_pos = URM_test.indptr[user_id + 1]

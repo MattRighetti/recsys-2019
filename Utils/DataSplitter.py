@@ -1,17 +1,22 @@
 import numpy as np
 import scipy.sparse as sps
+from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
 
 class DataSplitter(object):
-    def __init__(self, URM_all):
+    def __init__(self, URM_all, ICM):
         self.URM_all = URM_all
+        self.ICM = ICM
         self.warm_users = None
         self.URM_train = None
         self.URM_test = None
+        self.ICM_test = None
+        self.ICM_train = None
         self.target_users = None
         self.dict_test = None
         self.train_test_split = 0.8
         self.at = 10
         self.indptr_array = self.URM_all.indptr
+        self.indptr_ICM_array = self.ICM.indptr
 
     def apply_mask(self, train_mask):
 
@@ -59,6 +64,35 @@ class DataSplitter(object):
                     train_mask = np.append(train_mask, sub_arr)
 
         return self.apply_mask(train_mask)
+
+    def leave_one_out_ICM(self):
+
+        self.ICM_train, self.ICM_test = train_test_holdout(self.ICM, train_perc=0.8)
+
+        return self.ICM_train, self.ICM_test
+
+        # # Don't consider cold users, can't say nothing about them
+        # warm_users_mask = np.ediff1d(self.ICM.tocsr().indptr) > 0
+        # warm_users = np.arange(self.ICM.shape[0])[warm_users_mask]
+        #
+        # indptr_array = self.ICM.indptr
+        #
+        # train_mask = np.array([])
+        #
+        # for row in range(len(indptr_array) - 1):
+        #     if row in warm_users:
+        #         values_in_row = indptr_array[row + 1] - indptr_array[row]
+        #
+        #         if values_in_row == 1:
+        #             train_mask = np.append(train_mask, [False])
+        #         elif values_in_row != 0:
+        #             # Now values_in_row-1 must be True, 1 must be False
+        #             # Remove last interaction
+        #             sub_arr = np.array([True] * (values_in_row - 1) + [False])
+        #             np.random.shuffle(sub_arr)
+        #             train_mask = np.append(train_mask, sub_arr)
+        #
+        # return self.apply_mask_ICM(train_mask)
 
     def leave_k_out(self, k):
 

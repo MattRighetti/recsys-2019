@@ -1,6 +1,6 @@
 from Algorithms.Base.IR_feature_weighting import okapi_BM_25
-from sklearn.preprocessing import normalize
 from Utils.DataSplitter import DataSplitter
+from sklearn.preprocessing import normalize
 from sklearn import feature_extraction
 import scipy.sparse as sps
 from tqdm import tqdm
@@ -99,15 +99,16 @@ class TestGen(object):
     """
     This class generates URM_train & URM_test matrices
     """
-    def __init__(self, URM_all_csr, kind=TestSplit.FORCE_LEAVE_K_OUT, k=10):
+    def __init__(self, URM_all_csr, ICM_csr, kind=TestSplit.FORCE_LEAVE_K_OUT, k=10):
         if kind is TestSplit.FORCE_LEAVE_K_OUT:
-            self.URM_train, self.URM_test = DataSplitter(URM_all_csr).force_leave_k_out(k)
+            self.URM_train, self.URM_test = DataSplitter(URM_all_csr, ICM_csr).force_leave_k_out(k)
         elif kind is TestSplit.LEAVE_K_OUT:
-            self.URM_train, self.URM_test = DataSplitter(URM_all_csr).leave_k_out(k)
+            self.URM_train, self.URM_test = DataSplitter(URM_all_csr, ICM_csr).leave_k_out(k)
         elif kind is TestSplit.LEAVE_ONE_OUT:
-            self.URM_train, self.URM_test = DataSplitter(URM_all_csr).leave_one_out()
+            self.URM_train, self.URM_test = DataSplitter(URM_all_csr, ICM_csr).leave_one_out()
+            self.ICM_train, self.ICM_test = DataSplitter(URM_all_csr, ICM_csr).leave_one_out_ICM()
         elif kind is TestSplit.K_FOLD:
-            self.Matrices = DataSplitter(URM_all_csr).k_fold(k=k)
+            self.Matrices = DataSplitter(URM_all_csr, ICM_csr).k_fold(k=k)
 
     def get_k_fold_matrices(self):
         return self.Matrices
@@ -197,18 +198,83 @@ def generate_SM_user_feature_matrix(URM_train, ICM):
         u_end_pos = URM_train.indptr[user_id + 1]
 
         mask = URM_train.indices[u_start_pos:u_end_pos]
+        zero_mask = np.zeros(ICM.shape[1], dtype=int)
 
         if len(mask) > 0:
             features_matrix = ICM[mask,:].sum(axis=0)
             user_features = np.squeeze(np.asarray(features_matrix))
         else:
-            user_features = np.zeros(ICM.shape[1], dtype=int)
+            user_features = zero_mask.copy()
 
         SM_user_feature_matrix[user_id] = user_features
 
     SM_user_feature_matrix = sps.csr_matrix(SM_user_feature_matrix)
     print(f'Generated UFM with shape {SM_user_feature_matrix.shape}')
     return SM_user_feature_matrix
+
+def feature_boost_URM(URM_in, topN=5):
+    data = get_data(dir_path='../../')
+    URM = URM_in.copy()
+    ICM = data['ICM_subclass'].tocsr()
+    target_users = data['target_users']
+
+    RM_features, RM_features_scores = get_features_ratings(URM, ICM, at=topN)
+
+    for user_id in tqdm(range(URM.shape[0]), desc="Boosting URM..."):
+        if user_id in target_users:
+            topNfeatures = RM_features[user_id].data
+            topNfeatures_ratings = RM_features_scores[user_id].data
+            user_profile = URM[user_id].indices
+            gradient_array = np.ediff1d(topNfeatures_ratings)
+            n_items = len(user_profile)
+
+            if n_items == 1:
+                URM.data[URM.indptr[user_id]] += topN
+            else:
+                for i in range(n_items):
+                    item_profile = ICM[user_profile[i]].indices
+                    n_features = len(item_profile)
+                    delta = 0
+                    for j in range(n_features):
+                        feature_position, = np.where(topNfeatures == item_profile[j])
+                        if len(feature_position) != 0:
+                            additive_score = topN - delta
+                            URM.data[URM.indptr[user_id] + i] += additive_score
+                            if len(topNfeatures_ratings) > 1:
+                                if gradient_array[j] < 0:
+                                    delta += 1
+                                elif gradient_array[j] > 0:
+                                    raise Exception("Items are not sorted")
+
+    return URM
+
+def get_features_ratings(URM_in, ICM_in, at=10):
+    data = []
+    scores = []
+
+    URM = URM_in.copy()
+    ICM = ICM_in.copy()
+
+    SM_user_feature = generate_SM_user_feature_matrix(URM, ICM)
+
+    for i in range(SM_user_feature.shape[0]):
+        recommended_features = np.zeros(SM_user_feature.shape[1])
+        recommended_features_indexes = np.flip(np.argsort(SM_user_feature[i].toarray().ravel()), 0)
+        ordered_features = SM_user_feature[i].toarray().ravel()[recommended_features_indexes]
+        ordered_features_mul = np.where(ordered_features > 0, 1, ordered_features)
+        recommended_features = recommended_features + recommended_features_indexes
+        recommended_features *= ordered_features_mul
+
+        data.append(recommended_features)
+        scores.append(ordered_features)
+
+    data_csr = sps.csr_matrix(data, dtype=int)
+    scores_csr = sps.csr_matrix(scores, dtype=int)
+    RM_user_feature = data_csr[:, :at]
+    RM_user_feature_ratings = scores_csr[:, :at]
+
+    return RM_user_feature, RM_user_feature_ratings
+
 
 def get_data(split_kind=None, dir_path=None):
     dataReader = DataReader(dir_path=dir_path)
@@ -223,14 +289,16 @@ def get_data(split_kind=None, dir_path=None):
     target_users = dataReader.target_users()
 
     if split_kind is None:
-        testGen = TestGen(URM_all.tocsr(), TestSplit.LEAVE_ONE_OUT)
+        testGen = TestGen(URM_all.tocsr(), ICM_subclass.tocsr(), TestSplit.LEAVE_ONE_OUT)
     else:
-        testGen = TestGen(URM_all.tocsr(), split_kind)
+        testGen = TestGen(URM_all.tocsr(), ICM_subclass.tocsr(), split_kind)
 
     data = {
         'URM_all': URM_all,
         'train': testGen.URM_train,
         'test': testGen.URM_test,
+        'ICM_test' : testGen.ICM_test,
+        'ICM_train' : testGen.ICM_train,
         'target_users': target_users,
         'UCM_region': UCM_region,
         'UCM_age': UCM_age,
