@@ -212,7 +212,8 @@ def generate_SM_user_feature_matrix(URM_train, ICM):
     print(f'Generated UFM with shape {SM_user_feature_matrix.shape}')
     return SM_user_feature_matrix
 
-def feature_boost_URM(URM_in, topN=5):
+def feature_boost_URM(URM_in, topN=5, min_interactions = 5):
+    print(f'TopN={topN}, start_score={min_interactions}')
     data = get_data(dir_path='../../')
     URM = URM_in.copy()
     ICM = data['ICM_subclass'].tocsr()
@@ -220,25 +221,49 @@ def feature_boost_URM(URM_in, topN=5):
 
     RM_features, RM_features_scores = get_features_ratings(URM, ICM, at=topN)
 
+    start_score = max(topN, 0)
+
+    # Scorri tutti gli utenti nella URM
     for user_id in tqdm(range(URM.shape[0]), desc="Boosting URM..."):
-        if user_id in target_users:
+        # Prendi solo utenti target
+        #if user_id in target_users:
+            # Prendi le topN features di un utente
             topNfeatures = RM_features[user_id].data
+            # Prendi i rating delle topN features di un utente
             topNfeatures_ratings = RM_features_scores[user_id].data
-            user_profile = URM[user_id].indices
+            # Prendi il gradiente degli score delle topN features
             gradient_array = np.ediff1d(topNfeatures_ratings)
+            # Prendi tutte le item con cui un utente ha interagito
+            user_profile = URM[user_id].indices
+            # Conta numero di items con cui l'utente ha interagito
             n_items = len(user_profile)
 
-            if n_items == 1:
-                URM.data[URM.indptr[user_id]] += topN
+            # Se il numero di items con cui ha interagito è minore del numero di interactions minime
+            # Possiamo supporre che abbia interagito con items di suo interesse
+            if n_items <= min_interactions:
+                # Ogni item viene messa a RATING 5 perché suppongo che ha interagito solamente
+                # con items che hanno solo features di suo interesse
+                URM.data[URM.indptr[user_id]] *= 5
+            # Altrimenti Boost
             else:
+                # Per ogni item
                 for i in range(n_items):
+                    # Prendi tutte le features dell'item
                     item_profile = ICM[user_profile[i]].indices
+                    # Conta numero di features dell'item
                     n_features = len(item_profile)
+                    # Imposta delta
                     delta = 0
+                    # Per ogni feature dell'item in considerazione
+                    # TODO this is wrong, cumulative sum is different for items that has more than one feature
                     for j in range(n_features):
+                        # Determina in che posizione si trova l'item se è tra le topN
                         feature_position, = np.where(topNfeatures == item_profile[j])
+                        # Se la pozione è nulla allora la feature non è da boostare
+                        # altrimenti boosta
                         if len(feature_position) != 0:
-                            additive_score = topN - delta
+                            # Calcola lo score da aggiungere
+                            additive_score = (start_score - delta)/n_features
                             URM.data[URM.indptr[user_id] + i] += additive_score
                             if len(topNfeatures_ratings) > 1:
                                 if gradient_array[j] < 0:

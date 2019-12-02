@@ -1,12 +1,12 @@
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
 from Algorithms.GraphBased.P3alphaRecommender import P3alphaRecommender
-from Recommenders.BaseRecommender import BaseRecommender
-from Recommenders.CBF.item_CBF import ItemContentBasedRecommender
-from Recommenders.CF.user_cf import UserBasedCollaborativeFiltering
 from Recommenders.CF.item_cf import ItemBasedCollaborativeFiltering
-from Recommenders.NonPersonalized.top_pop import TopPop
+from Recommenders.CF.user_cf import UserBasedCollaborativeFiltering
+from Recommenders.CBF.item_CBF import ItemContentBasedRecommender
 from Recommenders.SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
-from Utils.Toolkit import get_data
+from Recommenders.BaseRecommender import BaseRecommender
+from Recommenders.NonPersonalized.top_pop import TopPop
+from Utils.Toolkit import get_data, feature_boost_URM
 
 
 class HybridRecommender(BaseRecommender):
@@ -18,6 +18,7 @@ class HybridRecommender(BaseRecommender):
         super().__init__()
         self.URM_train = None
         self.with_top_pop = with_top_pop
+
         ######################## DEFAULT VALUES ########################
         self.weight = {
             'user_cf' : 0.5,
@@ -82,14 +83,13 @@ class HybridRecommender(BaseRecommender):
                                                    shrink=self.itemCBF_args['shrink'])
         self.SLIM_BPR = SLIM_BPR_Cython(epochs=self.SLIM_BPR_args['epochs'],
                                 topK=self.SLIM_BPR_args['topK'],
-                               lambda_i=self.SLIM_BPR_args['lambda_i'],
-                               lambda_j=self.SLIM_BPR_args['lambda_j'],
-                               positive_threshold=1,
-                               sgd_mode=self.SLIM_BPR_args['sgd_mode'],
-                               learning_rate=self.SLIM_BPR_args['learning_rate'],
-                               batch_size=1000)
+                                lambda_i=self.SLIM_BPR_args['lambda_i'],
+                                lambda_j=self.SLIM_BPR_args['lambda_j'],
+                                positive_threshold=1,
+                                sgd_mode=self.SLIM_BPR_args['sgd_mode'],
+                                learning_rate=self.SLIM_BPR_args['learning_rate'],
+                                batch_size=1000)
         self.P3Graph = None
-        self.ICF = ItemFeatureCollaborativeFiltering(self.ICF_args['topK'], self.ICF_args['shrink'])
         self.topPop = TopPop()
 
         self.userCF_scores = None
@@ -97,14 +97,21 @@ class HybridRecommender(BaseRecommender):
         self.SLIM_BPR_scores = None
         self.itemCBF_scores = None
 
-    def fit(self, URM_train, ICM):
+    def fit(self, URM_train, ICM, boost=True):
         self.URM_train = URM_train.copy()
+
+        ########### PREPROCESSING #########
+        if boost:
+            self.URM_train = feature_boost_URM(URM_train, 5)
+            #self.URM_train = get_URM_TFIDF(self.URM_train.transpose())
+            #self.URM_train = self.URM_train.transpose().tocsr()
+            #self.URM_train = normalize_matrix(self.URM_train, axis=1)
+
         ########### Models ###########
         self.P3Graph = P3alphaRecommender(URM_train.copy(), verbose=False)
         ########### FITTING ##########
         self.userCF.fit(self.URM_train.copy())
         self.itemCF.fit(self.URM_train.copy())
-        self.IFC.fit(URM_train.copy(), ICM.tocsr(), last_ten_boost=True)
         self.topPop.fit(self.URM_train.copy())
         self.SLIM_BPR.fit(self.URM_train.copy())
         self.itemCBF.fit(self.URM_train.copy(), ICM)
@@ -176,7 +183,7 @@ weights = {
 }
 
 hyb = HybridRecommender(weights=weights, userCF_args=userCF_args, itemCF_args=itemCF_args, with_top_pop=True)
-hyb.fit(data['train'].tocsr(), data['ICM'].tocsr())
+hyb.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr())
 result = hyb.evaluate_MAP_target(data['test'], data['target_users'])
 print(weights)
 #

@@ -2,7 +2,9 @@ from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
 from Recommenders.BaseRecommender import BaseRecommender
 from Utils.Toolkit import get_URM_TFIDF, normalize_matrix, get_data, feature_boost_URM
+from Utils.OutputWriter import write_output
 import numpy as np
+from multiprocessing import Process
 
 
 class FeatureBoostedItemCollaborativeFiltering(BaseRecommender):
@@ -27,13 +29,14 @@ class FeatureBoostedItemCollaborativeFiltering(BaseRecommender):
                                                       similarity = similarity)
         return similarity_object.compute_similarity()
 
-    def fit(self, URM_train):
+    def fit(self, URM_train, boost=False):
         self.URM_train = URM_train.tocsr()
 
-        self.URM_train = feature_boost_URM(URM_train, 1)
-        #self.URM_train = get_URM_TFIDF(self.URM_train.transpose())
-        #self.URM_train = self.URM_train.transpose().tocsr()
-        #self.URM_train = normalize_matrix(self.URM_train, axis=1)
+        if boost:
+            self.URM_train = feature_boost_URM(URM_train, 5, min_interactions=10)
+            #self.URM_train = normalize_matrix(self.URM_train, axis=1)
+            #self.URM_train = get_URM_TFIDF(self.URM_train.transpose())
+            #self.URM_train = self.URM_train.transpose().tocsr()
 
         self.SM_item = self.get_similarity_matrix()
         self.RM = self.URM_train.dot(self.SM_item)
@@ -57,7 +60,10 @@ data = get_data(dir_path='../../')
 
 URM = data['train'].tocsr()
 URM_test = data['test'].tocsr()
+URM_final = URM_test + URM
 
 FBICF = FeatureBoostedItemCollaborativeFiltering(29, 5)
-FBICF.fit(URM)
+FBICF.fit(URM, boost=True)
 FBICF.evaluate_MAP_target(URM_test, data['target_users'])
+#FBICF.fit(URM_final, boost=True)
+#write_output(FBICF, data['target_users'])
