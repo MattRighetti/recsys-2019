@@ -26,7 +26,7 @@ def create_unique_file(test=True):
     """
     current_date = datetime.datetime.now()
     if test:
-        folder_path = "../g../output"
+        folder_path = "../../output"
     else:
         folder_path = "./output"
 

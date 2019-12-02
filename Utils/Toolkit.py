@@ -213,15 +213,12 @@ def generate_SM_user_feature_matrix(URM_train, ICM):
     return SM_user_feature_matrix
 
 def feature_boost_URM(URM_in, topN=5, min_interactions = 5):
-    print(f'TopN={topN}, start_score={min_interactions}')
+    print(f'TopN={topN}, min_interactions={min_interactions}')
     data = get_data(dir_path='../../')
     URM = URM_in.copy()
     ICM = data['ICM_subclass'].tocsr()
-    target_users = data['target_users']
 
     RM_features, RM_features_scores = get_features_ratings(URM, ICM, at=topN)
-
-    start_score = max(topN, 0)
 
     # Scorri tutti gli utenti nella URM
     for user_id in tqdm(range(URM.shape[0]), desc="Boosting URM..."):
@@ -234,42 +231,33 @@ def feature_boost_URM(URM_in, topN=5, min_interactions = 5):
             # Prendi il gradiente degli score delle topN features
             gradient_array = np.ediff1d(topNfeatures_ratings)
             # Prendi tutte le item con cui un utente ha interagito
-            user_profile = URM[user_id].indices
+            user_interacted_items = URM[user_id].indices
             # Conta numero di items con cui l'utente ha interagito
-            n_items = len(user_profile)
+            n_items = len(user_interacted_items)
 
             # Se il numero di items con cui ha interagito è minore del numero di interactions minime
             # Possiamo supporre che abbia interagito con items di suo interesse
             if n_items <= min_interactions:
-                # Ogni item viene messa a RATING 5 perché suppongo che ha interagito solamente
+                # Ogni item viene messa a RATING 1 perché suppongo che ha interagito solamente
                 # con items che hanno solo features di suo interesse
-                URM.data[URM.indptr[user_id]] *= 5
+                URM.data[URM.indptr[user_id]] *= 1
             # Altrimenti Boost
             else:
                 # Per ogni item
                 for i in range(n_items):
                     # Prendi tutte le features dell'item
-                    item_profile = ICM[user_profile[i]].indices
-                    # Conta numero di features dell'item
-                    n_features = len(item_profile)
-                    # Imposta delta
-                    delta = 0
-                    # Per ogni feature dell'item in considerazione
+                    item_features = ICM[user_interacted_items[i]].indices
+                    # Per la feature dell'item in considerazione
                     # TODO this is wrong, cumulative sum is different for items that has more than one feature
-                    for j in range(n_features):
-                        # Determina in che posizione si trova l'item se è tra le topN
-                        feature_position, = np.where(topNfeatures == item_profile[j])
-                        # Se la pozione è nulla allora la feature non è da boostare
-                        # altrimenti boosta
-                        if len(feature_position) != 0:
-                            # Calcola lo score da aggiungere
-                            additive_score = (start_score - delta)/n_features
-                            URM.data[URM.indptr[user_id] + i] += additive_score
-                            if len(topNfeatures_ratings) > 1:
-                                if gradient_array[j] < 0:
-                                    delta += 1
-                                elif gradient_array[j] > 0:
-                                    raise Exception("Items are not sorted")
+                    # Determina in che posizione si trova l'item se è tra le topN
+                    feature_position, = np.where(topNfeatures == item_features[0])
+                    num_top_features = len(topNfeatures)
+                    # Se la pozione è nulla allora la feature non è da boostare
+                    # altrimenti boosta
+                    if len(feature_position) != 0:
+                        # TODO logic here
+                        additive_score = 5 * (1/(feature_position[0] + 1))
+                        URM.data[URM.indptr[user_id] + i] += additive_score
 
     return URM
 

@@ -33,7 +33,7 @@ class FeatureBoostedItemCollaborativeFiltering(BaseRecommender):
         self.URM_train = URM_train.tocsr()
 
         if boost:
-            self.URM_train = feature_boost_URM(URM_train, 5, min_interactions=10)
+            self.URM_train = feature_boost_URM(URM_train, 10, min_interactions=20)
             #self.URM_train = normalize_matrix(self.URM_train, axis=1)
             #self.URM_train = get_URM_TFIDF(self.URM_train.transpose())
             #self.URM_train = self.URM_train.transpose().tocsr()
