@@ -1,10 +1,10 @@
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
-from Recommenders.BaseRecommender import BaseRecommender
 from Utils.Toolkit import get_URM_TFIDF, normalize_matrix, get_data, feature_boost_URM
+from Recommenders.BaseRecommender import BaseRecommender
 from Utils.OutputWriter import write_output
-import numpy as np
 from multiprocessing import Process
+import numpy as np
 
 
 class FeatureBoostedItemCollaborativeFiltering(BaseRecommender):
@@ -27,17 +27,19 @@ class FeatureBoostedItemCollaborativeFiltering(BaseRecommender):
                                                       tversky_alpha = 1.0,
                                                       tversky_beta = 1.0,
                                                       similarity = similarity)
+
         return similarity_object.compute_similarity()
 
     def fit(self, URM_train, boost=False):
         self.URM_train = URM_train.tocsr()
 
         if boost:
-            self.URM_train = feature_boost_URM(URM_train, 10, min_interactions=20)
-            #self.URM_train = normalize_matrix(self.URM_train, axis=1)
-            #self.URM_train = get_URM_TFIDF(self.URM_train.transpose())
-            #self.URM_train = self.URM_train.transpose().tocsr()
+            self.URM_train = feature_boost_URM(self.URM_train.copy(), 10, min_interactions=40, kind="subclass")
+            #self.URM_train = feature_boost_URM(self.URM_train.copy(), 5, min_interactions=3, kind="asset")
+            #self.URM_train = feature_boost_URM(self.URM_train.copy(), 5, min_interactions=3, kind="price")
+            self.URM_train = normalize_matrix(self.URM_train, axis=1)
 
+        print(self.URM_train.nnz)
         self.SM_item = self.get_similarity_matrix()
         self.RM = self.URM_train.dot(self.SM_item)
 
@@ -62,8 +64,8 @@ URM = data['train'].tocsr()
 URM_test = data['test'].tocsr()
 URM_final = URM_test + URM
 
-FBICF = FeatureBoostedItemCollaborativeFiltering(29, 5)
+FBICF = FeatureBoostedItemCollaborativeFiltering(31, 5)
 FBICF.fit(URM, boost=True)
 FBICF.evaluate_MAP_target(URM_test, data['target_users'])
-#FBICF.fit(URM_final, boost=True)
-#write_output(FBICF, data['target_users'])
+FBICF.fit(URM_final, boost=True)
+write_output(FBICF, data['target_users'])

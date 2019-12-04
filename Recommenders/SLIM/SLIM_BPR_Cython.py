@@ -13,13 +13,13 @@ import numpy as np
 
 from Algorithms.Base.Recommender_utils import similarityMatrixTopK
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users
-from Utils.Toolkit import get_data
+from Utils.Toolkit import get_data, feature_boost_URM
 from Recommenders.BaseRecommender import BaseRecommender
 
 
 class SLIM_BPR_Cython(BaseRecommender):
 
-    def __init__(self, positive_threshold=None, recompile_cython=False, final_model_sparse_weights=True,
+    def __init__(self, positive_threshold=None, final_model_sparse_weights=True,
                  train_with_sparse_weights=False, symmetric=True, epochs=400, batch_size=1000, lambda_i=0.6, lambda_j=1,
                  learning_rate=1e-4, topK=30, sgd_mode='sgd', gamma=0.995, beta_1=0.9, beta_2=0.999):
 
@@ -48,17 +48,17 @@ class SLIM_BPR_Cython(BaseRecommender):
         if self.train_with_sparse_weights:
             self.sparse_weights = True
 
-
-        if recompile_cython:
-            print("Compiling in Cython")
-            self.runCompilationScript()
-            print("Compilation Complete")
-
-    def fit(self, URM_train):
+    def fit(self, URM_train, boost=True):
 
         ### Stuff to adapt code to general structure
 
         self.URM_train = URM_train
+
+        if boost:
+            self.URM_train = feature_boost_URM(self.URM_train.copy(), 10, min_interactions=40, kind="subclass")
+            # self.URM_train = feature_boost_URM(self.URM_train.copy(), 5, min_interactions=3, kind="asset")
+            # self.URM_train = feature_boost_URM(self.URM_train.copy(), 5, min_interactions=3, kind="price")
+            # self.URM_train = normalize_matrix(self.URM_train, axis=1)
 
         self.n_users = URM_train.shape[0]
         self.n_items = URM_train.shape[1]
@@ -149,47 +149,6 @@ class SLIM_BPR_Cython(BaseRecommender):
             else:
                 self.W = self.S_incremental
 
-    def runCompilationScript(self):
-
-        # Run compile script setting the working directory to ensure the compiled file are contained in the
-        # appropriate subfolder and not the project root
-
-        compiledModuleSubfolder = ""
-        # fileToCompile_list = ['Sparse_Matrix_CSR.pyx', 'SLIM_BPR_Cython_Epoch.pyx']
-        fileToCompile_list = ['SLIM_BPR_Cython_Epoch.pyx']
-
-        for fileToCompile in fileToCompile_list:
-
-            command = ['python',
-                       'compileCython.py',
-                       fileToCompile,
-                       'build_ext',
-                       '--inplace'
-                       ]
-
-            output = subprocess.check_output(' '.join(command), shell=True, cwd=os.getcwd() + compiledModuleSubfolder)
-
-            try:
-
-                command = ['cython',
-                           fileToCompile,
-                           '-a'
-                           ]
-
-                output = subprocess.check_output(' '.join(command), shell=True,
-                                                 cwd=os.getcwd() + compiledModuleSubfolder)
-
-            except:
-                pass
-
-        print("Compiled module saved in subfolder: {}".format(compiledModuleSubfolder))
-
-        # Command to run compilation script
-        # python compileCython.py SLIM_BPR_Cython_Epoch.pyx build_ext --inplace
-
-        # Command to generate html report
-        # cython -a SLIM_BPR_Cython_Epoch.pyx
-
     def get_expected_ratings(self, playlist_id):
         expected_ratings = self.RECS[playlist_id].todense()
         return np.squeeze(np.asarray(expected_ratings))
@@ -205,19 +164,17 @@ class SLIM_BPR_Cython(BaseRecommender):
 
 ################################################ Test ##################################################
 # max_map = 0
-# data = get_data(dir_path='../')
+# data = get_data()
 #
 # args = {
-#     'topK': 25,
-#     'lambda_i': 0.0,
-#     'lambda_j': 0.0,
-#     'epochs': 3800,
+#     'topK': 85,
+#     'lambda_i': 0.1,
+#     'lambda_j': 1,
+#     'epochs': 4000,
 #     'learning_rate' : 1e-4,
+#     'symmetric' : False,
 #     'sgd_mode' : 'adagrad'
 # }
-#
-# bayesian_args = {'topK': 547, 'epochs': 120, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 2.9288627980909483e-05, 'lambda_j': 0.0008452530534290479, 'learning_rate': 0.000730447099956657}
-# args = bayesian_args
 #
 # recommender = SLIM_BPR_Cython(epochs=args['epochs'],
 #                               topK=args['topK'],
@@ -226,10 +183,7 @@ class SLIM_BPR_Cython(BaseRecommender):
 #                               positive_threshold=1,
 #                               sgd_mode=args['sgd_mode'],
 #                               symmetric=args['symmetric'],
-#                               learning_rate=args['learning_rate']
-#                               )
-# #recommender.runCompilationScript()
+#                               learning_rate=args['learning_rate'])
 # recommender.fit(data['train'])
-# result = evaluate_MAP_target_users(data['test'], recommender, data['target_users'])
-# print(result)
+# recommender.evaluate_MAP_target(data['test'], data['target_users'])
 ################################################ Test ##################################################

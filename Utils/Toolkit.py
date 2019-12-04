@@ -14,7 +14,7 @@ class DataReader(object):
     """
     This class will read the URM_train and the Target_users files and will generate every URM that we'll need
     """
-    def __init__(self, dir_path='./'):
+    def __init__(self, dir_path='/Users/mattiarighetti/Developer/PycharmProjects/recsys/'):
         dir_file = dir_path
         self.data_train_file_path = dir_file + "data/data_train.csv"
         self.user_target_file_path = dir_file + "data/alg_sample_submission.csv"
@@ -78,9 +78,10 @@ class DataReader(object):
 
     def ICM_total(self):
         icm_asset = self.ICM_asset_COO()
-        icm_price = self.ICM_price_COO()
+        #icm_price = self.ICM_price_COO()
         icm_subclass = self.ICM_price_COO()
-        icm_total = sps.hstack((icm_asset, icm_subclass, icm_price))
+        #icm_total = sps.hstack((icm_asset, icm_subclass, icm_price))
+        icm_total = sps.hstack((icm_asset, icm_subclass))
         return icm_total
 
     def UCM_total(self):
@@ -212,11 +213,25 @@ def generate_SM_user_feature_matrix(URM_train, ICM):
     print(f'Generated UFM with shape {SM_user_feature_matrix.shape}')
     return SM_user_feature_matrix
 
-def feature_boost_URM(URM_in, topN=5, min_interactions = 5):
+def feature_boost_URM(URM_in, topN=5, min_interactions = 5, kind="subclass"):
+
     print(f'TopN={topN}, min_interactions={min_interactions}')
-    data = get_data(dir_path='../../')
+
+    boost_weight = 1
+
+    data = get_data(dir_path='/Users/mattiarighetti/Developer/PycharmProjects/recsys/')
     URM = URM_in.copy()
-    ICM = data['ICM_subclass'].tocsr()
+    if kind == "subclass":
+        ICM = data['ICM_subclass'].tocsr()
+        boost_val = 5
+    if kind == "asset":
+        ICM = data['ICM_asset'].tocsr()
+        boost_weight = 0.5
+        boost_val = 3
+    if kind == "price":
+        ICM = data['ICM_price'].tocsr()
+        boost_val = 2
+    #target_users = data['target_users']
 
     RM_features, RM_features_scores = get_features_ratings(URM, ICM, at=topN)
 
@@ -230,6 +245,16 @@ def feature_boost_URM(URM_in, topN=5, min_interactions = 5):
             topNfeatures_ratings = RM_features_scores[user_id].data
             # Prendi il gradiente degli score delle topN features
             gradient_array = np.ediff1d(topNfeatures_ratings)
+
+            rank = [1]
+            for i in range(len(topNfeatures)-1):
+                if gradient_array[i] == 0:
+                    rank.append(rank[i])
+                else:
+                    rank.append(rank[i] + 1)
+
+            rank = np.array(rank)
+
             # Prendi tutte le item con cui un utente ha interagito
             user_interacted_items = URM[user_id].indices
             # Conta numero di items con cui l'utente ha interagito
@@ -237,7 +262,14 @@ def feature_boost_URM(URM_in, topN=5, min_interactions = 5):
 
             # Se il numero di items con cui ha interagito è minore del numero di interactions minime
             # Possiamo supporre che abbia interagito con items di suo interesse
-            if n_items <= min_interactions:
+            if n_items < 2:
+
+                start_pos = URM.indptr[user_id]
+                end_pos = URM.indptr[user_id + 1]
+                URM.data[start_pos:end_pos] += boost_val
+
+            elif 3 < n_items <= min_interactions:
+
                 # Ogni item viene messa a RATING 1 perché suppongo che ha interagito solamente
                 # con items che hanno solo features di suo interesse
                 URM.data[URM.indptr[user_id]] *= 1
@@ -250,14 +282,15 @@ def feature_boost_URM(URM_in, topN=5, min_interactions = 5):
                     # Per la feature dell'item in considerazione
                     # TODO this is wrong, cumulative sum is different for items that has more than one feature
                     # Determina in che posizione si trova l'item se è tra le topN
-                    feature_position, = np.where(topNfeatures == item_features[0])
-                    num_top_features = len(topNfeatures)
-                    # Se la pozione è nulla allora la feature non è da boostare
-                    # altrimenti boosta
-                    if len(feature_position) != 0:
-                        # TODO logic here
-                        additive_score = 5 * (1/(feature_position[0] + 1))
-                        URM.data[URM.indptr[user_id] + i] += additive_score
+                    if len(item_features) != 0:
+                        feature_position, = np.where(topNfeatures == item_features[0])
+                        # Se la pozione è nulla allora la feature non è da boostare
+                        # altrimenti boosta
+                        if len(feature_position) != 0:
+                            # TODO logic here
+                            additive_score = boost_val * (1 / (rank[feature_position[0]]) ) * boost_weight
+                            #print(f'Added {additive_score} to item {i} to user {user_id}')
+                            URM.data[URM.indptr[user_id] + i] += additive_score
 
     return URM
 
@@ -290,7 +323,7 @@ def get_features_ratings(URM_in, ICM_in, at=10):
 
 
 def get_data(split_kind=None, dir_path=None):
-    dataReader = DataReader(dir_path=dir_path)
+    dataReader = DataReader()
     UCM_region = dataReader.UCM_region_COO()
     UCM_age = dataReader.UCM_age_COO()
     URM_all = dataReader.URM_COO()
