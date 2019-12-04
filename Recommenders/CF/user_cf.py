@@ -63,16 +63,6 @@ class UserBasedCollaborativeFiltering(BaseRecommender):
 
         return recommended_items[:at]
 
-    def evaluate_MAP(self, URM_test):
-        result = evaluate_MAP(URM_test, self)
-        print("UserCF -> MAP: {:.4f} with TopK = {} & Shrink = {}\t".format(result, self.topK, self.shrink))
-        return result
-
-    def evaluate_MAP_target(self, URM_test, target_user_list):
-        result = evaluate_MAP_target_users(URM_test, self, target_user_list)
-        print("UserCF -> MAP: {:.4f} with TopK = {} & Shrink = {}\t".format(result, self.topK, self.shrink))
-        return result
-
 
 ################################################ Test ##################################################
 # best_values = {'topK': 94, 'shrink': 19}

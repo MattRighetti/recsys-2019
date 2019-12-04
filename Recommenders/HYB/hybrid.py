@@ -97,15 +97,8 @@ class HybridRecommender(BaseRecommender):
         self.SLIM_BPR_scores = None
         self.itemCBF_scores = None
 
-    def fit(self, URM_train, ICM, boost=True):
+    def fit(self, URM_train, ICM):
         self.URM_train = URM_train.copy()
-
-        ########### PREPROCESSING #########
-        if boost:
-            self.URM_train = feature_boost_URM(URM_train, 5)
-            #self.URM_train = get_URM_TFIDF(self.URM_train.transpose())
-            #self.URM_train = self.URM_train.transpose().tocsr()
-            #self.URM_train = normalize_matrix(self.URM_train, axis=1)
 
         ########### Models ###########
         self.P3Graph = P3alphaRecommender(URM_train.copy(), verbose=False)
@@ -129,7 +122,6 @@ class HybridRecommender(BaseRecommender):
 
         if self.with_top_pop and len(self.URM_train.indices[start_pos:end_pos]) < 1:
             scores = self.topPop.recommend(user_id)
-            ranking = scores
         else:
             scores = (self.userCF_scores * self.weight['user_cf']) + \
                     (self.itemCF_scores * self.weight['item_cf']) + \

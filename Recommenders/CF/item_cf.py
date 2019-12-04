@@ -63,18 +63,6 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
 
         return scores
 
-    def evaluate_MAP(self, URM_test):
-        result = evaluate_MAP(URM_test, self)
-        print("ItemCF -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\t".format(result, self.topK, self.shrink))
-        return result
-
-    def evaluate_MAP_target(self, URM_test, target_user_list):
-        result = evaluate_MAP_target_users(URM_test, self, target_user_list)
-        print("ItemCF -> MAP: {:.4f} with TopK = {} "
-              "& Shrink = {}\t".format(result, self.topK, self.shrink))
-        return result
-
 
 ################################################ Test ##################################################
 # best_values_3 = {'topK': 26, 'shrink': 20}

@@ -30,14 +30,14 @@ class FeatureBoostedItemCollaborativeFiltering(BaseRecommender):
 
         return similarity_object.compute_similarity()
 
-    def fit(self, URM_train, boost=False):
+    def fit(self, URM_train, boost=True):
         self.URM_train = URM_train.tocsr()
 
         if boost:
-            self.URM_train = feature_boost_URM(self.URM_train.copy(), 10, min_interactions=40, kind="subclass")
+            self.URM_train = feature_boost_URM(self.URM_train.copy(), 10, min_interactions=5, kind="subclass")
             #self.URM_train = feature_boost_URM(self.URM_train.copy(), 5, min_interactions=3, kind="asset")
             #self.URM_train = feature_boost_URM(self.URM_train.copy(), 5, min_interactions=3, kind="price")
-            self.URM_train = normalize_matrix(self.URM_train, axis=1)
+            #self.URM_train = normalize_matrix(self.URM_train, axis=1)
 
         print(self.URM_train.nnz)
         self.SM_item = self.get_similarity_matrix()
@@ -58,14 +58,14 @@ class FeatureBoostedItemCollaborativeFiltering(BaseRecommender):
         return np.squeeze(np.asarray(expected_recommendations))
 
 ################################################ Test ##################################################
-data = get_data(dir_path='../../')
-
-URM = data['train'].tocsr()
-URM_test = data['test'].tocsr()
-URM_final = URM_test + URM
-
-FBICF = FeatureBoostedItemCollaborativeFiltering(31, 5)
-FBICF.fit(URM, boost=True)
-FBICF.evaluate_MAP_target(URM_test, data['target_users'])
-FBICF.fit(URM_final, boost=True)
-write_output(FBICF, data['target_users'])
+# data = get_data(dir_path='../../')
+#
+# URM = data['train'].tocsr()
+# URM_test = data['test'].tocsr()
+# URM_final = URM_test + URM
+#
+# FBICF = FeatureBoostedItemCollaborativeFiltering(31, 5)
+# FBICF.fit(URM, boost=True)
+# FBICF.evaluate_MAP_target(URM_test, data['target_users'])
+# FBICF.fit(URM_final, boost=True)
+# write_output(FBICF, data['target_users'])
