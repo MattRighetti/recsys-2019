@@ -48,7 +48,7 @@ class SLIM_BPR_Cython(BaseRecommender):
         if self.train_with_sparse_weights:
             self.sparse_weights = True
 
-    def fit(self, URM_train, boost=True):
+    def fit(self, URM_train, boost=False):
 
         ### Stuff to adapt code to general structure
 

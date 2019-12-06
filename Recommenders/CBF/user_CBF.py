@@ -56,21 +56,21 @@ class UserContentBasedRecommender(BaseRecommender):
 # max_map = 0
 # data = get_data(dir_path='../')
 #
-# for topK in range(1):
-#     for shrink in range(1):
+# for topK in range(1500, 2501, 100):
+#     for shrink in [190]:
 #
 #         args = {
-#             'topK':1000,
-#             'shrink':1000
+#             'topK':topK,
+#             'shrink':shrink
 #         }
 #
 #         userCF = UserContentBasedRecommender(args['topK'], args['shrink'])
 #
-#         userCF.fit(data['train'].tocsr(), data['UCM_age'].tocsr(), data['UCM_age'].tocsr())
+#         userCF.fit(data['train'].tocsr(), data['UCM'].tocsr())
 #         result = userCF.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
 #
-#         if result > max_map:
-#             max_map = result
+#         if result['MAP'] > max_map:
+#             max_map = result['MAP']
 #             print(f'Best values {args}')
 
 #URM_final = data['train'] + data['test']

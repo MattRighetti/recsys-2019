@@ -18,63 +18,57 @@ class ItemContentBasedRecommender(BaseRecommender):
         self.URM_train = None
         self.ICM = None
         self.SM = None
+        self.RM = None
 
     def compute_similarity(self, ICM, topK, shrink):
         similarity_object = Compute_Similarity_Cython(ICM.transpose(), shrink, topK, True, similarity='cosine')
         return sps.csr_matrix(similarity_object.compute_similarity())
 
-    def recommend(self, user_id, at=10):
-        user_id = int(user_id)
-        expected_ratings = self.get_expected_ratings(user_id)
-
-        recommended_items = np.flip(np.argsort(expected_ratings), 0)
-        return recommended_items[:at]
-
     def fit(self, URM_train, ICM):
         # PRICE IS NOT INCLUDED INTENTIONALLY
         self.URM_train = URM_train.copy()
         self.ICM = ICM.copy()
-        self.ICM = get_URM_BM_25(self.ICM)
+        #self.ICM = get_URM_BM_25(self.ICM)
         #self.ICM = get_URM_TFIDF(self.ICM)
-        self.ICM = normalize(self.ICM)
+        #self.ICM = normalize(self.ICM)
 
         self.SM = self.compute_similarity(self.ICM, self.topK, self.shrink)
+        self.RM = self.URM_train.dot(self.SM)
 
     def get_expected_ratings(self, user_id):
-        interactions = self.URM_train[user_id]
-        expected_ratings = interactions.dot(self.SM).toarray().ravel()
+        expected_ratings = self.RM[user_id].todense()
+        return np.squeeze(np.asarray(expected_ratings))
 
-        start_pos = self.URM_train.indptr[user_id]
-        end_pos = self.URM_train.indptr[user_id + 1]
+    def recommend(self, user_id, at=10, exclude_seen=True):
+        expected_ratings = self.get_expected_ratings(user_id)
+        recommended_items = np.flip(np.argsort(expected_ratings), 0)
 
-        user_profile = self.URM_train.indices[start_pos:end_pos]
+        if exclude_seen:
+            unseen_items_mask = np.in1d(recommended_items, self.URM_train[user_id].indices, assume_unique=True, invert=True)
+            recommended_items = recommended_items[unseen_items_mask]
 
-        expected_ratings[user_profile] = -np.inf
-
-        expected_ratings[interactions.indices] = -10
-        return expected_ratings
+        return recommended_items[:at]
 
 
 ################################################ Test ##################################################
 # max_map = 0
 # data = get_data(dir_path='../')
 #
-# for topK in range(1):
-#     for shrink in range(1):
+# for topK in [10, 12, 15, 20]:
+#     for shrink in [5, 10]:
 #
 #         args = {
-#             'topK':topK,
-#             'shrink':shrink
+#             'topK': topK,
+#             'shrink': shrink
 #         }
 #
-#         userCF = ItemContentBasedRecommender(900,
-#                                              100)
+#         itemCBF = ItemContentBasedRecommender(args['topK'], args['shrink'])
 #
-#         userCF.fit(data['train'], data['ICM_subclass'])
-#         result = userCF.evaluate_MAP_target(data['test'], data['target_users'])
+#         itemCBF.fit(data['train'], data['ICM_subclass'])
+#         result = itemCBF.evaluate_MAP_target(data['test'], data['target_users'])
 #
-#         if result > max_map:
-#             max_map = result
+#         if result['MAP'] > max_map:
+#             max_map = result['MAP']
 #             print(f'Best values {args}')
 
 #URM_final = data['train'] + data['test']

@@ -192,7 +192,9 @@ def generate_SM_user_feature_matrix(URM_train, ICM):
     Generates a UFM matrix, the dot product looked incorrect
     :return: UFM matrix ( USER x ITEMFEATURES )
     """
-    SM_user_feature_matrix = np.zeros((URM_train.shape[0], ICM.shape[1]), dtype=int)
+    data = []
+    users = []
+    features = []
 
     for user_id in tqdm(range(URM_train.shape[0]), desc="Evaluating SM_user_feature_matrix"):
         u_start_pos = URM_train.indptr[user_id]
@@ -200,16 +202,35 @@ def generate_SM_user_feature_matrix(URM_train, ICM):
 
         mask = URM_train.indices[u_start_pos:u_end_pos]
         zero_mask = np.zeros(ICM.shape[1], dtype=int)
+        user_row = zero_mask.copy() + user_id
 
         if len(mask) > 0:
             features_matrix = ICM[mask,:].sum(axis=0)
             user_features = np.squeeze(np.asarray(features_matrix))
+
+            data.append(user_features)
+            users.append(user_row)
+            features.append(np.arange(ICM.shape[1]))
         else:
-            user_features = zero_mask.copy()
+            data.append(zero_mask.copy())
+            users.append(user_row)
+            features.append(np.arange(ICM.shape[1]))
 
-        SM_user_feature_matrix[user_id] = user_features
+    data = np.asarray(data).ravel()
+    users = np.asarray(users).ravel()
+    features = np.asarray(features).ravel()
 
-    SM_user_feature_matrix = sps.csr_matrix(SM_user_feature_matrix)
+    mask_non_zero = data > 0
+
+    data = data[mask_non_zero]
+    users = users[mask_non_zero]
+    features = features[mask_non_zero]
+
+    SM_user_feature_matrix = sps.coo_matrix((data, (users, features)),
+                                            dtype=int,
+                                            shape=(URM_train.shape[0], ICM.shape[1]))
+
+    SM_user_feature_matrix = SM_user_feature_matrix.tocsr()
     print(f'Generated UFM with shape {SM_user_feature_matrix.shape}')
     return SM_user_feature_matrix
 
@@ -219,15 +240,17 @@ def feature_boost_URM(URM_in, topN=5, min_interactions = 5, kind="subclass"):
 
     boost_weight = 1
 
-    data = get_data(dir_path='/Users/mattiarighetti/Developer/PycharmProjects/recsys/')
+    data = get_data()
     URM = URM_in.copy()
+    ICM = None
+    boost_val = 0
     if kind == "subclass":
         ICM = data['ICM_subclass'].tocsr()
         boost_val = 5
     if kind == "asset":
         ICM = data['ICM_asset'].tocsr()
         boost_weight = 0.5
-        boost_val = 3
+        boost_val = 5
     if kind == "price":
         ICM = data['ICM_price'].tocsr()
         boost_val = 2
@@ -247,7 +270,7 @@ def feature_boost_URM(URM_in, topN=5, min_interactions = 5, kind="subclass"):
             gradient_array = np.ediff1d(topNfeatures_ratings)
 
             rank = [1]
-            for i in range(len(topNfeatures)-1):
+            for i in range(len(topNfeatures) - 1):
                 if gradient_array[i] == 0:
                     rank.append(rank[i])
                 else:
@@ -262,18 +285,10 @@ def feature_boost_URM(URM_in, topN=5, min_interactions = 5, kind="subclass"):
 
             # Se il numero di items con cui ha interagito è minore del numero di interactions minime
             # Possiamo supporre che abbia interagito con items di suo interesse
-            if n_items < 2:
-
+            if n_items < min_interactions:
                 start_pos = URM.indptr[user_id]
                 end_pos = URM.indptr[user_id + 1]
-                URM.data[start_pos:end_pos] += boost_val
-
-            elif 3 < n_items <= min_interactions:
-
-                # Ogni item viene messa a RATING 1 perché suppongo che ha interagito solamente
-                # con items che hanno solo features di suo interesse
-                URM.data[URM.indptr[user_id]] *= 1
-            # Altrimenti Boost
+                URM.data[start_pos:end_pos] = 5
             else:
                 # Per ogni item
                 for i in range(n_items):
@@ -296,6 +311,8 @@ def feature_boost_URM(URM_in, topN=5, min_interactions = 5, kind="subclass"):
 
 def get_features_ratings(URM_in, ICM_in, at=10):
     data = []
+    users = []
+    features = []
     scores = []
 
     URM = URM_in.copy()
@@ -303,26 +320,57 @@ def get_features_ratings(URM_in, ICM_in, at=10):
 
     SM_user_feature = generate_SM_user_feature_matrix(URM, ICM)
 
-    for i in range(SM_user_feature.shape[0]):
+    # Scorro ogni utente
+    for i in tqdm(range(SM_user_feature.shape[0]), desc="Getting ratings..."):
+        # Creo un array vuoto
         recommended_features = np.zeros(SM_user_feature.shape[1])
+        # Metto in ordine di importanza l'indice delle features più interacted
         recommended_features_indexes = np.flip(np.argsort(SM_user_feature[i].toarray().ravel()), 0)
+        # Metto in ordine i ratings delle features in base all'array sopra
         ordered_features = SM_user_feature[i].toarray().ravel()[recommended_features_indexes]
+        # Credo una maschera che ha come 1 i valori per cui le features sono state interacted with
         ordered_features_mul = np.where(ordered_features > 0, 1, ordered_features)
+        # Creo l'array di features più importanti
         recommended_features = recommended_features + recommended_features_indexes
+        # Metto a 0 le features che l'utente non ha mai avuto a che fare
+        # Altrimenti l'argsort avrebbe ordinato a random anche gli zeri
         recommended_features *= ordered_features_mul
+
+        # Costruisco COO Matrix man mano
+        users_mask = np.zeros(SM_user_feature.shape[1], dtype=int) + i
+        features_mask = np.arange(SM_user_feature.shape[1])
+
+        users.append(users_mask)
+        features.append(features_mask)
 
         data.append(recommended_features)
         scores.append(ordered_features)
 
-    data_csr = sps.csr_matrix(data, dtype=int)
-    scores_csr = sps.csr_matrix(scores, dtype=int)
+    data = np.asarray(data).ravel()
+    users = np.asarray(users).ravel()
+    features = np.asarray(features).ravel()
+    scores = np.asarray(scores).ravel()
+
+    mask_non_zero = data > 0
+
+    data = data[mask_non_zero]
+    users = users[mask_non_zero]
+    features = features[mask_non_zero]
+    scores = scores[mask_non_zero]
+
+    data_coo = sps.coo_matrix((data, (users.copy(), features.copy())), shape=SM_user_feature.shape)
+    scores_coo = sps.coo_matrix((scores, (users.copy(), features.copy())), shape=SM_user_feature.shape)
+
+    data_csr = data_coo.tocsc()
+    scores_csr = scores_coo.tocsr()
+
     RM_user_feature = data_csr[:, :at]
     RM_user_feature_ratings = scores_csr[:, :at]
 
     return RM_user_feature, RM_user_feature_ratings
 
 
-def get_data(split_kind=None, dir_path=None):
+def get_data(split_kind=None):
     dataReader = DataReader()
     UCM_region = dataReader.UCM_region_COO()
     UCM_age = dataReader.UCM_age_COO()
