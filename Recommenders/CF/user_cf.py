@@ -49,12 +49,12 @@ class UserBasedCollaborativeFiltering(BaseRecommender):
         self.SM_users = self.get_similarity_matrix()
         self.RM = self.SM_users.dot(self.URM_train)
 
-    def get_expected_recommendations(self, user_id):
+    def get_expected_ratings(self, user_id):
         expected_recommendations = self.RM[user_id].todense()
         return np.squeeze(np.asarray(expected_recommendations))
 
     def recommend(self, user_id, at=None, exclude_seen=True):
-        expected_ratings = self.get_expected_recommendations(user_id)
+        expected_ratings = self.get_expected_ratings(user_id)
         recommended_items = np.flip(np.argsort(expected_ratings), 0)
 
         if exclude_seen:

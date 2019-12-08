@@ -167,13 +167,13 @@ class SLIM_BPR_Cython(BaseRecommender):
 # data = get_data()
 #
 # args = {
-#     'topK': 85,
-#     'lambda_i': 0.1,
-#     'lambda_j': 1,
-#     'epochs': 4000,
+#     'topK': 20,
+#     'lambda_i': 1,
+#     'lambda_j': 7,
+#     'epochs': 4500,
 #     'learning_rate' : 1e-4,
 #     'symmetric' : False,
-#     'sgd_mode' : 'adagrad'
+#     'sgd_mode' : 'adam'
 # }
 #
 # recommender = SLIM_BPR_Cython(epochs=args['epochs'],

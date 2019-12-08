@@ -25,11 +25,18 @@ class BaseRecommender(object):
 
     def evaluate_MAP_target(self, URM_test, target_user_list):
         result = evaluate_MAP_target_users(URM_test, self, target_user_list)
-        print("{} -> MAP: {:.4f} with TopK = {} "
+        if self.topK is not None and self.shrink is not None:
+            print("{} -> MAP: {:.4f} with TopK = {} "
               "& Shrink = {}\tTOTAL MISS={}\tRelevant={}".format(self.RECOMMENDER_NAME,
                                                                 result['MAP'],
-                                                                0,
-                                                                0,
+                                                                self.topK,
+                                                                self.shrink,
                                                                  result['TOT_MISS'],
                                                                  result['RELEVANT']))
+        else:
+            print("{} -> MAP: {:.4f}\tTOTAL MISS={}\tRelevant={}".format(self.RECOMMENDER_NAME,
+                                                                     result['MAP'],
+                                                                     result['TOT_MISS'],
+                                                                     result['RELEVANT']))
+
         return result

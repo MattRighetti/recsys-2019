@@ -28,9 +28,6 @@ class ItemContentBasedRecommender(BaseRecommender):
         # PRICE IS NOT INCLUDED INTENTIONALLY
         self.URM_train = URM_train.copy()
         self.ICM = ICM.copy()
-        #self.ICM = get_URM_BM_25(self.ICM)
-        #self.ICM = get_URM_TFIDF(self.ICM)
-        #self.ICM = normalize(self.ICM)
 
         self.SM = self.compute_similarity(self.ICM, self.topK, self.shrink)
         self.RM = self.URM_train.dot(self.SM)

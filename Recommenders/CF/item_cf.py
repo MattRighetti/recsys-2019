@@ -1,7 +1,7 @@
-from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
+from Utils.Toolkit import get_URM_TFIDF, normalize_matrix, get_data, rerank_based_on_ICM, generate_SM_user_feature_matrix
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
+from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 from Recommenders.BaseRecommender import BaseRecommender
-from Utils.Toolkit import get_URM_TFIDF, normalize_matrix, get_data
 import numpy as np
 
 
@@ -16,6 +16,7 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
         self.shrink = shrink
         self.SM_item = None
         self.RM = None
+        self.UFM = None
 
     def get_similarity_matrix(self, similarity='tanimoto'):
         similarity_object = Compute_Similarity_Cython(self.URM_train,
@@ -27,18 +28,24 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
                                                       similarity = similarity)
         return similarity_object.compute_similarity()
 
-    def fit(self, URM_train):
+    def fit(self, URM_train, ICM):
         self.URM_train = URM_train.tocsr()
+        self.UFM = generate_SM_user_feature_matrix(self.URM_train.copy(), ICM)
         self.SM_item = self.get_similarity_matrix()
         self.RM = self.URM_train.dot(self.SM_item)
 
     def recommend(self, user_id, at=10, exclude_seen=True):
         expected_ratings = self.get_expected_ratings(user_id)
         recommended_items = np.flip(np.argsort(expected_ratings), 0)
+        expected_ratings = expected_ratings[recommended_items]
 
         if exclude_seen:
             unseen_items_mask = np.in1d(recommended_items, self.URM_train[user_id].indices, assume_unique=True, invert=True)
             recommended_items = recommended_items[unseen_items_mask]
+
+        recommended_items = recommended_items[:at]
+        expected_ratings = expected_ratings[:at]
+        #recommended_items = rerank_based_on_ICM(self.UFM, recommended_items, expected_ratings, user_id)
 
         return recommended_items[:at]
 
@@ -68,24 +75,25 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
 # best_values_3 = {'topK': 26, 'shrink': 20}
 # best_values_2 = {'topK': 26, 'shrink': 10}
 # best_values_1 = {'topK': 29, 'shrink': 5}
-# max_map = 0
-# data = get_data(dir_path='../')
-#
-# for topK in [29, 26, 27, 28]:
-#     for shrink in [1, 2, 3, 4, 5, 6]:
-#
-#         args = {
-#             'topK':topK,
-#             'shrink':shrink
-#         }
-#
-#         itemCF = ItemBasedCollaborativeFiltering(args['topK'], args['shrink'])
-#         itemCF.fit(data['train'])
-#         result = itemCF.evaluate_MAP_target(data['test'], data['target_users'])
-#
-#         if result > max_map:
-#             max_map = result
-#             print(f'Best values {args}')
+max_map = 0
+data = get_data()
+ICM = data['ICM_subclass'].tocsr()
+
+for topK in [29]:
+    for shrink in [5]:
+
+        args = {
+            'topK':topK,
+            'shrink':shrink
+        }
+
+        itemCF = ItemBasedCollaborativeFiltering(args['topK'], args['shrink'])
+        itemCF.fit(data['train'], ICM)
+        result = itemCF.evaluate_MAP_target(data['test'], data['target_users'])
+
+        if result['MAP'] > max_map:
+            max_map = result['MAP']
+            print(f'Best values {args}')
 
 #URM_final = data['train'] + data['test']
 #URM_final = URM_final.tocsr()
