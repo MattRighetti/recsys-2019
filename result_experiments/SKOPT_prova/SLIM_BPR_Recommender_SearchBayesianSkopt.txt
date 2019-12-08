@@ -1,0 +1,104 @@
+SearchBayesianSkopt: Config 0 Exception. Config: {'topK': 93, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 1.5673682343758695e-05, 'lambda_j': 0.004223982854289337, 'learning_rate': 0.004191532752235138} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/SLIM_BPR/Cython/SLIM_BPR_Cython.py", line 167, in fit
+    **earlystopping_kwargs)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Incremental_Training_Early_Stopping.py", line 192, in _train_with_early_stopping
+    results_run, results_run_string = evaluator_object.evaluateRecommender(self)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 397, in evaluateRecommender
+    results_dict, n_users_evaluated = self._run_evaluation_on_selected_users(recommender_object, self.usersToEvaluate)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 275, in _run_evaluation_on_selected_users
+    self.diversity_object)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 78, in create_empty_metrics_dict
+    empty_dict[metric.value] = MAP()
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/metrics.py", line 92, in __init__
+    data = get_data(dir_path='../../')
+TypeError: get_data() got an unexpected keyword argument 'dir_path'
+
+SearchBayesianSkopt: Config 1 Exception. Config: {'topK': 845, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 5.685663941183315e-05, 'lambda_j': 0.003351330694176249, 'learning_rate': 0.09100730543473214} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/SLIM_BPR/Cython/SLIM_BPR_Cython.py", line 167, in fit
+    **earlystopping_kwargs)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Incremental_Training_Early_Stopping.py", line 192, in _train_with_early_stopping
+    results_run, results_run_string = evaluator_object.evaluateRecommender(self)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 397, in evaluateRecommender
+    results_dict, n_users_evaluated = self._run_evaluation_on_selected_users(recommender_object, self.usersToEvaluate)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 275, in _run_evaluation_on_selected_users
+    self.diversity_object)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 78, in create_empty_metrics_dict
+    empty_dict[metric.value] = MAP()
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/metrics.py", line 92, in __init__
+    data = get_data(dir_path='../../')
+TypeError: get_data() got an unexpected keyword argument 'dir_path'
+
+SearchBayesianSkopt: Config 2 Exception. Config: {'topK': 554, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 0.00013038627457131961, 'lambda_j': 0.0009586990959033957, 'learning_rate': 0.004836943819948659} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/SLIM_BPR/Cython/SLIM_BPR_Cython.py", line 167, in fit
+    **earlystopping_kwargs)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Incremental_Training_Early_Stopping.py", line 192, in _train_with_early_stopping
+    results_run, results_run_string = evaluator_object.evaluateRecommender(self)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 397, in evaluateRecommender
+    results_dict, n_users_evaluated = self._run_evaluation_on_selected_users(recommender_object, self.usersToEvaluate)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 275, in _run_evaluation_on_selected_users
+    self.diversity_object)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 78, in create_empty_metrics_dict
+    empty_dict[metric.value] = MAP()
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/metrics.py", line 92, in __init__
+    data = get_data(dir_path='../../')
+TypeError: get_data() got an unexpected keyword argument 'dir_path'
+
+SearchBayesianSkopt: Config 3 Exception. Config: {'topK': 764, 'epochs': 1500, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 6.244416522086279e-05, 'lambda_j': 0.00026989309547265935, 'learning_rate': 0.08276207205529164} - Exception: Traceback (most recent call last):
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 362, in _objective_function
+    result_dict, result_string, recommender_instance, train_time, evaluation_time = self._evaluate_on_validation(current_fit_parameters_dict)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 267, in _evaluate_on_validation
+    recommender_instance, train_time = self._fit_model(current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/ParameterTuning/SearchAbstractClass.py", line 257, in _fit_model
+    **current_fit_parameters)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/SLIM_BPR/Cython/SLIM_BPR_Cython.py", line 167, in fit
+    **earlystopping_kwargs)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Incremental_Training_Early_Stopping.py", line 192, in _train_with_early_stopping
+    results_run, results_run_string = evaluator_object.evaluateRecommender(self)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 397, in evaluateRecommender
+    results_dict, n_users_evaluated = self._run_evaluation_on_selected_users(recommender_object, self.usersToEvaluate)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 275, in _run_evaluation_on_selected_users
+    self.diversity_object)
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/Evaluator.py", line 78, in create_empty_metrics_dict
+    empty_dict[metric.value] = MAP()
+  File "/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/Base/Evaluation/metrics.py", line 92, in __init__
+    data = get_data(dir_path='../../')
+TypeError: get_data() got an unexpected keyword argument 'dir_path'
+
+SearchBayesianSkopt: New best config found. Config 0: {'topK': 68, 'epochs': 200, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0019560567771969833, 'lambda_j': 0.00042191722440810766, 'learning_rate': 0.038716914420609275} - results: ROC_AUC: 0.1105296, PRECISION: 0.0190134, PRECISION_RECALL_MIN_DEN: 0.0592553, RECALL: 0.0581026, MAP: 0.0174044, MRR: 0.0792672, NDCG: 0.0467116, F1: 0.0286511, HIT_RATE: 0.1901344, ARHR: 0.0841374, RMSE: 18.7936893, NOVELTY: 0.0054909, AVERAGE_POPULARITY: 0.5304838, DIVERSITY_MEAN_INTER_LIST: 0.9209553, DIVERSITY_HERFINDAHL: 0.9920906, COVERAGE_ITEM: 0.3001892, COVERAGE_USER: 0.6040245, DIVERSITY_GINI: 0.0867981, SHANNON_ENTROPY: 8.4232918, 
+SearchBayesianSkopt: Best config evaluated with evaluator_test. Config: {'topK': 68, 'epochs': 200, 'symmetric': True, 'sgd_mode': 'adam', 'lambda_i': 0.0019560567771969833, 'lambda_j': 0.00042191722440810766, 'learning_rate': 0.038716914420609275} - results:
+CUTOFF: 10 - ROC_AUC: 0.0409058, PRECISION: 0.0057384, PRECISION_RECALL_MIN_DEN: 0.0573840, RECALL: 0.0573840, MAP: 0.0258727, MRR: 0.0293433, NDCG: 0.0359466, F1: 0.0104334, HIT_RATE: 0.0573840, ARHR: 0.0293433, RMSE: 10.8128572, NOVELTY: 0.0057184, AVERAGE_POPULARITY: 0.4496030, DIVERSITY_MEAN_INTER_LIST: 0.9314004, DIVERSITY_HERFINDAHL: 0.9931366, COVERAGE_ITEM: 0.3951338, COVERAGE_USER: 0.8817250, DIVERSITY_GINI: 0.0874680, SHANNON_ENTROPY: 8.6754109, 
+
+SearchBayesianSkopt: New best config found. Config 1: {'topK': 42, 'epochs': 200, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.003887395307781475, 'lambda_j': 0.00016663369098293262, 'learning_rate': 0.0030918131767546887} - results: ROC_AUC: 0.1119128, PRECISION: 0.0195651, PRECISION_RECALL_MIN_DEN: 0.0582333, RECALL: 0.0570072, MAP: 0.0174589, MRR: 0.0804804, NDCG: 0.0468382, F1: 0.0291320, HIT_RATE: 0.1956510, ARHR: 0.0861320, RMSE: 0.9604449, NOVELTY: 0.0057328, AVERAGE_POPULARITY: 0.4245683, DIVERSITY_MEAN_INTER_LIST: 0.9632540, DIVERSITY_HERFINDAHL: 0.9963202, COVERAGE_ITEM: 0.3180319, COVERAGE_USER: 0.6040245, DIVERSITY_GINI: 0.1304258, SHANNON_ENTROPY: 9.4439869, 
+SearchBayesianSkopt: Best config evaluated with evaluator_test. Config: {'topK': 42, 'epochs': 200, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.003887395307781475, 'lambda_j': 0.00016663369098293262, 'learning_rate': 0.0030918131767546887} - results:
+CUTOFF: 10 - ROC_AUC: 0.0400375, PRECISION: 0.0056760, PRECISION_RECALL_MIN_DEN: 0.0567602, RECALL: 0.0567602, MAP: 0.0252985, MRR: 0.0286921, NDCG: 0.0352901, F1: 0.0103200, HIT_RATE: 0.0567602, ARHR: 0.0286921, RMSE: 0.9399595, NOVELTY: 0.0059413, AVERAGE_POPULARITY: 0.3571749, DIVERSITY_MEAN_INTER_LIST: 0.9605875, DIVERSITY_HERFINDAHL: 0.9960552, COVERAGE_ITEM: 0.4148148, COVERAGE_USER: 0.8817250, DIVERSITY_GINI: 0.1228218, SHANNON_ENTROPY: 9.5588941, 
+
+SearchBayesianSkopt: Config 2 is suboptimal. Config: {'topK': 46, 'epochs': 200, 'symmetric': True, 'sgd_mode': 'sgd', 'lambda_i': 2.4345018043263296e-05, 'lambda_j': 0.00010749562435787374, 'learning_rate': 0.004431874834818757} - results: ROC_AUC: 0.0950598, PRECISION: 0.0165712, PRECISION_RECALL_MIN_DEN: 0.0496088, RECALL: 0.0485716, MAP: 0.0142799, MRR: 0.0669297, NDCG: 0.0390121, F1: 0.0247115, HIT_RATE: 0.1657115, ARHR: 0.0710955, RMSE: 1.0236983, NOVELTY: 0.0059343, AVERAGE_POPULARITY: 0.3547909, DIVERSITY_MEAN_INTER_LIST: 0.9760708, DIVERSITY_HERFINDAHL: 0.9976019, COVERAGE_ITEM: 0.3285753, COVERAGE_USER: 0.6040245, DIVERSITY_GINI: 0.1622306, SHANNON_ENTROPY: 9.9920013, 
+SearchBayesianSkopt: New best config found. Config 3: {'topK': 54, 'epochs': 200, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 7.007798764552096e-05, 'lambda_j': 0.0002680101579864269, 'learning_rate': 0.0039417090907858145} - results: ROC_AUC: 0.1224148, PRECISION: 0.0210648, PRECISION_RECALL_MIN_DEN: 0.0642392, RECALL: 0.0629214, MAP: 0.0196039, MRR: 0.0905318, NDCG: 0.0520041, F1: 0.0315629, HIT_RATE: 0.2106475, ARHR: 0.0969229, RMSE: 2.4628711, NOVELTY: 0.0055077, AVERAGE_POPULARITY: 0.5191158, DIVERSITY_MEAN_INTER_LIST: 0.9331149, DIVERSITY_HERFINDAHL: 0.9933065, COVERAGE_ITEM: 0.3015950, COVERAGE_USER: 0.6040245, DIVERSITY_GINI: 0.0964054, SHANNON_ENTROPY: 8.6436406, 
+SearchBayesianSkopt: Best config evaluated with evaluator_test. Config: {'topK': 54, 'epochs': 200, 'symmetric': False, 'sgd_mode': 'adam', 'lambda_i': 7.007798764552096e-05, 'lambda_j': 0.0002680101579864269, 'learning_rate': 0.0039417090907858145} - results:
+CUTOFF: 10 - ROC_AUC: 0.0439471, PRECISION: 0.0061860, PRECISION_RECALL_MIN_DEN: 0.0618602, RECALL: 0.0618602, MAP: 0.0280664, MRR: 0.0318313, NDCG: 0.0388872, F1: 0.0112473, HIT_RATE: 0.0618602, ARHR: 0.0318313, RMSE: 1.8024707, NOVELTY: 0.0057312, AVERAGE_POPULARITY: 0.4403689, DIVERSITY_MEAN_INTER_LIST: 0.9396341, DIVERSITY_HERFINDAHL: 0.9939600, COVERAGE_ITEM: 0.3959989, COVERAGE_USER: 0.8817250, DIVERSITY_GINI: 0.0960358, SHANNON_ENTROPY: 8.8687231, 
+
+SearchBayesianSkopt: Config 4 is suboptimal. Config: {'topK': 20, 'epochs': 200, 'symmetric': False, 'sgd_mode': 'sgd', 'lambda_i': 0.0018964771677134758, 'lambda_j': 0.0035886475334207637, 'learning_rate': 0.021125168667539464} - results: ROC_AUC: 0.0829723, PRECISION: 0.0141556, PRECISION_RECALL_MIN_DEN: 0.0420503, RECALL: 0.0411451, MAP: 0.0123013, MRR: 0.0583573, NDCG: 0.0335378, F1: 0.0210643, HIT_RATE: 0.1415564, ARHR: 0.0614754, RMSE: 1.0862997, NOVELTY: 0.0063295, AVERAGE_POPULARITY: 0.2507034, DIVERSITY_MEAN_INTER_LIST: 0.9871390, DIVERSITY_HERFINDAHL: 0.9987086, COVERAGE_ITEM: 0.3464720, COVERAGE_USER: 0.6040245, DIVERSITY_GINI: 0.2032582, SHANNON_ENTROPY: 10.6142173, 
+SearchBayesianSkopt: New best config found. Config 5: {'topK': 70, 'epochs': 800, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 1e-05, 'lambda_j': 1e-05, 'learning_rate': 0.0001} - results: ROC_AUC: 0.1383286, PRECISION: 0.0244657, PRECISION_RECALL_MIN_DEN: 0.0724731, RECALL: 0.0708709, MAP: 0.0221340, MRR: 0.1026748, NDCG: 0.0589493, F1: 0.0363745, HIT_RATE: 0.2446575, ARHR: 0.1110549, RMSE: 0.9991376, NOVELTY: 0.0056510, AVERAGE_POPULARITY: 0.4611889, DIVERSITY_MEAN_INTER_LIST: 0.9524455, DIVERSITY_HERFINDAHL: 0.9952394, COVERAGE_ITEM: 0.3300892, COVERAGE_USER: 0.6040245, DIVERSITY_GINI: 0.1189115, SHANNON_ENTROPY: 9.1846461, 
+SearchBayesianSkopt: Best config evaluated with evaluator_test. Config: {'topK': 70, 'epochs': 800, 'symmetric': False, 'sgd_mode': 'adagrad', 'lambda_i': 1e-05, 'lambda_j': 1e-05, 'learning_rate': 0.0001} - results:
+CUTOFF: 10 - ROC_AUC: 0.0484763, PRECISION: 0.0067511, PRECISION_RECALL_MIN_DEN: 0.0675105, RECALL: 0.0675105, MAP: 0.0310064, MRR: 0.0351656, NDCG: 0.0427811, F1: 0.0122746, HIT_RATE: 0.0675105, ARHR: 0.0351656, RMSE: 0.9992604, NOVELTY: 0.0058427, AVERAGE_POPULARITY: 0.3961250, DIVERSITY_MEAN_INTER_LIST: 0.9519647, DIVERSITY_HERFINDAHL: 0.9951930, COVERAGE_ITEM: 0.4161665, COVERAGE_USER: 0.8817250, DIVERSITY_GINI: 0.1135477, SHANNON_ENTROPY: 9.2801939, 
+
+SearchBayesianSkopt: Config 6 is suboptimal. Config: {'topK': 5, 'epochs': 800, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 0.01, 'lambda_j': 1e-05, 'learning_rate': 0.0001} - results: ROC_AUC: 0.1398381, PRECISION: 0.0241605, PRECISION_RECALL_MIN_DEN: 0.0682439, RECALL: 0.0665554, MAP: 0.0217966, MRR: 0.1031589, NDCG: 0.0576625, F1: 0.0354516, HIT_RATE: 0.2416046, ARHR: 0.1123545, RMSE: 0.9989711, NOVELTY: 0.0064234, AVERAGE_POPULARITY: 0.2689877, DIVERSITY_MEAN_INTER_LIST: 0.9780505, DIVERSITY_HERFINDAHL: 0.9977998, COVERAGE_ITEM: 0.4171398, COVERAGE_USER: 0.6040245, DIVERSITY_GINI: 0.1912445, SHANNON_ENTROPY: 10.4137265, 
+SearchBayesianSkopt: Config 7 is suboptimal. Config: {'topK': 15, 'epochs': 600, 'symmetric': True, 'sgd_mode': 'adagrad', 'lambda_i': 3.1129871009145044e-05, 'lambda_j': 0.009589770589522756, 'learning_rate': 0.00012309167890623869} - results: ROC_AUC: 0.1410496, PRECISION: 0.0246853, PRECISION_RECALL_MIN_DEN: 0.0711230, RECALL: 0.0694923, MAP: 0.0221337, MRR: 0.1038754, NDCG: 0.0588789, F1: 0.0364299, HIT_RATE: 0.2468534, ARHR: 0.1130988, RMSE: 0.9985280, NOVELTY: 0.0061752, AVERAGE_POPULARITY: 0.3220803, DIVERSITY_MEAN_INTER_LIST: 0.9774587, DIVERSITY_HERFINDAHL: 0.9977406, COVERAGE_ITEM: 0.4206002, COVERAGE_USER: 0.6040245, DIVERSITY_GINI: 0.1887156, SHANNON_ENTROPY: 10.3535779, 

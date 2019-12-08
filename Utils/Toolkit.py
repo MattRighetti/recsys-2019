@@ -370,6 +370,37 @@ def get_features_ratings(URM_in, ICM_in, at=10):
     return RM_user_feature, RM_user_feature_ratings
 
 
+def rerank_based_on_ICM(UFM, recommended_items, recommended_items_ratings, user_id):
+    data = get_data()
+
+    ICM = data['ICM_subclass'].tocsr()
+    UFM = UFM.copy()
+
+    for item_index in range(len(recommended_items)):
+        item_id = recommended_items[item_index]
+
+        start_pos = ICM.indptr[item_id]
+        end_pos = ICM.indptr[item_id + 1]
+
+        # Features dell'item
+        item_profile = ICM.indices[start_pos:end_pos]
+
+        start_pos = UFM.indptr[user_id]
+        end_pos = UFM.indptr[user_id + 1]
+
+        user_feature_profile = UFM.indices[start_pos:end_pos]
+
+        feature_position = np.where(user_feature_profile == item_profile[0])
+
+        if len(feature_position) > 0:
+            additive_score = 1
+            recommended_items_ratings[item_index] += additive_score
+
+    order_mask = np.flip(np.argsort(recommended_items_ratings), 0)
+
+    return recommended_items[order_mask]
+
+
 def get_data(split_kind=None):
     dataReader = DataReader()
     UCM_region = dataReader.UCM_region_COO()

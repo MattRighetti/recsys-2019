@@ -1,3 +1,4 @@
+implicit
 SLIM
 lightfm
 affine==2.3.0

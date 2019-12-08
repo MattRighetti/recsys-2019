@@ -30,7 +30,7 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
 
     def fit(self, URM_train, ICM):
         self.URM_train = URM_train.tocsr()
-        self.UFM = generate_SM_user_feature_matrix(self.URM_train.copy(), ICM)
+        #self.UFM = generate_SM_user_feature_matrix(self.URM_train.copy(), ICM)
         self.SM_item = self.get_similarity_matrix()
         self.RM = self.URM_train.dot(self.SM_item)
 
@@ -43,9 +43,7 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
             unseen_items_mask = np.in1d(recommended_items, self.URM_train[user_id].indices, assume_unique=True, invert=True)
             recommended_items = recommended_items[unseen_items_mask]
 
-        recommended_items = recommended_items[:at]
-        expected_ratings = expected_ratings[:at]
-        #recommended_items = rerank_based_on_ICM(self.UFM, recommended_items, expected_ratings, user_id)
+        #recommended_items = self.rerank_items(user_id, recommended_items, expected_ratings)
 
         return recommended_items[:at]
 
@@ -53,47 +51,36 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
         expected_recommendations = self.RM[user_id].todense()
         return np.squeeze(np.asarray(expected_recommendations))
 
-    def filter_seen(self, user_id, scores):
-        """
-        Function that removes items already seen by the user
-        :param user_id: User ID corresponding to each row index of the URM
-        :param scores: Every rating of the corresponding User ID
-        :return: Scored without already seen items
-        """
-        target_row = user_id
-        start_pos = self.URM_train.indptr[target_row]
-        end_pos = self.URM_train.indptr[target_row + 1]
-
-        user_profile = self.URM_train.indices[start_pos:end_pos]
-
-        scores[user_profile] = -np.inf
-
-        return scores
+    def rerank_items(self, user_id, recommended_items, expected_ratings):
+        recommended_items = recommended_items[:20]
+        expected_ratings = expected_ratings[:20]
+        recommended_items = rerank_based_on_ICM(self.UFM, recommended_items, expected_ratings, user_id)
+        return recommended_items
 
 
 ################################################ Test ##################################################
 # best_values_3 = {'topK': 26, 'shrink': 20}
 # best_values_2 = {'topK': 26, 'shrink': 10}
 # best_values_1 = {'topK': 29, 'shrink': 5}
-max_map = 0
-data = get_data()
-ICM = data['ICM_subclass'].tocsr()
-
-for topK in [29]:
-    for shrink in [5]:
-
-        args = {
-            'topK':topK,
-            'shrink':shrink
-        }
-
-        itemCF = ItemBasedCollaborativeFiltering(args['topK'], args['shrink'])
-        itemCF.fit(data['train'], ICM)
-        result = itemCF.evaluate_MAP_target(data['test'], data['target_users'])
-
-        if result['MAP'] > max_map:
-            max_map = result['MAP']
-            print(f'Best values {args}')
+# max_map = 0
+# data = get_data()
+# ICM = data['ICM_subclass'].tocsr()
+#
+# for topK in [29]:
+#     for shrink in [5]:
+#
+#         args = {
+#             'topK':topK,
+#             'shrink':shrink
+#         }
+#
+#         itemCF = ItemBasedCollaborativeFiltering(args['topK'], args['shrink'])
+#         itemCF.fit(data['train'], ICM)
+#         result = itemCF.evaluate_MAP_target(data['test'], data['target_users'])
+#
+#         if result['MAP'] > max_map:
+#             max_map = result['MAP']
+#             print(f'Best values {args}')
 
 #URM_final = data['train'] + data['test']
 #URM_final = URM_final.tocsr()
