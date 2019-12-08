@@ -51,6 +51,7 @@ class HybridRecommender(BaseRecommender):
                                 lambda_j=self.SLIM_BPR_args['lambda_j'],
                                 positive_threshold=1,
                                 sgd_mode=self.SLIM_BPR_args['sgd_mode'],
+                                symmetric=self.SLIM_BPR_args['symmetric'],
                                 learning_rate=self.SLIM_BPR_args['learning_rate'],
                                 batch_size=1000)
         self.ALS = AlternatingLeastSquare()
@@ -111,7 +112,7 @@ userCF_args = {
 
 userCBF_args = {
     'topK' : 1000,
-    'shrink' : 8000
+    'shrink' : 7900
 }
 
 itemCF_args = {
@@ -129,15 +130,16 @@ SLIM_BPR_args = {
     'lambda_j': 7.0,
     'epochs': 5000,
     'learning_rate' : 1e-4,
+    'symmetric' : True,
     'sgd_mode' : 'adam'
 }
 
 weights = {
     'user_cf' : 0,
     'item_cf' : 1.55,
-    'SLIM_BPR' : 1.72,
+    'SLIM_BPR' : 1.52,
     'item_cbf' : 0,
-    'ALS' : 0.5
+    'ALS' : 0.6
 }
 
 hyb = HybridRecommender(weights=weights,
@@ -147,14 +149,14 @@ hyb = HybridRecommender(weights=weights,
                         itemCBF_args=itemCBF_args,
                         userCBF_args=userCBF_args)
 
-hyb.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr(), data['UCM'].tocsr())
-result = hyb.evaluate_MAP_target(data['test'], data['target_users'])
+#hyb.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr(), data['UCM'].tocsr())
+#result = hyb.evaluate_MAP_target(data['test'], data['target_users'])
 print(weights)
 # #
-# URM_final = data['train'] + data['test']
-# URM_final = URM_final.tocsr()
+URM_final = data['train'] + data['test']
+URM_final = URM_final.tocsr()
 # #
 # #print(type(URM_final))
-# hyb.fit(URM_final, data['ICM_subclass'].tocsr(), data['UCM'].tocsr())
-# write_output(hyb, target_user_list=data['target_users'])
+hyb.fit(URM_final, data['ICM_subclass'].tocsr(), data['UCM'].tocsr())
+write_output(hyb, target_user_list=data['target_users'])
 ################################################ Test ##################################################
