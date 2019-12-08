@@ -89,7 +89,7 @@ class MAP(Metrics_Object):
     """
 
     def __init__(self):
-        data = get_data(dir_path='../../')
+        data = get_data()
         URM_all = data['URM_all']
         super(MAP, self).__init__()
         self.cumulative_AP = 0.0
