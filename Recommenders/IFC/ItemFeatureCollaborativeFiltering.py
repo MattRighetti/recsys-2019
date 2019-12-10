@@ -96,20 +96,15 @@ class ItemFeatureCollaborativeFiltering(BaseRecommender):
 
 
 ################################ TEST #######################################
+if __name__ == '__main__':
+    data = get_data()
 
-data = get_data(dir_path='../../')
+    args = {
+        'topK' : 29,
+        'shrink' : 9
+    }
 
-args = {
-    'topK' : 29,
-    'shrink' : 9
-}
-
-ICM_final = sps.hstack((data['ICM_asset'], data['ICM_subclass']))
-URM_final = data['train'] + data['test']
-
-itemFeatureCF = ItemFeatureCollaborativeFiltering(args['topK'], args['shrink'])
-itemFeatureCF.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr(), boost=True)
-itemFeatureCF.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
-#itemFeatureCF.fit(URM_final.tocsr(), ICM_final.tocsr(), boost=True)
-#write_output(itemFeatureCF, data['target_users'])
+    itemFeatureCF = ItemFeatureCollaborativeFiltering(args['topK'], args['shrink'])
+    itemFeatureCF.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr(), boost=True)
+    itemFeatureCF.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
 ################################ TEST #######################################

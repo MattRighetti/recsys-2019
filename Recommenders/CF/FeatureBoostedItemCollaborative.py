@@ -54,15 +54,16 @@ class FeatureBoostedItemCollaborativeFiltering(BaseRecommender):
         return np.squeeze(np.asarray(expected_recommendations))
 
 ################################################ Test ##################################################
-# data = get_data()
-#
-# URM = data['train'].tocsr()
-# URM_test = data['test'].tocsr()
-# URM_final = URM_test + URM
-#
-# FBICF = FeatureBoostedItemCollaborativeFiltering(29, 5)
-# FBICF.fit(URM)
-# FBICF.evaluate_MAP_target(URM_test, data['target_users'])
-#FBICF.fit(URM_final)
-#write_output(FBICF, data['target_users'])
+if __name__ == '__main__':
+    data = get_data()
+
+    URM = data['train'].tocsr()
+    URM_test = data['test'].tocsr()
+    URM_final = URM_test + URM
+
+    FBICF = FeatureBoostedItemCollaborativeFiltering(29, 5)
+    FBICF.fit(URM)
+    FBICF.evaluate_MAP_target(URM_test, data['target_users'])
+    FBICF.fit(URM_final)
+    write_output(FBICF, data['target_users'])
 ################################################ Test ##################################################

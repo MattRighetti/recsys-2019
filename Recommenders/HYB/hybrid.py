@@ -23,20 +23,24 @@ class HybridRecommender(BaseRecommender):
         super().__init__()
         ######################## URM ########################
         self.URM_train = None
+
         ######################## Weights ########################
         self.weight = weights
+
         ######################## Args ########################
         self.userCF_args = userCF_args
         self.itemCBF_args = itemCBF_args
         self.itemCF_args = itemCF_args
         self.SLIM_BPR_args = SLIM_BPR_args
         self.userCBF_args = userCBF_args
+
         ######################## Scores ########################
         self.userCF_scores = None
         self.itemCF_scores = None
         self.SLIM_BPR_scores = None
         self.itemCBF_scores = None
         self.ALS_scores = None
+
         ######################## Collaborative Filtering ########################
         self.userCF = UserBasedCollaborativeFiltering(topK=self.userCF_args['topK'], shrink=self.userCF_args['shrink'])
         self.itemCF = ItemBasedCollaborativeFiltering(topK=self.itemCF_args['topK'], shrink=self.itemCF_args['shrink'])
@@ -54,13 +58,15 @@ class HybridRecommender(BaseRecommender):
                                 symmetric=self.SLIM_BPR_args['symmetric'],
                                 learning_rate=self.SLIM_BPR_args['learning_rate'],
                                 batch_size=1000)
+
         self.ALS = AlternatingLeastSquare()
 
     def fit(self, URM_train, ICM, UCM):
         self.URM_train = URM_train.copy()
+
         ########### FITTING ##########
         self.userCF.fit(self.URM_train.copy())
-        self.itemCF.fit(self.URM_train.copy(), ICM)
+        self.itemCF.fit(self.URM_train.copy())
         self.userCBF.fit(self.URM_train.copy(), UCM)
         self.SLIM_BPR.fit(self.URM_train.copy())
         self.itemCBF.fit(self.URM_train.copy(), ICM)
@@ -102,61 +108,63 @@ class HybridRecommender(BaseRecommender):
         return scores
 
 ################################################ Test ##################################################
-max_map = 0
-data = get_data()
+if __name__ == '__main__':
+    test = True
+    max_map = 0
+    data = get_data()
 
-userCF_args = {
-    'topK' : 102,
-    'shrink' : 7
-}
+    userCF_args = {
+        'topK' : 102,
+        'shrink' : 7
+    }
 
-userCBF_args = {
-    'topK' : 1000,
-    'shrink' : 7900
-}
+    userCBF_args = {
+        'topK' : 1000,
+        'shrink' : 7950
+    }
 
-itemCF_args = {
-    'topK' : 29,
-    'shrink' : 5
-}
-itemCBF_args = {
-    'topK' : 29,
-    'shrink' : 5
-}
+    itemCF_args = {
+        'topK' : 29,
+        'shrink' : 5
+    }
+    itemCBF_args = {
+        'topK' : 29,
+        'shrink' : 5
+    }
 
-SLIM_BPR_args = {
-    'topK': 20,
-    'lambda_i': 5.0,
-    'lambda_j': 7.0,
-    'epochs': 5000,
-    'learning_rate' : 1e-4,
-    'symmetric' : True,
-    'sgd_mode' : 'adam'
-}
+    SLIM_BPR_args = {
+        'topK': 20,
+        'lambda_i': 5.0,
+        'lambda_j': 7.0,
+        'epochs': 5000,
+        'learning_rate' : 1e-4,
+        'symmetric' : True,
+        'sgd_mode' : 'adam'
+    }
 
-weights = {
-    'user_cf' : 0,
-    'item_cf' : 1.55,
-    'SLIM_BPR' : 1.52,
-    'item_cbf' : 0,
-    'ALS' : 0.6
-}
+    weights = {
+        'user_cf' : 0,
+        'item_cf' : 1.55,
+        'SLIM_BPR' : 1.52,
+        'item_cbf' : 0,
+        'ALS' : 0.6
+    }
 
-hyb = HybridRecommender(weights=weights,
-                        userCF_args=userCF_args,
-                        SLIM_BPR_args=SLIM_BPR_args,
-                        itemCF_args=itemCF_args,
-                        itemCBF_args=itemCBF_args,
-                        userCBF_args=userCBF_args)
+    hyb = HybridRecommender(weights=weights,
+                            userCF_args=userCF_args,
+                            SLIM_BPR_args=SLIM_BPR_args,
+                            itemCF_args=itemCF_args,
+                            itemCBF_args=itemCBF_args,
+                            userCBF_args=userCBF_args)
 
-#hyb.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr(), data['UCM'].tocsr())
-#result = hyb.evaluate_MAP_target(data['test'], data['target_users'])
-print(weights)
-# #
-URM_final = data['train'] + data['test']
-URM_final = URM_final.tocsr()
-# #
-# #print(type(URM_final))
-hyb.fit(URM_final, data['ICM_subclass'].tocsr(), data['UCM'].tocsr())
-write_output(hyb, target_user_list=data['target_users'])
+    if test:
+        hyb.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr(), data['UCM'].tocsr())
+        result = hyb.evaluate_MAP_target(data['test'], data['target_users'])
+        print(weights)
+
+    else:
+        URM_final = data['train'] + data['test']
+        URM_final = URM_final.tocsr()
+        hyb.fit(URM_final, data['ICM_subclass'].tocsr(), data['UCM'].tocsr())
+        write_output(hyb, target_user_list=data['target_users'])
 ################################################ Test ##################################################

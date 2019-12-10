@@ -65,30 +65,31 @@ class UserBasedCollaborativeFiltering(BaseRecommender):
 
 
 ################################################ Test ##################################################
-# best_values = {'topK': 94, 'shrink': 19}
-# max_map = 0
-# data = get_data(dir_path='../')
-#
-# for topK in range(1):
-#     for shrink in range(1):
-#
-#         args = {
-#             'topK' : 902,
-#             'shrink' : 1111
-#         }
-#
-#         userCF = UserBasedCollaborativeFiltering(args['topK'], args['shrink'])
-#         userCF.fit(data['train'])
-#         result = userCF.evaluate_MAP_target(data['test'], data['target_users'])
-#
-#         if result > max_map:
-#             max_map = result
-#             print(f'Best values {args}')
+if __name__ == '__main__':
+    best_values = {'topK': 94, 'shrink': 19}
+    max_map = 0
+    data = get_data()
 
-#URM_final = data['train'] + data['test']
-#URM_final = URM_final.tocsr()
+    for topK in range(1):
+        for shrink in range(1):
 
-#print(type(URM_final))
-#hyb.fit(URM_final)
-#write_output(hyb, target_user_list=data['target_users'])
+            args = {
+                'topK' : 902,
+                'shrink' : 1111
+            }
+
+            userCF = UserBasedCollaborativeFiltering(args['topK'], args['shrink'])
+            userCF.fit(data['train'])
+            result = userCF.evaluate_MAP_target(data['test'], data['target_users'])
+
+            if result > max_map:
+                max_map = result
+                print(f'Best values {args}')
+
+    #URM_final = data['train'] + data['test']
+    #URM_final = URM_final.tocsr()
+
+    #print(type(URM_final))
+    #hyb.fit(URM_final)
+    #write_output(hyb, target_user_list=data['target_users'])
 ################################################ Test ##################################################

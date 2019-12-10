@@ -46,13 +46,16 @@ class TopPopFeatureUser(BaseRecommender):
         print(top_features)
         print(top_ratings)
 
-data = get_data(dir_path='../../')
-URM = data['train'].tocsr()
-ICM = data['ICM_subclass'].tocsr()
+################################ TEST #######################################
+if __name__ == '__main__':
+    data = get_data()
+    URM = data['train'].tocsr()
+    ICM = data['ICM_subclass'].tocsr()
 
-tf = TopPopFeatureUser()
-tf.fit(URM, ICM)
-tf.get_features_ratings()
+    tf = TopPopFeatureUser()
+    tf.fit(URM, ICM)
+    tf.get_features_ratings()
 
-for i in range(10):
-    tf.recommend(i)
+    for i in range(10):
+        tf.recommend(i)
+################################ TEST #######################################

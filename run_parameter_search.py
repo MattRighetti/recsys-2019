@@ -145,7 +145,7 @@ def runParameterSearch_Content(recommender_class, URM_train, ICM_object, ICM_nam
 
 
     if similarity_type_list is None:
-        similarity_type_list = ['cosine', 'jaccard', "asymmetric", "dice", "tversky"]
+        similarity_type_list = ['cosine', 'jaccard', "asymmetric", "dice", "tversky", "tanimoto"]
 
 
     recommender_input_args = SearchInputRecommenderArgs(
@@ -277,7 +277,7 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
         if recommender_class in [ItemKNNCFRecommender, UserKNNCFRecommender]:
 
             if similarity_type_list is None:
-                similarity_type_list = ['cosine', 'jaccard', "asymmetric", "dice", "tversky"]
+                similarity_type_list = ['cosine', 'tanimoto', 'jaccard', "asymmetric", "dice", "tversky"]
 
             recommender_input_args = SearchInputRecommenderArgs(
                 CONSTRUCTOR_POSITIONAL_ARGS = [URM_train],
@@ -601,12 +601,12 @@ def read_data_split_and_search():
         # TopPop,
         # P3alphaRecommender,
         # RP3betaRecommender,
-        # ItemKNNCFRecommender
+        ItemKNNCFRecommender
         # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
         # PureSVDRecommender,
-        SLIM_BPR_Cython,
+        # SLIM_BPR_Cython,
         # SLIMElasticNetRecommender
     ]
 

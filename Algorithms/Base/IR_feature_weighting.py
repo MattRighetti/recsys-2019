@@ -19,7 +19,7 @@ def okapi_BM_25(dataMatrix, K1=1.2, B=0.75):
     :return:
     """
 
-    assert B>0 and B<1, "okapi_BM_25: B must be in (0,1)"
+    assert 0 < B < 1, "okapi_BM_25: B must be in (0,1)"
     assert K1>0,        "okapi_BM_25: K1 must be > 0"
 
     assert np.all(np.isfinite(dataMatrix.data)), \

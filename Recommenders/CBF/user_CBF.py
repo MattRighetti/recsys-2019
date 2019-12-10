@@ -38,6 +38,7 @@ class UserContentBasedRecommender(BaseRecommender):
         # PRICE IS NOT INCLUDED INTENTIONALLY
         self.URM_train = URM_train.copy()
         self.UCM = UCM.copy()
+        self.UCM = get_URM_TFIDF(self.UCM)
         self.SM = self.compute_similarity(self.UCM.T, self.topK, self.shrink)
         self.RM = self.SM.dot(self.URM_train)
         self.RM = self.RM.tocsr()
@@ -48,30 +49,24 @@ class UserContentBasedRecommender(BaseRecommender):
 
 
 ################################################ Test ##################################################
-# max_map = 0
-# data = get_data(dir_path='../')
-#
-# for topK in range(1500, 2501, 100):
-#     for shrink in [190]:
-#
-#         args = {
-#             'topK':topK,
-#             'shrink':shrink
-#         }
-#
-#         userCF = UserContentBasedRecommender(args['topK'], args['shrink'])
-#
-#         userCF.fit(data['train'].tocsr(), data['UCM'].tocsr())
-#         result = userCF.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
-#
-#         if result['MAP'] > max_map:
-#             max_map = result['MAP']
-#             print(f'Best values {args}')
+if __name__ == '__main__':
+    max_map = 0
+    data = get_data()
 
-#URM_final = data['train'] + data['test']
-#URM_final = URM_final.tocsr()
+    for topK in range(1500, 2501, 100):
+        for shrink in [190]:
 
-#print(type(URM_final))
-#hyb.fit(URM_final)
-#write_output(hyb, target_user_list=data['target_users'])
+            args = {
+                'topK':1000,
+                'shrink':7900
+            }
+
+            userCF = UserContentBasedRecommender(args['topK'], args['shrink'])
+
+            userCF.fit(data['train'].tocsr(), data['UCM'].tocsr())
+            result = userCF.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
+
+            if result['MAP'] > max_map:
+                max_map = result['MAP']
+                print(f'Best values {args}')
 ################################################ Test ##################################################

@@ -178,6 +178,31 @@ def normalize_matrix(URM, axis=0):
     n_matrix = normalize(URM, 'l2', axis)
     return n_matrix.tocsr()
 
+def TF_IDF(dataMatrix):
+    """
+    Items are assumed to be on rows
+    :param dataMatrix:
+    :return:
+    """
+
+    assert np.all(np.isfinite(dataMatrix.data)), \
+        "TF_IDF: Data matrix contains {} non finite values.".format(np.sum(np.logical_not(np.isfinite(dataMatrix.data))))
+
+    assert np.all(dataMatrix.data >= 0.0),\
+        "TF_IDF: Data matrix contains {} negative values, computing the square root is not possible.".format(np.sum(dataMatrix.data < 0.0))
+
+    # TFIDF each row of a sparse amtrix
+    dataMatrix = sps.coo_matrix(dataMatrix)
+    N = float(dataMatrix.shape[0])
+
+    # calculate IDF
+    idf = np.log(N / (1 + np.bincount(dataMatrix.col)))
+
+    # apply TF-IDF adjustment
+    dataMatrix.data = np.sqrt(dataMatrix.data) * idf[dataMatrix.col]
+
+    return dataMatrix.tocsr()
+
 def get_URM_TFIDF(URM):
     """
     Applies TF-IDF weighting to the passed matrix

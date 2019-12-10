@@ -163,27 +163,29 @@ class SLIM_BPR_Cython(BaseRecommender):
         return ranking[:at]
 
 ################################################ Test ##################################################
-# max_map = 0
-# data = get_data()
-#
-# args = {
-#     'topK': 20,
-#     'lambda_i': 1,
-#     'lambda_j': 7,
-#     'epochs': 4500,
-#     'learning_rate' : 1e-4,
-#     'symmetric' : False,
-#     'sgd_mode' : 'adam'
-# }
-#
-# recommender = SLIM_BPR_Cython(epochs=args['epochs'],
-#                               topK=args['topK'],
-#                               lambda_i=args['lambda_i'],
-#                               lambda_j=args['lambda_j'],
-#                               positive_threshold=1,
-#                               sgd_mode=args['sgd_mode'],
-#                               symmetric=args['symmetric'],
-#                               learning_rate=args['learning_rate'])
-# recommender.fit(data['train'])
-# recommender.evaluate_MAP_target(data['test'], data['target_users'])
+if __name__ == '__main__':
+    max_map = 0
+    data = get_data()
+
+    args = {
+        'topK': 20,
+        'lambda_i': 0.01,
+        'lambda_j': 0.007,
+        'epochs': 700,
+        'learning_rate' : 1e-4,
+        'symmetric' : True,
+        'sgd_mode' : 'adagrad'
+    }
+
+    recommender = SLIM_BPR_Cython(epochs=args['epochs'],
+                                  topK=args['topK'],
+                                  lambda_i=args['lambda_i'],
+                                  lambda_j=args['lambda_j'],
+                                  positive_threshold=1,
+                                  sgd_mode=args['sgd_mode'],
+                                  symmetric=args['symmetric'],
+                                  learning_rate=args['learning_rate'])
+    recommender.fit(data['train'])
+    recommender.evaluate_MAP_target(data['test'], data['target_users'])
+    print(args)
 ################################################ Test ##################################################

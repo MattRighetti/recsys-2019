@@ -48,30 +48,24 @@ class ItemContentBasedRecommender(BaseRecommender):
 
 
 ################################################ Test ##################################################
-# max_map = 0
-# data = get_data(dir_path='../')
-#
-# for topK in [10, 12, 15, 20]:
-#     for shrink in [5, 10]:
-#
-#         args = {
-#             'topK': topK,
-#             'shrink': shrink
-#         }
-#
-#         itemCBF = ItemContentBasedRecommender(args['topK'], args['shrink'])
-#
-#         itemCBF.fit(data['train'], data['ICM_subclass'])
-#         result = itemCBF.evaluate_MAP_target(data['test'], data['target_users'])
-#
-#         if result['MAP'] > max_map:
-#             max_map = result['MAP']
-#             print(f'Best values {args}')
+if __name__ == '__main__':
+    max_map = 0
+    data = get_data()
 
-#URM_final = data['train'] + data['test']
-#URM_final = URM_final.tocsr()
+    for topK in [10, 12, 15, 20]:
+        for shrink in [5, 10]:
 
-#print(type(URM_final))
-#hyb.fit(URM_final)
-#write_output(hyb, target_user_list=data['target_users'])
+            args = {
+                'topK': topK,
+                'shrink': shrink
+            }
+
+            itemCBF = ItemContentBasedRecommender(args['topK'], args['shrink'])
+
+            itemCBF.fit(data['train'], data['ICM_subclass'])
+            result = itemCBF.evaluate_MAP_target(data['test'], data['target_users'])
+
+            if result['MAP'] > max_map:
+                max_map = result['MAP']
+                print(f'Best values {args}')
 ################################################ Test ##################################################

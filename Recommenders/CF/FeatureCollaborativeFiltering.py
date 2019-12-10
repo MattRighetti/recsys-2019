@@ -56,15 +56,16 @@ class FeatureCollaborativeFiltering(BaseRecommender):
         return data_csr[:, :at]
 
 ################################################ Test ##################################################
-# data = get_data(dir_path='../../')
-#
-# ICM_test = data['ICM_test'].tocsr()
-# ICM_train = data['ICM_train'].tocsr()
-# URM = data['train'].tocsr()
-#
-# for topK in np.arange(10, 101, 10):
-#     for shrink in np.arange(10, 601, 100):
-#         featCF = FeatureCollaborativeFiltering(topK, shrink)
-#         featCF.fit(ICM_train, URM)
-#         featCF.evaluate_MAP(ICM_test)
+if __name__ == '__main__':
+    data = get_data()
+
+    ICM_test = data['ICM_test'].tocsr()
+    ICM_train = data['ICM_train'].tocsr()
+    URM = data['train'].tocsr()
+
+    for topK in np.arange(10, 101, 10):
+        for shrink in np.arange(10, 601, 100):
+            featCF = FeatureCollaborativeFiltering(topK, shrink)
+            featCF.fit(ICM_train, URM)
+            featCF.evaluate_MAP(ICM_test)
 ################################################ Test ##################################################

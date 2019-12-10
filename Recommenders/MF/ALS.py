@@ -1,8 +1,8 @@
 import numpy as np
-import implicit
+from implicit.als import AlternatingLeastSquares
 from tqdm import tqdm
 from Recommenders.BaseRecommender import BaseRecommender
-from Utils.Toolkit import get_data
+from Utils.Toolkit import get_data, get_URM_TFIDF, get_URM_BM_25
 
 class AlternatingLeastSquare(BaseRecommender):
     """
@@ -21,18 +21,19 @@ class AlternatingLeastSquare(BaseRecommender):
         self.regularization = regularization
         self.iterations = iterations
         self.URM = None
+        self.user_factors = None
+        self.item_factors = None
 
     def fit(self, URM):
         self.URM = URM
         sparse_item_user = self.URM.T
 
         # Initialize the als model and fit it using the sparse item-user matrix
-        model = implicit.als.AlternatingLeastSquares(factors=self.n_factors, regularization=self.regularization, iterations=self.iterations)
+        model = AlternatingLeastSquares(factors=self.n_factors, regularization=self.regularization, iterations=self.iterations)
 
+        alpha_val = 15
 
-        alpha_val = 30
         # Calculate the confidence by multiplying it by our alpha value.
-
         data_conf = (sparse_item_user * alpha_val).astype('double')
 
         # Fit the model
@@ -43,25 +44,25 @@ class AlternatingLeastSquare(BaseRecommender):
         self.item_factors = model.item_factors
 
 
-    def get_expected_ratings(self, playlist_id):
-        scores = np.dot(self.user_factors[playlist_id], self.item_factors.T)
+    def get_expected_ratings(self, user_id):
+        scores = np.dot(self.user_factors[user_id], self.item_factors.T)
         return np.squeeze(scores)
 
-    def recommend(self, playlist_id, at=10):
-        playlist_id = int(playlist_id)
-        expected_ratings = self.get_expected_ratings(playlist_id)
+    def recommend(self, user_id, at=10):
+        expected_ratings = self.get_expected_ratings(user_id)
 
         recommended_items = np.flip(np.argsort(expected_ratings), 0)
 
-        unseen_items_mask = np.in1d(recommended_items, self.URM[playlist_id].indices, assume_unique=True, invert=True)
+        unseen_items_mask = np.in1d(recommended_items, self.URM[user_id].indices, assume_unique=True, invert=True)
         recommended_items = recommended_items[unseen_items_mask]
 
         return recommended_items[:at]
 
 ################################################ Test ##################################################
-# data = get_data()
-#
-# ALS = AlternatingLeastSquare()
-# ALS.fit(data['train'].tocsr())
-# ALS.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
+if __name__ == '__main__':
+    data = get_data()
+
+    ALS = AlternatingLeastSquare()
+    ALS.fit(data['train'].tocsr())
+    ALS.evaluate_MAP_target(data['test'].tocsr(), data['target_users'])
 ################################################ Test ##################################################
