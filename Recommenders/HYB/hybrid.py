@@ -25,7 +25,9 @@ class HybridRecommender(BaseRecommender):
         self.URM_train = None
 
         ######################## Weights ########################
-        self.weight = weights
+        self.weight_initial = weights[0]
+        self.weight_middle = weights[1]
+        self.weight_end = weights[2]
 
         ######################## Args ########################
         self.userCF_args = userCF_args
@@ -42,12 +44,11 @@ class HybridRecommender(BaseRecommender):
         self.ALS_scores = None
 
         ######################## Collaborative Filtering ########################
-        self.userCF = UserBasedCollaborativeFiltering(topK=self.userCF_args['topK'], shrink=self.userCF_args['shrink'])
+        #self.userCF = UserBasedCollaborativeFiltering(topK=self.userCF_args['topK'], shrink=self.userCF_args['shrink'])
         self.itemCF = ItemBasedCollaborativeFiltering(topK=self.itemCF_args['topK'], shrink=self.itemCF_args['shrink'])
         self.userCBF = UserContentBasedRecommender(topK=self.userCBF_args['topK'], shrink=self.userCBF_args['shrink'])
 
-        self.itemCBF = ItemContentBasedRecommender(topK=self.itemCBF_args['topK'],
-                                                   shrink=self.itemCBF_args['shrink'])
+        #self.itemCBF = ItemContentBasedRecommender(topK=self.itemCBF_args['topK'], shrink=self.itemCBF_args['shrink'])
 
         self.SLIM_BPR = SLIM_BPR_Cython(epochs=self.SLIM_BPR_args['epochs'],
                                 topK=self.SLIM_BPR_args['topK'],
@@ -92,30 +93,38 @@ class HybridRecommender(BaseRecommender):
         start_pos = self.URM_train.indptr[user_id]
         end_pos = self.URM_train.indptr[user_id + 1]
 
-        if len(self.URM_train.indices[start_pos:end_pos]) < 1:
-            scores = self.userCBF.get_expected_ratings(user_id)
-        else:
-            scores =  self.itemCF_scores * self.weight['item_cf']
-            scores += self.SLIM_BPR_scores * self.weight['SLIM_BPR']
-            scores += self.ALS_scores * self.weight['ALS']
-            #scores += self.userCF_scores * self.weight['user_cf']
-            #scores += self.itemCBF_scores * self.weight['item_cbf']
+        score = 0
+
+        if len(self.URM_train.indices[start_pos:end_pos]) == 0:
+            score = self.userCBF.get_expected_ratings(user_id)
+
+        elif 0 < len(self.URM_train.indices[start_pos:end_pos]) <= 2:
+            score = self.itemCF_scores * self.weight_initial['item_cf']
+            score += self.SLIM_BPR_scores * self.weight_initial['SLIM_BPR']
+            score += self.ALS_scores * self.weight_initial['ALS']
+            # scores += self.userCF_scores * self.weight['user_cf']
+            # scores += self.itemCBF_scores * self.weight['item_cbf']
+
+        elif 2 < len(self.URM_train.indices[start_pos:end_pos]) <= 5:
+            score = self.itemCF_scores * self.weight_middle['item_cf']
+            score += self.SLIM_BPR_scores * self.weight_middle['SLIM_BPR']
+            score += self.ALS_scores * self.weight_middle['ALS']
+            # scores += self.userCF_scores * self.weight['user_cf']
+            # scores += self.itemCBF_scores * self.weight['item_cbf']
+
+        elif 5 < len(self.URM_train.indices[start_pos:end_pos]):
+            score = self.itemCF_scores * self.weight_end['item_cf']
+            score += self.SLIM_BPR_scores * self.weight_end['SLIM_BPR']
+            score += self.ALS_scores * self.weight_end['ALS']
+            # scores += self.userCF_scores * self.weight['user_cf']
+            # scores += self.itemCBF_scores * self.weight['item_cbf']
 
         if exclude_seen:
-            scores = self.filter_seen(user_id, scores)
+            score = self._filter_seen(user_id, score)
 
-        ranking = scores.argsort()[::-1]
+        ranking = score.argsort()[::-1]
 
         return ranking[:at]
-
-    def filter_seen(self, user_id, scores):
-        start_pos = self.URM_train.indptr[user_id]
-        end_pos = self.URM_train.indptr[user_id + 1]
-        user_profile = self.URM_train.indices[start_pos:end_pos]
-
-        scores[user_profile] = -np.inf
-
-        return scores
 
 ################################################ Test ##################################################
 if __name__ == '__main__':
@@ -152,7 +161,15 @@ if __name__ == '__main__':
         'sgd_mode' : 'adam'
     }
 
-    weights = {
+    weights_initial = {
+        'user_cf' : 0,
+        'item_cf' : 1.55,
+        'SLIM_BPR' : 1.62,
+        'item_cbf' : 0,
+        'ALS' : 0.6
+    }
+
+    weights_middle = {
         'user_cf' : 0,
         'item_cf' : 1.55,
         'SLIM_BPR' : 1.52,
@@ -160,7 +177,15 @@ if __name__ == '__main__':
         'ALS' : 0.6
     }
 
-    hyb = HybridRecommender(weights=weights,
+    weight_end = {
+        'user_cf' : 0,
+        'item_cf' : 1.55,
+        'SLIM_BPR' : 1.22,
+        'item_cbf' : 0,
+        'ALS' : 0.6
+    }
+
+    hyb = HybridRecommender(weights=[weights_initial, weights_middle, weight_end],
                             userCF_args=userCF_args,
                             SLIM_BPR_args=SLIM_BPR_args,
                             itemCF_args=itemCF_args,
