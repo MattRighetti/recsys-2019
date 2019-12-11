@@ -65,18 +65,28 @@ class HybridRecommender(BaseRecommender):
         self.URM_train = URM_train.copy()
 
         ########### FITTING ##########
-        self.userCF.fit(self.URM_train.copy())
+        #self.userCF.fit(self.URM_train.copy())
+
+        print("Fitting ItemCF...")
         self.itemCF.fit(self.URM_train.copy())
+
+        print("Fitting UserCBF...")
         self.userCBF.fit(self.URM_train.copy(), UCM)
+
+        print("Fitting SLIM...")
         self.SLIM_BPR.fit(self.URM_train.copy())
-        self.itemCBF.fit(self.URM_train.copy(), ICM)
+        #self.itemCBF.fit(self.URM_train.copy(), ICM)
+
+        print("Fitting ALS...")
         self.ALS.fit(self.URM_train.copy())
 
+        print("Done fitting models...")
+
     def recommend(self, user_id, at=10, exclude_seen=True):
-        self.userCF_scores = self.userCF.get_expected_ratings(user_id)
+        #self.userCF_scores = self.userCF.get_expected_ratings(user_id)
         self.itemCF_scores = self.itemCF.get_expected_ratings(user_id)
         self.SLIM_BPR_scores = self.SLIM_BPR.get_expected_ratings(user_id)
-        self.itemCBF_scores = self.itemCBF.get_expected_ratings(user_id)
+        #self.itemCBF_scores = self.itemCBF.get_expected_ratings(user_id)
         self.ALS_scores = self.ALS.get_expected_ratings(user_id)
 
         start_pos = self.URM_train.indptr[user_id]
@@ -85,11 +95,11 @@ class HybridRecommender(BaseRecommender):
         if len(self.URM_train.indices[start_pos:end_pos]) < 1:
             scores = self.userCBF.get_expected_ratings(user_id)
         else:
-            scores = (self.userCF_scores * self.weight['user_cf']) + \
-                    (self.itemCF_scores * self.weight['item_cf']) + \
-                    (self.SLIM_BPR_scores * self.weight['SLIM_BPR']) + \
-                    (self.itemCBF_scores * self.weight['item_cbf']) + \
-                    (self.ALS_scores * self.weight['ALS'])
+            scores =  self.itemCF_scores * self.weight['item_cf']
+            scores += self.SLIM_BPR_scores * self.weight['SLIM_BPR']
+            scores += self.ALS_scores * self.weight['ALS']
+            #scores += self.userCF_scores * self.weight['user_cf']
+            #scores += self.itemCBF_scores * self.weight['item_cbf']
 
         if exclude_seen:
             scores = self.filter_seen(user_id, scores)
