@@ -63,4 +63,5 @@ output/*
 .DS_Store
 
 # Tuning output files
+output
 result_experiments
