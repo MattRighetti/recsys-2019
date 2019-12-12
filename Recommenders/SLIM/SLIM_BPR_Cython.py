@@ -13,7 +13,7 @@ import numpy as np
 
 from Algorithms.Base.Recommender_utils import similarityMatrixTopK
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users
-from Utils.Toolkit import get_data, feature_boost_URM
+from Utils.Toolkit import get_data, feature_boost_URM, get_URM_TFIDF, normalize_matrix
 from Recommenders.BaseRecommender import BaseRecommender
 
 
@@ -48,17 +48,11 @@ class SLIM_BPR_Cython(BaseRecommender):
         if self.train_with_sparse_weights:
             self.sparse_weights = True
 
-    def fit(self, URM_train, boost=False):
+    def fit(self, URM_train):
 
         ### Stuff to adapt code to general structure
 
         self.URM_train = URM_train
-
-        if boost:
-            self.URM_train = feature_boost_URM(self.URM_train.copy(), 10, min_interactions=40, kind="subclass")
-            # self.URM_train = feature_boost_URM(self.URM_train.copy(), 5, min_interactions=3, kind="asset")
-            # self.URM_train = feature_boost_URM(self.URM_train.copy(), 5, min_interactions=3, kind="price")
-            # self.URM_train = normalize_matrix(self.URM_train, axis=1)
 
         self.n_users = URM_train.shape[0]
         self.n_items = URM_train.shape[1]

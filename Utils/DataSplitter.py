@@ -3,6 +3,7 @@ import scipy.sparse as sps
 from Algorithms.Notebooks_utils.data_splitter import train_test_holdout
 
 class DataSplitter(object):
+
     def __init__(self, URM_all, ICM):
         self.URM_all = URM_all
         self.ICM = ICM
@@ -18,7 +19,7 @@ class DataSplitter(object):
         self.indptr_array = self.URM_all.indptr
         self.indptr_ICM_array = self.ICM.indptr
 
-    def apply_mask(self, train_mask):
+    def _apply_mask(self, train_mask):
 
         # URM_all to COO matrix
         URM_all_coo = self.URM_all.tocoo()
@@ -63,7 +64,7 @@ class DataSplitter(object):
                     np.random.shuffle(sub_arr)
                     train_mask = np.append(train_mask, sub_arr)
 
-        return self.apply_mask(train_mask)
+        return self._apply_mask(train_mask)
 
     def leave_one_out_ICM(self):
 
@@ -119,7 +120,7 @@ class DataSplitter(object):
                 num_us_with_k += 1
         #print(f'\rUsers with more than {k} interactions: {num_us_with_k}, not {num_us_not_k}\r')
 
-        return self.apply_mask(train_mask)
+        return self._apply_mask(train_mask)
 
     def force_leave_k_out(self, k):
         """
@@ -151,7 +152,7 @@ class DataSplitter(object):
 
         #print(f'\rUsers with more than {k} interactions: {num_us_with_k}, not {num_us_not_k}\r')
 
-        return self.apply_mask(train_mask)
+        return self._apply_mask(train_mask)
 
     def split(self, Matrix_CSR, k):
         Matrix_CSR = sps.csr_matrix(Matrix_CSR)

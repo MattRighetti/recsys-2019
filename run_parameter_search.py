@@ -7,7 +7,7 @@ Created on 22/11/17
 """
 
 
-
+from Utils.Toolkit import feature_boost_URM
 ######################################################################
 ##########                                                  ##########
 ##########                  PURE COLLABORATIVE              ##########
@@ -214,7 +214,7 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
 
     # TODO CHANGE VALIDATION EVERY HERE
 
-    earlystopping_keywargs = {"validation_every_n": 200,
+    earlystopping_keywargs = {"validation_every_n": 5,
                               "stop_on_validation": True,
                               "evaluator_object": evaluator_validation_earlystopping,
                               "lower_validations_allowed": 5,
@@ -277,7 +277,7 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
         if recommender_class in [ItemKNNCFRecommender, UserKNNCFRecommender]:
 
             if similarity_type_list is None:
-                similarity_type_list = ['cosine', 'tanimoto', 'jaccard', "asymmetric", "dice", "tversky"]
+                similarity_type_list = ['cosine', 'jaccard', "asymmetric", "dice", "tversky"]
 
             recommender_input_args = SearchInputRecommenderArgs(
                 CONSTRUCTOR_POSITIONAL_ARGS = [URM_train],
@@ -588,6 +588,7 @@ def read_data_split_and_search():
     URM_test = data['test']
     URM_train = data['train']
     URM_train, URM_validation = train_test_holdout(URM_train)
+    URM_train = feature_boost_URM(URM_train)
 
     output_folder_path = "result_experiments/SKOPT_prova/"
 
@@ -601,11 +602,12 @@ def read_data_split_and_search():
         # TopPop,
         # P3alphaRecommender,
         # RP3betaRecommender,
-        ItemKNNCFRecommender
+        # ItemKNNCFRecommender
         # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
         # PureSVDRecommender,
+         IALSRecommender,
         # SLIM_BPR_Cython,
         # SLIMElasticNetRecommender
     ]

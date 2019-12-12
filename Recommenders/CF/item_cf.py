@@ -1,4 +1,5 @@
-from Utils.Toolkit import get_URM_TFIDF, normalize_matrix, get_data, rerank_based_on_ICM, TF_IDF
+from Utils.Toolkit import get_URM_TFIDF, normalize_matrix, get_data, TF_IDF, feature_boost_URM
+from Utils.OutputWriter import write_output
 from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
@@ -68,33 +69,20 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
 
 ################################################ Test ##################################################
 if __name__ == '__main__':
-    best_values_3 = {'topK': 26, 'shrink': 20}
-    best_values_2 = {'topK': 26, 'shrink': 10}
-    best_values_1 = {'topK': 29, 'shrink': 5}
     max_map = 0
     data = get_data()
-    ICM = data['ICM_subclass'].tocsr()
 
-    for topK in [29]:
-        for shrink in [5]:
+    test = True
 
-            args = {
-                'topK':topK,
-                'shrink':shrink
-            }
+    itemCF = ItemBasedCollaborativeFiltering(29, 5)
 
-            itemCF = ItemBasedCollaborativeFiltering(args['topK'], args['shrink'])
-            itemCF.fit(data['train'])
-            result = itemCF.evaluate_MAP_target(data['test'], data['target_users'])
+    if test:
 
-            if result['MAP'] > max_map:
-                max_map = result['MAP']
-                print(f'Best values {args}')
+        itemCF.fit(data['train'])
+        result = itemCF.evaluate_MAP_target(data['test'], data['target_users'])
 
-    URM_final = data['train'] + data['test']
-    URM_final = URM_final.tocsr()
-
-    print(type(URM_final))
-    hyb.fit(URM_final)
-    write_output(hyb, target_user_list=data['target_users'])
+    else:
+        URM_final = get_data()['URM_all'].tocsr()
+        itemCF.fit(URM_final)
+        write_output(itemCF, target_user_list=data['target_users'])
 ################################################ Test ##################################################

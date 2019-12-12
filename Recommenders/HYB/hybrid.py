@@ -128,7 +128,7 @@ class HybridRecommender(BaseRecommender):
 
 ################################################ Test ##################################################
 if __name__ == '__main__':
-    test = True
+    test = False
     max_map = 0
     data = get_data()
 
@@ -146,6 +146,7 @@ if __name__ == '__main__':
         'topK' : 29,
         'shrink' : 5
     }
+
     itemCBF_args = {
         'topK' : 29,
         'shrink' : 5
@@ -177,15 +178,15 @@ if __name__ == '__main__':
         'ALS' : 0.6
     }
 
-    weight_end = {
+    weights_end = {
         'user_cf' : 0,
         'item_cf' : 1.55,
-        'SLIM_BPR' : 1.22,
+        'SLIM_BPR' : 0,
         'item_cbf' : 0,
-        'ALS' : 0.6
+        'ALS' : 0
     }
 
-    hyb = HybridRecommender(weights=[weights_initial, weights_middle, weight_end],
+    hyb = HybridRecommender(weights=[weights_initial, weights_middle, weights_end],
                             userCF_args=userCF_args,
                             SLIM_BPR_args=SLIM_BPR_args,
                             itemCF_args=itemCF_args,
@@ -195,7 +196,9 @@ if __name__ == '__main__':
     if test:
         hyb.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr(), data['UCM'].tocsr())
         result = hyb.evaluate_MAP_target(data['test'], data['target_users'])
-        print(weights)
+        print("Initial {}".format(weights_initial))
+        print("Middle {}".format(weights_middle))
+        print("End {}".format(weights_end))
 
     else:
         URM_final = data['train'] + data['test']
