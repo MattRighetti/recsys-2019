@@ -218,3 +218,31 @@ class BaseRecommender(object):
              self.__setattr__(attrib_name, data_dict[attrib_name])
 
         self._print("Loading complete")
+
+
+    #########################################################################################################
+    ##########                                                                                     ##########
+    ##########                                Evaluation                                           ##########
+    ##########                                                                                     ##########
+    #########################################################################################################
+
+    from Utils.Evaluator_new import evaluate_ranklist_MAP
+
+    def evaluate_MAP_target(self, URM_test, target_user_list):
+        result = evaluate_ranklist_MAP(URM_test, self, target_user_list)
+        if False:
+
+            print("{} -> MAP: {:.4f} with TopK = {} "
+              "& Shrink = {}\tTOTAL MISS={}\tRelevant={}".format(self.RECOMMENDER_NAME,
+                                                                result['MAP'],
+                                                                self.topK,
+                                                                self.shrink,
+                                                                 result['TOT_MISS'],
+                                                                 result['RELEVANT']))
+        else:
+            print("{} -> MAP: {:.4f}\tTOTAL MISS={}\tRelevant={}".format(self.RECOMMENDER_NAME,
+                                                                     result['MAP'],
+                                                                     result['TOT_MISS'],
+                                                                     result['RELEVANT']))
+
+        return result

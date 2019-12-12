@@ -126,7 +126,7 @@ def similarityMatrixTopK(item_weights, k=100, verbose = False, forceSparseOutput
 
 def areURMequals(URM1, URM2):
 
-    if(URM1.shape != URM2.shape):
+    if URM1.shape != URM2.shape:
         return False
 
     return (URM1-URM2).nnz ==0
@@ -146,7 +146,7 @@ def removeTopPop(URM_1, URM_2=None, percentageToRemove=0.2):
 
     item_pop = URM_1.sum(axis=0)  # this command returns a numpy.matrix of size (1, nitems)
 
-    if URM_2 != None:
+    if URM_2 is not None:
 
         assert URM_2.shape[1] == URM_1.shape[1], \
             "The two URM do not contain the same number of columns, URM_1 has {}, URM_2 has {}".format(URM_1.shape[1], URM_2.shape[1])
@@ -185,12 +185,12 @@ def addZeroSamples(S_matrix, numSamplesToAdd):
     addedSamples = 0
     consecutiveFailures = 0
 
-    while (addedSamples < numSamplesToAdd):
+    while addedSamples < numSamplesToAdd:
 
         item1 = np.random.randint(0, n_items)
         item2 = np.random.randint(0, n_items)
 
-        if (item1 != item2 and (item1, item2) not in existingSamples):
+        if item1 != item2 and (item1, item2) not in existingSamples:
 
             row_index.append(item1)
             col_index.append(item2)
@@ -204,7 +204,7 @@ def addZeroSamples(S_matrix, numSamplesToAdd):
         else:
             consecutiveFailures += 1
 
-        if (consecutiveFailures >= 100):
+        if consecutiveFailures >= 100:
             raise SystemExit(
                 "Unable to generate required zero samples, termination at 100 consecutive discarded samples")
 

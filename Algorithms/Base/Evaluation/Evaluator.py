@@ -396,7 +396,7 @@ class EvaluatorHoldout(Evaluator):
 
         results_dict, n_users_evaluated = self._run_evaluation_on_selected_users(recommender_object, self.usersToEvaluate)
 
-        if (n_users_evaluated > 0):
+        if n_users_evaluated > 0:
 
             for cutoff in self.cutoff_list:
 
@@ -429,7 +429,7 @@ class EvaluatorHoldout(Evaluator):
         if self.ignore_items_flag:
             recommender_object.reset_items_to_ignore()
 
-        return (results_dict, results_run_string)
+        return results_dict, results_run_string
 
 
 
@@ -594,7 +594,7 @@ class EvaluatorNegativeItemSample(Evaluator):
                 start_time_print = time.time()
 
 
-        if (n_users_evaluated > 0):
+        if n_users_evaluated > 0:
 
             for cutoff in self.cutoff_list:
 
@@ -626,4 +626,4 @@ class EvaluatorNegativeItemSample(Evaluator):
 
         results_run_string = get_result_string(results_dict)
 
-        return (results_dict, results_run_string)
+        return results_dict, results_run_string

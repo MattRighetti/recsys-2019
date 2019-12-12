@@ -5,6 +5,7 @@ Created on 23/10/17
 
 @author: Maurizio Ferrari Dacrema
 """
+from Utils.Toolkit import get_data
 
 from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseItemSimilarityMatrixRecommender
@@ -52,3 +53,9 @@ class ItemKNNCFRecommender(BaseItemSimilarityMatrixRecommender):
 
         self.W_sparse = similarity.compute_similarity()
         self.W_sparse = check_matrix(self.W_sparse, format='csr')
+
+if __name__ == '__main__':
+
+    itemCF = ItemKNNCFRecommender(get_data()['train'])
+    itemCF.fit(29, 5, similarity='cosine')
+    itemCF.evaluate_MAP_target(get_data()['test'], get_data()['target_users'])

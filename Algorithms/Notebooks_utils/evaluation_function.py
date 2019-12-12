@@ -119,7 +119,7 @@ def evaluate_MAP(URM_test, recommender_object, at=10, verbose=False):
 
     return cumulative_MAP
 
-def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10, verbose=True):
+def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10):
     cumulative_MAP = 0.0
     num_eval = 0
     n_users = URM_test.shape[0]
