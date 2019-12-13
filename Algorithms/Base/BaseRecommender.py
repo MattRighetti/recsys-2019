@@ -9,6 +9,7 @@ import numpy as np
 from Algorithms.Base.DataIO import DataIO
 import os
 from Algorithms.Base.Recommender_utils import check_matrix
+from Utils.Evaluator_new import evaluate_ranklist_MAP
 
 
 class BaseRecommender(object):
@@ -225,8 +226,6 @@ class BaseRecommender(object):
     ##########                                Evaluation                                           ##########
     ##########                                                                                     ##########
     #########################################################################################################
-
-    from Utils.Evaluator_new import evaluate_ranklist_MAP
 
     def evaluate_MAP_target(self, URM_test, target_user_list):
         result = evaluate_ranklist_MAP(URM_test, self, target_user_list)

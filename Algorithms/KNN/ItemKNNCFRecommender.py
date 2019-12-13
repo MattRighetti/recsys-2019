@@ -6,6 +6,7 @@ Created on 23/10/17
 @author: Maurizio Ferrari Dacrema
 """
 from Utils.Toolkit import get_data
+from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 
 from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseItemSimilarityMatrixRecommender
@@ -48,7 +49,7 @@ class ItemKNNCFRecommender(BaseItemSimilarityMatrixRecommender):
             self.URM_train = TF_IDF(self.URM_train.T).T
             self.URM_train = check_matrix(self.URM_train, 'csr')
 
-        similarity = Compute_Similarity(self.URM_train, shrink=shrink, topK=topK, normalize=normalize, similarity = similarity, **similarity_args)
+        similarity = Compute_Similarity(self.URM_train, shrink=shrink, topK=topK, normalize=normalize, similarity=similarity, **similarity_args)
 
 
         self.W_sparse = similarity.compute_similarity()
@@ -57,5 +58,8 @@ class ItemKNNCFRecommender(BaseItemSimilarityMatrixRecommender):
 if __name__ == '__main__':
 
     itemCF = ItemKNNCFRecommender(get_data()['train'])
-    itemCF.fit(29, 5, similarity='cosine')
-    itemCF.evaluate_MAP_target(get_data()['test'], get_data()['target_users'])
+    itemCF.fit(29, 5, similarity='tanimoto')
+
+    evaluator = EvaluatorHoldout(get_data()['test'], [10])
+    result, result_run_string = evaluator.evaluateRecommender(itemCF)
+    print(f"MAP: {result[10]['MAP']}")

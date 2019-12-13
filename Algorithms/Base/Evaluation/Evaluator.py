@@ -293,14 +293,15 @@ class EvaluatorHoldout(Evaluator):
             test_user_batch_array = np.array(usersToEvaluate[user_batch_start:user_batch_end])
             user_batch_start = user_batch_end
 
-            # Compute predictions for a batch of users using vectorization, much more efficient than computing it one at a time
+            # Compute predictions for a batch of users using vectorization, much more
+            # efficient than computing it one at a time
             recommended_items_batch_list, scores_batch = recommender_object.recommend(test_user_batch_array,
                                                                       remove_seen_flag=self.exclude_seen,
                                                                       cutoff = self.max_cutoff,
                                                                       remove_top_pop_flag=False,
                                                                       remove_custom_items_flag=self.ignore_items_flag,
                                                                       return_scores = True
-                                                                     )
+                                                                      )
 
 
             assert len(recommended_items_batch_list) == len(test_user_batch_array), "{}: recommended_items_batch_list contained recommendations for {} users, expected was {}".format(
@@ -318,7 +319,9 @@ class EvaluatorHoldout(Evaluator):
 
                 test_user = test_user_batch_array[batch_user_index]
 
+                # Prendi tutte le items nella URM_test per un certo utente
                 relevant_items = self.get_user_relevant_items(test_user)
+                # Prendi lo score di tutte le items nella URM_test per un certo utente
                 relevant_items_rating = self.get_user_test_ratings(test_user)
 
                 all_items_predicted_ratings = scores_batch[batch_user_index]
@@ -380,6 +383,25 @@ class EvaluatorHoldout(Evaluator):
 
 
         return results_dict, n_users_evaluated
+
+
+
+    def _run_custom_MAP_evaluation_on_selected_users(self, recommender_object, usersToEvaluate):
+
+        results_dict = {}
+
+        for cutoff in self.cutoff_list:
+            results_dict[cutoff] = create_empty_metrics_dict(self.n_items, self.n_users,
+                                                             recommender_object.get_URM_train(),
+                                                             self.ignore_items_ID,
+                                                             self.ignore_users_ID,
+                                                             cutoff,
+                                                             self.diversity_object)
+
+        if self.ignore_items_flag:
+            recommender_object.set_items_to_ignore(self.ignore_items_ID)
+
+        n_users_evaluated = 0
 
 
 
