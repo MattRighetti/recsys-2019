@@ -9,7 +9,7 @@ import numpy as np
 from Algorithms.Base.DataIO import DataIO
 import os
 from Algorithms.Base.Recommender_utils import check_matrix
-from Utils.Evaluator_new import evaluate_ranklist_MAP
+from Utils.Evaluator_new import evaluate_ranklist_MAP, evaluate_MAP_target_users
 
 
 class BaseRecommender(object):
@@ -228,7 +228,7 @@ class BaseRecommender(object):
     #########################################################################################################
 
     def evaluate_MAP_target(self, URM_test, target_user_list):
-        result = evaluate_ranklist_MAP(URM_test, self, target_user_list)
+        result = evaluate_MAP_target_users(URM_test, self, target_user_list)
         if False:
 
             print("{} -> MAP: {:.4f} with TopK = {} "

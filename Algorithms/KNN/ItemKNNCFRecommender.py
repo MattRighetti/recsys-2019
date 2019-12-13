@@ -7,6 +7,9 @@ Created on 23/10/17
 """
 from Utils.Toolkit import get_data
 from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
+from Algorithms.Data_manager.Kaggle.KaggleDataReader import KaggleDataReader
+from Algorithms.Data_manager.DataSplitter_leave_k_out import DataSplitter_leave_k_out
+from Utils.OutputWriter import write_output
 
 from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseItemSimilarityMatrixRecommender
@@ -58,8 +61,7 @@ class ItemKNNCFRecommender(BaseItemSimilarityMatrixRecommender):
 if __name__ == '__main__':
 
     itemCF = ItemKNNCFRecommender(get_data()['train'])
-    itemCF.fit(29, 5, similarity='tanimoto')
-
-    evaluator = EvaluatorHoldout(get_data()['test'], [10])
-    result, result_run_string = evaluator.evaluateRecommender(itemCF)
-    print(f"MAP: {result[10]['MAP']}")
+    itemCF.load_model("/Users/mattiarighetti/Developer/PycharmProjects/recsys/result_experiments/SKOPT_prova/", file_name="ItemKNNCFRecommender_tanimoto_best_model.zip")
+    #itemCF.fit(29, 5, similarity='tanimoto', normalize=True, feature_weighting="none")
+    itemCF.evaluate_MAP_target(get_data()['test'], get_data()['target_users'])
+    #write_output(itemCF, get_data()['target_users'])

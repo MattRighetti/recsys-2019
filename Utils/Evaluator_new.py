@@ -39,11 +39,9 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10)
 
         if end_pos - start_pos > 0:
             relevant_items = URM_test.indices[start_pos:end_pos]
-
             recommended_items = recommender_object.recommend(user_id, at)
-
+            num_eval += 1
             is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
-
             val = MAP(is_relevant, relevant_items)
 
             if val == 0:
@@ -54,7 +52,7 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10)
 
             cumulative_MAP += val
 
-    cumulative_MAP /= n_users
+    cumulative_MAP /= num_eval
 
     results = {
         'MAP' : cumulative_MAP,
