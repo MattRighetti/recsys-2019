@@ -13,7 +13,7 @@ from Algorithms.Data_manager.IncrementalSparseMatrix import IncrementalSparseMat
 
 
 
-def split_train_leave_k_out_user_wise(URM, k_out = 1, use_validation_set = True, leave_random_out = True):
+def split_train_leave_k_out_user_wise(URM, k_out = 1, use_validation_set = False, leave_random_out = True):
     """
     The function splits an URM in two matrices selecting the k_out interactions one user at a time
     :param URM:

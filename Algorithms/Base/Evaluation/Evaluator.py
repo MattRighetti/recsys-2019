@@ -431,7 +431,7 @@ class EvaluatorHoldout(Evaluator):
                     if isinstance(value, Metrics_Object):
                         results_current_cutoff[key] = value.get_metric_value()
                     else:
-                        results_current_cutoff[key] = value/n_users_evaluated
+                        results_current_cutoff[key] = value / n_users_evaluated
 
                 precision_ = results_current_cutoff[EvaluatorMetrics.PRECISION.value]
                 recall_ = results_current_cutoff[EvaluatorMetrics.RECALL.value]

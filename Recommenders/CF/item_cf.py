@@ -3,6 +3,7 @@ from Utils.OutputWriter import write_output
 from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
 from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
+from Algorithms.Base.Similarity.Compute_Similarity import Compute_Similarity
 from Recommenders.BaseRecommender import BaseRecommender
 import numpy as np
 
@@ -11,7 +12,7 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
 
     RECOMMENDER_NAME = "ItemBasedCollaborativeFiltering"
 
-    def __init__(self, topK, shrink, feature_weighting=None):
+    def __init__(self, topK, shrink, feature_weighting='TF-IDF'):
         super().__init__()
         self.URM_train = None
         self.topK = topK
@@ -22,13 +23,7 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
         self.UFM = None
 
     def get_similarity_matrix(self, similarity='tanimoto'):
-        similarity_object = Compute_Similarity_Cython(self.URM_train,
-                                                      self.shrink,
-                                                      self.topK,
-                                                      normalize = True,
-                                                      tversky_alpha = 1.0,
-                                                      tversky_beta = 1.0,
-                                                      similarity = similarity)
+        similarity_object = Compute_Similarity(self.URM_train, shrink=self.shrink, topK=self.topK, normalize=True, similarity=similarity)
         return similarity_object.compute_similarity()
 
     def fit(self, URM_train):
@@ -74,7 +69,7 @@ if __name__ == '__main__':
 
     test = True
 
-    itemCF = ItemBasedCollaborativeFiltering(29, 5)
+    itemCF = ItemBasedCollaborativeFiltering(10, 986, feature_weighting='TF-IDF')
 
     if test:
 

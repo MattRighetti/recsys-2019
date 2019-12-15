@@ -27,7 +27,7 @@ def evaluate_MAP(URM_test, recommender_object, at=10, verbose=False):
 def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10):
     cumulative_MAP = 0.0
     num_eval = 0
-    n_users = URM_test.shape[0]
+    n_users = 28106
 
     n_total_miss = 0
     n_relevant = 0
@@ -52,7 +52,7 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10)
 
             cumulative_MAP += val
 
-    cumulative_MAP /= num_eval
+    cumulative_MAP /= n_users
 
     results = {
         'MAP' : cumulative_MAP,
@@ -64,7 +64,7 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10)
 
 def evaluate_ranklist_MAP(URM_test, recommender_object, target_users, at=10):
     cumulative_MAP = 0.0
-    n_users = URM_test.shape[0]
+    n_users = 28106
 
     n_total_miss = 0
     n_relevant = 0

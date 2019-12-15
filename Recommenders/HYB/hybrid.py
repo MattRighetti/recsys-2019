@@ -8,7 +8,7 @@ from Recommenders.MF.ALS import AlternatingLeastSquare
 from Recommenders.SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Recommenders.BaseRecommender import BaseRecommender
 from Recommenders.NonPersonalized.top_pop import TopPop
-from Utils.Toolkit import get_data, feature_boost_URM
+from Utils.Toolkit import get_data
 from Utils.OutputWriter import write_output
 import numpy as np
 
@@ -45,7 +45,7 @@ class HybridRecommender(BaseRecommender):
 
         ######################## Collaborative Filtering ########################
         #self.userCF = UserBasedCollaborativeFiltering(topK=self.userCF_args['topK'], shrink=self.userCF_args['shrink'])
-        self.itemCF = ItemBasedCollaborativeFiltering(topK=self.itemCF_args['topK'], shrink=self.itemCF_args['shrink'])
+        self.itemCF = ItemBasedCollaborativeFiltering(topK=self.itemCF_args['topK'], shrink=self.itemCF_args['shrink'], feature_weighting='TF-IDF')
         self.userCBF = UserContentBasedRecommender(topK=self.userCBF_args['topK'], shrink=self.userCBF_args['shrink'])
 
         #self.itemCBF = ItemContentBasedRecommender(topK=self.itemCBF_args['topK'], shrink=self.itemCBF_args['shrink'])
@@ -148,8 +148,8 @@ if __name__ == '__main__':
     }
 
     itemCBF_args = {
-        'topK' : 29,
-        'shrink' : 5
+        'topK' : 10,
+        'shrink' : 986
     }
 
     SLIM_BPR_args = {
@@ -165,7 +165,7 @@ if __name__ == '__main__':
     weights_initial = {
         'user_cf' : 0,
         'item_cf' : 1.55,
-        'SLIM_BPR' : 1.62,
+        'SLIM_BPR' : 1.45,
         'item_cbf' : 0,
         'ALS' : 0.6
     }
@@ -173,7 +173,7 @@ if __name__ == '__main__':
     weights_middle = {
         'user_cf' : 0,
         'item_cf' : 1.55,
-        'SLIM_BPR' : 1.52,
+        'SLIM_BPR' : 1.5,
         'item_cbf' : 0,
         'ALS' : 0.6
     }
@@ -181,7 +181,7 @@ if __name__ == '__main__':
     weights_end = {
         'user_cf' : 0,
         'item_cf' : 1.55,
-        'SLIM_BPR' : 0,
+        'SLIM_BPR' : 0.5,
         'item_cbf' : 0,
         'ALS' : 0
     }

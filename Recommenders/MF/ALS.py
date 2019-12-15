@@ -2,7 +2,7 @@ import numpy as np
 from implicit.als import AlternatingLeastSquares
 from tqdm import tqdm
 from Recommenders.BaseRecommender import BaseRecommender
-from Utils.Toolkit import get_data, get_URM_TFIDF, get_URM_BM_25, feature_boost_URM
+from Utils.Toolkit import get_data, get_URM_TFIDF, get_URM_BM_25
 
 class AlternatingLeastSquare(BaseRecommender):
     """
@@ -31,7 +31,7 @@ class AlternatingLeastSquare(BaseRecommender):
         # Initialize the als model and fit it using the sparse item-user matrix
         model = AlternatingLeastSquares(factors=self.n_factors, regularization=self.regularization, iterations=self.iterations)
 
-        alpha_val = 5
+        alpha_val = 15
 
         # Calculate the confidence by multiplying it by our alpha value.
         data_conf = (sparse_item_user * alpha_val).astype('double')

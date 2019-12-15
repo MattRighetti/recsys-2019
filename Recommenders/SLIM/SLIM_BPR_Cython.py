@@ -13,7 +13,7 @@ import numpy as np
 
 from Algorithms.Base.Recommender_utils import similarityMatrixTopK
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users
-from Utils.Toolkit import get_data, feature_boost_URM, get_URM_TFIDF, normalize_matrix
+from Utils.Toolkit import get_data, get_URM_TFIDF, normalize_matrix
 from Recommenders.BaseRecommender import BaseRecommender
 
 

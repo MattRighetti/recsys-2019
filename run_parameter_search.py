@@ -7,7 +7,6 @@ Created on 22/11/17
 """
 
 
-from Utils.Toolkit import feature_boost_URM
 ######################################################################
 ##########                                                  ##########
 ##########                  PURE COLLABORATIVE              ##########
@@ -588,7 +587,6 @@ def read_data_split_and_search():
     URM_test = data['test']
     URM_train = data['train']
     URM_train, URM_validation = train_test_holdout(URM_train)
-    URM_train = feature_boost_URM(URM_train)
 
     output_folder_path = "result_experiments/SKOPT_prova/"
 
@@ -602,12 +600,12 @@ def read_data_split_and_search():
         # TopPop,
         # P3alphaRecommender,
         # RP3betaRecommender,
-        # ItemKNNCFRecommender
+        ItemKNNCFRecommender
         # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
         # PureSVDRecommender,
-         IALSRecommender,
+        # IALSRecommender,
         # SLIM_BPR_Cython,
         # SLIMElasticNetRecommender
     ]
@@ -624,7 +622,7 @@ def read_data_split_and_search():
                                                        URM_train = URM_train,
                                                        metric_to_optimize = "MAP",
                                                        # TODO change num of iterations here
-                                                       n_cases = 30,
+                                                       n_cases = 100,
                                                        evaluator_validation_earlystopping = evaluator_validation,
                                                        evaluator_validation = evaluator_validation,
                                                        evaluator_test = evaluator_test,
