@@ -8,7 +8,7 @@ from Recommenders.MF.ALS import AlternatingLeastSquare
 from Recommenders.SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Recommenders.BaseRecommender import BaseRecommender
 from Recommenders.NonPersonalized.top_pop import TopPop
-from Utils.Toolkit import get_data, feature_boost_URM
+from Utils.Toolkit import get_data, get_target_users_group
 from Utils.OutputWriter import write_output
 import numpy as np
 
@@ -128,9 +128,15 @@ class HybridRecommender(BaseRecommender):
 
 ################################################ Test ##################################################
 if __name__ == '__main__':
-    test = False
+    test = True
+    split_users = True
     max_map = 0
     data = get_data()
+
+    group_cold = None
+    group_one = None
+    group_two = None
+    group_three = None
 
     userCF_args = {
         'topK' : 102,
@@ -173,7 +179,7 @@ if __name__ == '__main__':
     weights_middle = {
         'user_cf' : 0,
         'item_cf' : 1.55,
-        'SLIM_BPR' : 1.52,
+        'SLIM_BPR' : 1.62,
         'item_cbf' : 0,
         'ALS' : 0.6
     }
@@ -181,7 +187,7 @@ if __name__ == '__main__':
     weights_end = {
         'user_cf' : 0,
         'item_cf' : 1.55,
-        'SLIM_BPR' : 0,
+        'SLIM_BPR' : 0.4,
         'item_cbf' : 0,
         'ALS' : 0
     }
@@ -194,9 +200,24 @@ if __name__ == '__main__':
                             userCBF_args=userCBF_args)
 
     if test:
+
         hyb.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr(), data['UCM'].tocsr())
-        result = hyb.evaluate_MAP_target(data['test'], data['target_users'])
-        print("Initial {}".format(weights_initial))
+
+        if split_users:
+
+            group_cold, group_one, group_two, group_three = get_target_users_group(data['target_users'], data['train'])
+
+            result_cold = hyb.evaluate_MAP_target(data['test'], group_cold)
+            result_one = hyb.evaluate_MAP_target(data['test'], group_one)
+            result_two = hyb.evaluate_MAP_target(data['test'], group_two)
+            result_three = hyb.evaluate_MAP_target(data['test'], group_three)
+
+            print(f'Total MAP: {result_cold["MAP"] + result_one["MAP"] + result_two["MAP"] + result_three["MAP"]:.5f}')
+
+        elif not split_users:
+            hyb.evaluate_MAP_target(data['test'], data['target_users'])
+
+        print("\nInitial {}".format(weights_initial))
         print("Middle {}".format(weights_middle))
         print("End {}".format(weights_end))
 

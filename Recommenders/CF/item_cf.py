@@ -1,4 +1,4 @@
-from Utils.Toolkit import get_URM_TFIDF, normalize_matrix, get_data, TF_IDF, feature_boost_URM
+from Utils.Toolkit import get_URM_TFIDF, normalize_matrix, get_data, TF_IDF
 from Utils.OutputWriter import write_output
 from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP

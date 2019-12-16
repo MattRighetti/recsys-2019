@@ -177,6 +177,39 @@ def get_URM_TFIDF(URM):
     URM_tfidf = feature_extraction.text.TfidfTransformer().fit_transform(URM)
     return URM_tfidf.tocsr()
 
+def get_target_users_group(target_users, URM):
+    target_users = target_users
+
+    group_cold = []
+    group_one = []
+    group_two = []
+    group_three = []
+
+    print("Grouping users...")
+
+    for user in target_users:
+        s_pos = URM.indptr[user]
+        e_pos = URM.indptr[user+1]
+
+        if len(URM.indices[s_pos:e_pos]) == 0:
+            group_cold.append(user)
+
+        elif 0 < len(URM.indices[s_pos:e_pos]) <= 2:
+            group_one.append(user)
+
+        elif 2 < len(URM.indices[s_pos:e_pos]) <= 5:
+            group_two.append(user)
+
+        elif 5 < len(URM.indices[s_pos:e_pos]):
+            group_three.append(user)
+
+    print(f'Group Cold contains {len(group_cold)} users')
+    print(f'Group Cold contains {len(group_one)} users')
+    print(f'Group Cold contains {len(group_two)} users')
+    print(f'Group Cold contains {len(group_three)} users')
+
+    return np.array(group_cold), np.array(group_one), np.array(group_two), np.array(group_three)
+
 
 def get_data(split_kind=None):
     dataReader = DataReader()

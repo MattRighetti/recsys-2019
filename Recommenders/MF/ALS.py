@@ -2,7 +2,7 @@ import numpy as np
 from implicit.als import AlternatingLeastSquares
 from tqdm import tqdm
 from Recommenders.BaseRecommender import BaseRecommender
-from Utils.Toolkit import get_data, get_URM_TFIDF, get_URM_BM_25, feature_boost_URM
+from Utils.Toolkit import get_data, get_URM_TFIDF, get_URM_BM_25
 
 class AlternatingLeastSquare(BaseRecommender):
     """
