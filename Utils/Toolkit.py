@@ -204,9 +204,9 @@ def get_target_users_group(target_users, URM):
             group_three.append(user)
 
     print(f'Group Cold contains {len(group_cold)} users')
-    print(f'Group Cold contains {len(group_one)} users')
-    print(f'Group Cold contains {len(group_two)} users')
-    print(f'Group Cold contains {len(group_three)} users')
+    print(f'Group One contains {len(group_one)} users')
+    print(f'Group Two contains {len(group_two)} users')
+    print(f'Group Three contains {len(group_three)} users')
 
     return np.array(group_cold), np.array(group_one), np.array(group_two), np.array(group_three)
 

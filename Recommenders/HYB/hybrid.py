@@ -5,6 +5,7 @@ from Recommenders.CF.user_cf import UserBasedCollaborativeFiltering
 from Recommenders.CBF.item_CBF import ItemContentBasedRecommender
 from Recommenders.CBF.user_CBF import UserContentBasedRecommender
 from Recommenders.MF.ALS import AlternatingLeastSquare
+from Recommenders.Graph.P3GraphRecommender import P3alphaRecommender
 from Recommenders.SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Recommenders.BaseRecommender import BaseRecommender
 from Recommenders.NonPersonalized.top_pop import TopPop
@@ -18,7 +19,7 @@ class HybridRecommender(BaseRecommender):
     RECOMMENDER_NAME = "HYB"
 
     def __init__(self, weights=None, userCF_args=None, itemCBF_args=None,
-                 itemCF_args=None, SLIM_BPR_args=None, userCBF_args=None):
+                 itemCF_args=None, SLIM_BPR_args=None, P3alpha_args=None, userCBF_args=None):
 
         super().__init__()
         ######################## URM ########################
@@ -35,6 +36,7 @@ class HybridRecommender(BaseRecommender):
         self.itemCF_args = itemCF_args
         self.SLIM_BPR_args = SLIM_BPR_args
         self.userCBF_args = userCBF_args
+        self.P3alpha_args = P3alpha_args
 
         ######################## Scores ########################
         self.userCF_scores = None
@@ -42,6 +44,7 @@ class HybridRecommender(BaseRecommender):
         self.SLIM_BPR_scores = None
         self.itemCBF_scores = None
         self.ALS_scores = None
+        self.P3alpha_scores =  None
 
         ######################## Collaborative Filtering ########################
         #self.userCF = UserBasedCollaborativeFiltering(topK=self.userCF_args['topK'], shrink=self.userCF_args['shrink'])
@@ -59,6 +62,10 @@ class HybridRecommender(BaseRecommender):
                                 symmetric=self.SLIM_BPR_args['symmetric'],
                                 learning_rate=self.SLIM_BPR_args['learning_rate'],
                                 batch_size=1000)
+
+        self.P3alpha = P3alphaRecommender(topK=self.P3alpha_args['topK'],
+                                          alpha=self.P3alpha_args['alpha'],
+                                          normalize_similarity=self.P3alpha_args['normalize'])
 
         self.ALS = AlternatingLeastSquare()
 
@@ -81,6 +88,9 @@ class HybridRecommender(BaseRecommender):
         print("Fitting ALS...")
         self.ALS.fit(self.URM_train.copy())
 
+        print("Fitting P3Alpha")
+        self.P3alpha.fit(self.URM_train.copy())
+
         print("Done fitting models...")
 
     def recommend(self, user_id, at=10, exclude_seen=True):
@@ -89,6 +99,7 @@ class HybridRecommender(BaseRecommender):
         self.SLIM_BPR_scores = self.SLIM_BPR.get_expected_ratings(user_id)
         #self.itemCBF_scores = self.itemCBF.get_expected_ratings(user_id)
         self.ALS_scores = self.ALS.get_expected_ratings(user_id)
+        self.P3alpha_scores = self.P3alpha.get_expected_ratings(user_id)
 
         start_pos = self.URM_train.indptr[user_id]
         end_pos = self.URM_train.indptr[user_id + 1]
@@ -102,6 +113,7 @@ class HybridRecommender(BaseRecommender):
             score = self.itemCF_scores * self.weight_initial['item_cf']
             score += self.SLIM_BPR_scores * self.weight_initial['SLIM_BPR']
             score += self.ALS_scores * self.weight_initial['ALS']
+            score += self.P3alpha_scores * self.weight_initial['P3Alpha']
             # scores += self.userCF_scores * self.weight['user_cf']
             # scores += self.itemCBF_scores * self.weight['item_cbf']
 
@@ -109,6 +121,7 @@ class HybridRecommender(BaseRecommender):
             score = self.itemCF_scores * self.weight_middle['item_cf']
             score += self.SLIM_BPR_scores * self.weight_middle['SLIM_BPR']
             score += self.ALS_scores * self.weight_middle['ALS']
+            score += self.P3alpha_scores * self.weight_middle['P3Alpha']
             # scores += self.userCF_scores * self.weight['user_cf']
             # scores += self.itemCBF_scores * self.weight['item_cbf']
 
@@ -116,6 +129,7 @@ class HybridRecommender(BaseRecommender):
             score = self.itemCF_scores * self.weight_end['item_cf']
             score += self.SLIM_BPR_scores * self.weight_end['SLIM_BPR']
             score += self.ALS_scores * self.weight_end['ALS']
+            score += self.P3alpha_scores * self.weight_end['P3Alpha']
             # scores += self.userCF_scores * self.weight['user_cf']
             # scores += self.itemCBF_scores * self.weight['item_cbf']
 
@@ -128,7 +142,7 @@ class HybridRecommender(BaseRecommender):
 
 ################################################ Test ##################################################
 if __name__ == '__main__':
-    test = True
+    test = False
     split_users = True
     max_map = 0
     data = get_data()
@@ -146,6 +160,12 @@ if __name__ == '__main__':
     userCBF_args = {
         'topK' : 1000,
         'shrink' : 7950
+    }
+
+    P3alpha_args = {
+        'topK' : 66,
+        'alpha': 0.2731573847973295,
+        'normalize' : True
     }
 
     itemCF_args = {
@@ -173,7 +193,8 @@ if __name__ == '__main__':
         'item_cf' : 1.55,
         'SLIM_BPR' : 1.62,
         'item_cbf' : 0,
-        'ALS' : 0.6
+        'ALS' : 0.6,
+        'P3Alpha' : 1.5
     }
 
     weights_middle = {
@@ -181,7 +202,8 @@ if __name__ == '__main__':
         'item_cf' : 1.55,
         'SLIM_BPR' : 1.62,
         'item_cbf' : 0,
-        'ALS' : 0.6
+        'ALS' : 0.6,
+        'P3Alpha': 0.9
     }
 
     weights_end = {
@@ -189,7 +211,8 @@ if __name__ == '__main__':
         'item_cf' : 1.55,
         'SLIM_BPR' : 0.4,
         'item_cbf' : 0,
-        'ALS' : 0
+        'ALS' : 0,
+        'P3Alpha' : 2
     }
 
     hyb = HybridRecommender(weights=[weights_initial, weights_middle, weights_end],
@@ -197,7 +220,8 @@ if __name__ == '__main__':
                             SLIM_BPR_args=SLIM_BPR_args,
                             itemCF_args=itemCF_args,
                             itemCBF_args=itemCBF_args,
-                            userCBF_args=userCBF_args)
+                            userCBF_args=userCBF_args,
+                            P3alpha_args=P3alpha_args)
 
     if test:
 
