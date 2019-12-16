@@ -598,13 +598,13 @@ def read_data_split_and_search():
         # TopPop,
         # P3alphaRecommender,
         # RP3betaRecommender,
-        # ItemKNNCFRecommender
+        ItemKNNCFRecommender
         # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
         # PureSVDRecommender,
         # IALSRecommender,
-        SLIM_BPR_Cython,
+        # SLIM_BPR_Cython,
         # SLIMElasticNetRecommender
     ]
 

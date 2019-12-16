@@ -12,18 +12,31 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
 
     RECOMMENDER_NAME = "ItemBasedCollaborativeFiltering"
 
-    def __init__(self, topK, shrink, feature_weighting='TF-IDF'):
+    def __init__(self, topK, shrink, feature_weighting='TF-IDF', tversky_alpha=1.0, tversky_beta=1.0, asymmetric_alpha=1.0, similarity='cosine'):
         super().__init__()
         self.URM_train = None
         self.topK = topK
         self.shrink = shrink
         self.feature_weighting = feature_weighting
+        self.tversky_alpha = tversky_alpha
+        self.tversky_beta = tversky_beta
+        self.asymmetric_alpha = asymmetric_alpha
+        self.similarity=similarity
+
         self.SM_item = None
         self.RM = None
         self.UFM = None
 
-    def get_similarity_matrix(self, similarity='tanimoto'):
-        similarity_object = Compute_Similarity(self.URM_train, shrink=self.shrink, topK=self.topK, normalize=True, similarity=similarity)
+    def get_similarity_matrix(self, similarity='asymmetric'):
+        similarity_object = Compute_Similarity(self.URM_train,
+                                               shrink=self.shrink,
+                                               topK=self.topK,
+                                               normalize=True,
+                                               tversky_alpha=1.0,
+                                               tversky_beta=1.0,
+                                               asymmetric_alpha=self.asymmetric_alpha,
+                                               similarity=similarity)
+
         return similarity_object.compute_similarity()
 
     def fit(self, URM_train):
@@ -34,7 +47,7 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
             self.URM_train = TF_IDF(self.URM_train.T).T
             self.URM_train = check_matrix(self.URM_train, 'csr')
 
-        self.SM_item = self.get_similarity_matrix()
+        self.SM_item = self.get_similarity_matrix(similarity=self.similarity)
         self.RM = self.URM_train.dot(self.SM_item)
 
     def recommend(self, user_id, at=10, exclude_seen=True):
@@ -64,12 +77,51 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
 
 ################################################ Test ##################################################
 if __name__ == '__main__':
+
+    best_asymmetric = {
+        'topK': 15,
+        'shrink': 986,
+        'fw': 'TF-IDF',
+        'similarity': 'asymmetric',
+        'a_alpha' : 0.30904474725892556,
+        'alpha': 0.0,
+        'beta': 0.0
+    }
+
+    best_cosine = {
+        'topK': 14,
+        'shrink': 999,
+        'similarity': 'cosine',
+        'fw': 'TF-IDF',
+        'a_alpha': 0.30904474725892556,
+        'alpha': 0.0,
+        'beta': 0.0
+    }
+
+    best_tversky = {
+        'topK': 23,
+        'shrink': 26,
+        'similarity' : 'tversky',
+        'fw': 'TF-IDF',
+        'a_alpha': 0.30904474725892556,
+        'alpha' : 0.12835746708802967,
+        'beta' : 1.995921498038378
+    }
+
     max_map = 0
     data = get_data()
 
     test = True
 
-    itemCF = ItemBasedCollaborativeFiltering(10, 986, feature_weighting='TF-IDF')
+    args = best_asymmetric
+
+    itemCF = ItemBasedCollaborativeFiltering(args['topK'],
+                                             args['shrink'],
+                                             feature_weighting=args['fw'],
+                                             similarity=args['similarity'],
+                                             tversky_alpha=args['alpha'],
+                                             tversky_beta=args['beta'],
+                                             asymmetric_alpha=args['a_alpha'])
 
     if test:
 
