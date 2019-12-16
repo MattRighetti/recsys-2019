@@ -48,7 +48,14 @@ class HybridRecommender(BaseRecommender):
 
         ######################## Collaborative Filtering ########################
         #self.userCF = UserBasedCollaborativeFiltering(topK=self.userCF_args['topK'], shrink=self.userCF_args['shrink'])
-        self.itemCF = ItemBasedCollaborativeFiltering(topK=self.itemCF_args['topK'], shrink=self.itemCF_args['shrink'])
+        self.itemCF = ItemBasedCollaborativeFiltering(topK=self.itemCF_args['topK'],
+                                                      shrink=self.itemCF_args['shrink'],
+                                                      feature_weighting=self.itemCF_args['fw'],
+                                                      similarity=self.itemCF_args['similarity'],
+                                                      tversky_alpha=self.itemCF_args['alpha'],
+                                                      tversky_beta=self.itemCF_args['beta'],
+                                                      asymmetric_alpha=self.itemCF_args['a_alpha'])
+
         self.userCBF = UserContentBasedRecommender(topK=self.userCBF_args['topK'], shrink=self.userCBF_args['shrink'])
 
         #self.itemCBF = ItemContentBasedRecommender(topK=self.itemCBF_args['topK'], shrink=self.itemCBF_args['shrink'])
@@ -169,8 +176,13 @@ if __name__ == '__main__':
     }
 
     itemCF_args = {
-        'topK' : 29,
-        'shrink' : 5
+        'topK': 15,
+        'shrink': 986,
+        'fw': 'TF-IDF',
+        'similarity': 'asymmetric',
+        'a_alpha': 0.30904474725892556,
+        'alpha': 0.0,
+        'beta': 0.0
     }
 
     itemCBF_args = {
@@ -211,7 +223,7 @@ if __name__ == '__main__':
         'item_cf' : 1.55,
         'SLIM_BPR' : 0.4,
         'item_cbf' : 0,
-        'ALS' : 0,
+        'ALS' : 0.1,
         'P3Alpha' : 2
     }
 
