@@ -599,8 +599,8 @@ def read_data_split_and_search():
         # Random,
         # TopPop,
         # P3alphaRecommender,
-        # RP3betaRecommender,
-        ItemKNNCFRecommender
+        RP3betaRecommender,
+        # ItemKNNCFRecommender
         # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
