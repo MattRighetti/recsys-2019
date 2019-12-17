@@ -92,7 +92,6 @@ class MAP(Metrics_Object):
         super(MAP, self).__init__()
         self.cumulative_AP = 0.0
         self.n_users = 0
-        self.tot_num_users = 28106
 
     def add_recommendations(self, is_relevant, pos_items):
         self.cumulative_AP += average_precision(is_relevant, pos_items)
@@ -100,7 +99,7 @@ class MAP(Metrics_Object):
 
     def get_metric_value(self):
         print(f'n_users = {self.n_users}')
-        return self.cumulative_AP/self.tot_num_users
+        return self.cumulative_AP/self.n_users
 
     def merge_with_other(self, other_metric_object):
         assert other_metric_object is MAP, "MAP: attempting to merge with a metric object of different type"

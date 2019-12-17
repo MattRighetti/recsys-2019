@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
     train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
 
-    evaluator = EvaluatorHoldout(test, [10])
+    evaluator = EvaluatorHoldout(test, [10], target_users=get_data()['target_users'])
 
     itemCF = ItemKNNCFRecommender(train)
     # itemCF.load_model("/Users/mattiarighetti/Developer/PycharmProjects/recsys/result_experiments/SKOPT_prova/", file_name="ItemKNNCFRecommender_cosine_best_model.zip")

@@ -27,7 +27,6 @@ def evaluate_MAP(URM_test, recommender_object, at=10, verbose=False):
 def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10):
     cumulative_MAP = 0.0
     num_eval = 0
-    n_users = 28106
 
     n_total_miss = 0
     n_relevant = 0
@@ -44,6 +43,7 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10)
             is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
             val = MAP(is_relevant, relevant_items)
 
+
             if val == 0:
                 n_total_miss += 1
             else:
@@ -52,7 +52,8 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10)
 
             cumulative_MAP += val
 
-    cumulative_MAP /= n_users
+    print(f"Evaluated {num_eval} users")
+    cumulative_MAP /= num_eval
 
     results = {
         'MAP' : cumulative_MAP,

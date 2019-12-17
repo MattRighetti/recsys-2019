@@ -134,6 +134,7 @@ class Evaluator(object):
     EVALUATOR_NAME = "Evaluator_Base_Class"
 
     def __init__(self, URM_test_list, cutoff_list, minRatingsPerUser=1, exclude_seen=True,
+                        target_users = None,
                         diversity_object = None,
                         ignore_items = None,
                         ignore_users = None,
@@ -172,6 +173,7 @@ class Evaluator(object):
         self.URM_test_list = []
         usersToEvaluate_mask = np.zeros(self.n_users, dtype=np.bool)
 
+        # This does remove every cold user from the evaluation
         for URM_test in URM_test_list:
 
             URM_test = _remove_item_interactions(URM_test, self.ignore_items_ID)
@@ -194,7 +196,22 @@ class Evaluator(object):
         else:
             self.ignore_users_ID = np.array([])
 
+
         self.usersToEvaluate = list(self.usersToEvaluate)
+
+        if target_users is not None:
+            mask_target = np.zeros(self.n_users, dtype=np.bool)
+            all_users = np.arange(self.n_users)
+
+            for user in target_users:
+                pos, = np.where(all_users == user)
+                assert 0 <= len(pos) <= 1
+                if len(pos) == 1:
+                    mask_target[pos[0]] = 1
+
+            target_cold_mask = np.logical_and(mask_target, usersToEvaluate_mask)
+
+            self.usersToEvaluate = np.arange(self.n_users)[target_cold_mask]
 
 
     def _print(self, string):
@@ -238,6 +255,7 @@ class EvaluatorHoldout(Evaluator):
     EVALUATOR_NAME = "EvaluatorHoldout"
 
     def __init__(self, URM_test_list, cutoff_list, minRatingsPerUser=1, exclude_seen=True,
+                 target_users = None,
                  diversity_object = None,
                  ignore_items = None,
                  ignore_users = None,
@@ -245,6 +263,7 @@ class EvaluatorHoldout(Evaluator):
 
 
         super(EvaluatorHoldout, self).__init__(URM_test_list, cutoff_list,
+                                               target_users = target_users,
                                                diversity_object = diversity_object,
                                                minRatingsPerUser=minRatingsPerUser, exclude_seen=exclude_seen,
                                                ignore_items = ignore_items, ignore_users = ignore_users,
@@ -383,25 +402,6 @@ class EvaluatorHoldout(Evaluator):
 
 
         return results_dict, n_users_evaluated
-
-
-
-    def _run_custom_MAP_evaluation_on_selected_users(self, recommender_object, usersToEvaluate):
-
-        results_dict = {}
-
-        for cutoff in self.cutoff_list:
-            results_dict[cutoff] = create_empty_metrics_dict(self.n_items, self.n_users,
-                                                             recommender_object.get_URM_train(),
-                                                             self.ignore_items_ID,
-                                                             self.ignore_users_ID,
-                                                             cutoff,
-                                                             self.diversity_object)
-
-        if self.ignore_items_flag:
-            recommender_object.set_items_to_ignore(self.ignore_items_ID)
-
-        n_users_evaluated = 0
 
 
 
