@@ -11,7 +11,7 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
 
     RECOMMENDER_NAME = "ItemBasedCollaborativeFiltering"
 
-    def __init__(self, topK, shrink, feature_weighting='TF-IDF', tversky_alpha=1.0, tversky_beta=1.0,
+    def __init__(self, topK, shrink, feature_weighting='none', tversky_alpha=1.0, tversky_beta=1.0,
                  asymmetric_alpha=1.0, similarity='cosine'):
         super().__init__()
         self.URM_train = None
@@ -47,7 +47,7 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
             self.URM_train = TF_IDF(self.URM_train.T).T
             self.URM_train = check_matrix(self.URM_train, 'csr')
 
-        self.SM_item = self.get_similarity_matrix(similarity=self.similarity)
+        self.SM_item = self.get_similarity_matrix()
         self.RM = self.URM_train.dot(self.SM_item)
 
     def recommend(self, user_id, at=10, exclude_seen=True):
@@ -66,12 +66,6 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
     def get_expected_ratings(self, user_id):
         expected_recommendations = self.RM[user_id].todense()
         return np.squeeze(np.asarray(expected_recommendations))
-
-    def rerank_items(self, user_id, recommended_items, expected_ratings):
-        recommended_items = recommended_items[:20]
-        expected_ratings = expected_ratings[:20]
-        recommended_items = rerank_based_on_ICM(self.UFM, recommended_items, expected_ratings, user_id)
-        return recommended_items
 
 
 
@@ -109,13 +103,13 @@ if __name__ == '__main__':
     }
 
     best = {
-        'topK': 29,
-        'shrink': 5,
-        'similarity': 'tanimoto',
+        'topK': 12,
+        'shrink': 88,
+        'similarity': 'tversky',
         'fw': 'None',
         'a_alpha': 0.0,
-        'alpha': 0.0,
-        'beta': 0.0
+        'alpha': 0.12331166243379268,
+        'beta': 1.9752288743799558
     }
 
     max_map = 0

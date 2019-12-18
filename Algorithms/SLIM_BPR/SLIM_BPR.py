@@ -12,6 +12,10 @@ import time
 import numpy as np
 from scipy.special import expit
 
+from Utils.Toolkit import get_data
+from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
+from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
+
 from Algorithms.Base.BaseRecommender import BaseRecommender
 
 
@@ -50,12 +54,12 @@ class SLIM_BPR(BaseRecommender):
         for userSeenItem in userSeenItems:
 
             # For positive item is PLUS logistic minus lambda*S
-            if (pos_item_id != userSeenItem):
+            if pos_item_id != userSeenItem:
                 update = logisticFunction - self.lambda_i * self.S[pos_item_id, userSeenItem]
                 self.S[pos_item_id, userSeenItem] += self.learning_rate * update
 
             # For positive item is MINUS logistic minus lambda*S
-            if (neg_item_id != userSeenItem):
+            if neg_item_id != userSeenItem:
                 update = - logisticFunction - self.lambda_j * self.S[neg_item_id, userSeenItem]
                 self.S[neg_item_id, userSeenItem] += self.learning_rate * update
 
@@ -100,7 +104,7 @@ class SLIM_BPR(BaseRecommender):
             user_id, pos_item_id, neg_item_id = self.sampleTriple()
             self.updateFactors(user_id, pos_item_id, neg_item_id)
 
-            if (numSample % 5000 == 0):
+            if numSample % 5000 == 0:
                 print("Processed {} ( {:.2f}% ) in {:.4f} seconds".format(numSample,
                                                                           100.0 * float(
                                                                               numSample) / numPositiveIteractions,
@@ -115,12 +119,12 @@ class SLIM_BPR(BaseRecommender):
         Sample a user that has viewed at least one and not all items
         :return: user_id
         """
-        while (True):
+        while True:
 
             user_id = np.random.randint(0, self.n_users)
             numSeenItems = self.URM_train[user_id].nnz
 
-            if (numSeenItems > 0 and numSeenItems < self.n_items):
+            if 0 < numSeenItems < self.n_items:
                 return user_id
 
     def sampleItemPair(self, user_id):
@@ -134,11 +138,11 @@ class SLIM_BPR(BaseRecommender):
 
         pos_item_id = userSeenItems[np.random.randint(0, len(userSeenItems))]
 
-        while (True):
+        while True:
 
             neg_item_id = np.random.randint(0, self.n_items)
 
-            if (neg_item_id not in userSeenItems):
+            if neg_item_id not in userSeenItems:
                 return pos_item_id, neg_item_id
 
     def sampleTriple(self):
@@ -151,3 +155,15 @@ class SLIM_BPR(BaseRecommender):
         pos_item_id, neg_item_id = self.sampleItemPair(user_id)
 
         return user_id, pos_item_id, neg_item_id
+
+if __name__ == '__main__':
+
+    train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
+
+    evaluator = EvaluatorHoldout(test, [10], target_users=get_data()['target_users'])
+
+    slim = SLIM_BPR(train)
+    slim.fit(1)
+    result, result_string = evaluator.evaluateRecommender(slim)
+    # write_output(itemCF, get_data()['target_users'])
+    print(f"MAP: {result[10]['MAP']:.5f}")
