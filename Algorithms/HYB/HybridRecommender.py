@@ -26,6 +26,7 @@ class HybridRecommender(BaseRecommender):
     def __init__(self, URM_train, verbose=True):
         super(HybridRecommender, self).__init__(URM_train, verbose)
 
+        self.verbose = verbose
         ############## RECOMMENDERS ##############
         self.itemCF = None
         self.SLIM_BPR = None
@@ -75,14 +76,16 @@ class HybridRecommender(BaseRecommender):
         }
 
         ############################ INIT ############################
-        print("Initialising models...")
+        if self.verbose:
+            print("Initialising models...")
         self.itemCF = ItemKNNCFRecommender(self.URM_train, verbose=False)
         self.SLIM_BPR = SLIM_BPR_Cython(self.URM_train, verbose=False)
         self.RP3 = RP3betaRecommender(self.URM_train, verbose=False)
         self.P3 = P3alphaRecommender(self.URM_train, verbose=False)
 
         ############################ FIT #############################
-        print("Fitting Item CF")
+        if self.verbose:
+            print("Fitting Item CF")
         self.itemCF.fit(topK=itemCF_args['topK'],
                         shrink=itemCF_args['shrink'],
                         similarity=itemCF_args['similarity'],
@@ -91,7 +94,8 @@ class HybridRecommender(BaseRecommender):
                         tversky_beta=itemCF_args['tversky_beta'],
                         asymmetric_alpha=itemCF_args['asymmetric_alpha'])
 
-        print("Fitting SLIM BPR")
+        if self.verbose:
+            print("Fitting SLIM BPR")
         self.SLIM_BPR.fit(epochs=SLIM_args['epochs'],
                           topK=SLIM_args['topK'],
                           lambda_i=SLIM_args['lambda_i'],
@@ -100,12 +104,14 @@ class HybridRecommender(BaseRecommender):
                           symmetric=SLIM_args['symmetric'],
                           learning_rate=SLIM_args['learning_rate'])
 
-        print("Fitting P3")
+        if self.verbose:
+            print("Fitting P3")
         self.P3.fit(topK=P3_args['topK'],
                     alpha=P3_args['alpha'],
                     normalize_similarity=P3_args['normalize'])
 
-        print("Fitting RP3")
+        if self.verbose:
+            print("Fitting RP3")
         self.RP3.fit(alpha=RP3_args['alpha'],
                      beta=RP3_args['beta'],
                      topK=RP3_args['topK'],
@@ -125,6 +131,9 @@ class HybridRecommender(BaseRecommender):
         scores += RP3_scores * self.weight_rp3
 
         return scores
+
+    def save_model(self, folder_path, file_name = None):
+        print("Saving not implemented...")
 
 
 if __name__ == '__main__':
@@ -163,19 +172,17 @@ if __name__ == '__main__':
         'normalize_similarity': True
     }
 
-    weights = {
-        'item_cf': 1.55,
-        'SLIM_BPR': 0.4,
-        'P3' : 0.9,
-        'RP3' : 0.9
-    }
+    weight_itemcf = 3.7076880415191917
+    weight_slim = 1.013619998005147
+    weight_p3 = 2.2500050504760125
+    weight_rp3 = 3.3606074884992196
 
     train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
 
     evaluator = EvaluatorHoldout(test, [10], target_users=get_data()['target_users'])
 
-    hybrid = HybridRecommender(train, weights=weights)
-    hybrid.fit(itemCF_args=itemCF_args, SLIM_args=SLIM_args, P3_args=P3_args, RP3_args=RP3_args)
+    hybrid = HybridRecommender(train)
+    hybrid.fit(weight_itemcf=weight_itemcf, weight_slim=weight_slim, weight_p3=weight_p3, weight_rp3=weight_rp3)
 
     result, result_string = evaluator.evaluateRecommender(hybrid)
     print(f"MAP: {result[10]['MAP']:.5f}")
