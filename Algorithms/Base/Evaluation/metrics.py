@@ -89,16 +89,16 @@ class MAP(Metrics_Object):
     """
 
     def __init__(self):
-        data = get_data()
-        URM_all = data['URM_all']
         super(MAP, self).__init__()
         self.cumulative_AP = 0.0
-        self.n_users = URM_all.shape[0]
+        self.n_users = 0
 
     def add_recommendations(self, is_relevant, pos_items):
         self.cumulative_AP += average_precision(is_relevant, pos_items)
+        self.n_users += 1
 
     def get_metric_value(self):
+        print(f'n_users = {self.n_users}')
         return self.cumulative_AP/self.n_users
 
     def merge_with_other(self, other_metric_object):

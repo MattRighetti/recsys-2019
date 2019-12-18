@@ -186,8 +186,8 @@ if __name__ == '__main__':
     }
 
     itemCBF_args = {
-        'topK' : 29,
-        'shrink' : 5
+        'topK' : 10,
+        'shrink' : 986
     }
 
     SLIM_BPR_args = {
@@ -203,7 +203,7 @@ if __name__ == '__main__':
     weights_initial = {
         'user_cf' : 0,
         'item_cf' : 1.55,
-        'SLIM_BPR' : 1.62,
+        'SLIM_BPR' : 1.45,
         'item_cbf' : 0,
         'ALS' : 0.6,
         'P3Alpha' : 1.5

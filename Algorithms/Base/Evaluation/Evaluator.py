@@ -134,6 +134,7 @@ class Evaluator(object):
     EVALUATOR_NAME = "Evaluator_Base_Class"
 
     def __init__(self, URM_test_list, cutoff_list, minRatingsPerUser=1, exclude_seen=True,
+                        target_users = None,
                         diversity_object = None,
                         ignore_items = None,
                         ignore_users = None,
@@ -172,6 +173,7 @@ class Evaluator(object):
         self.URM_test_list = []
         usersToEvaluate_mask = np.zeros(self.n_users, dtype=np.bool)
 
+        # This does remove every cold user from the evaluation
         for URM_test in URM_test_list:
 
             URM_test = _remove_item_interactions(URM_test, self.ignore_items_ID)
@@ -194,7 +196,22 @@ class Evaluator(object):
         else:
             self.ignore_users_ID = np.array([])
 
+
         self.usersToEvaluate = list(self.usersToEvaluate)
+
+        if target_users is not None:
+            mask_target = np.zeros(self.n_users, dtype=np.bool)
+            all_users = np.arange(self.n_users)
+
+            for user in target_users:
+                pos, = np.where(all_users == user)
+                assert 0 <= len(pos) <= 1
+                if len(pos) == 1:
+                    mask_target[pos[0]] = 1
+
+            target_cold_mask = np.logical_and(mask_target, usersToEvaluate_mask)
+
+            self.usersToEvaluate = np.arange(self.n_users)[target_cold_mask]
 
 
     def _print(self, string):
@@ -238,6 +255,7 @@ class EvaluatorHoldout(Evaluator):
     EVALUATOR_NAME = "EvaluatorHoldout"
 
     def __init__(self, URM_test_list, cutoff_list, minRatingsPerUser=1, exclude_seen=True,
+                 target_users = None,
                  diversity_object = None,
                  ignore_items = None,
                  ignore_users = None,
@@ -245,6 +263,7 @@ class EvaluatorHoldout(Evaluator):
 
 
         super(EvaluatorHoldout, self).__init__(URM_test_list, cutoff_list,
+                                               target_users = target_users,
                                                diversity_object = diversity_object,
                                                minRatingsPerUser=minRatingsPerUser, exclude_seen=exclude_seen,
                                                ignore_items = ignore_items, ignore_users = ignore_users,
@@ -293,14 +312,15 @@ class EvaluatorHoldout(Evaluator):
             test_user_batch_array = np.array(usersToEvaluate[user_batch_start:user_batch_end])
             user_batch_start = user_batch_end
 
-            # Compute predictions for a batch of users using vectorization, much more efficient than computing it one at a time
+            # Compute predictions for a batch of users using vectorization, much more
+            # efficient than computing it one at a time
             recommended_items_batch_list, scores_batch = recommender_object.recommend(test_user_batch_array,
                                                                       remove_seen_flag=self.exclude_seen,
                                                                       cutoff = self.max_cutoff,
                                                                       remove_top_pop_flag=False,
                                                                       remove_custom_items_flag=self.ignore_items_flag,
                                                                       return_scores = True
-                                                                     )
+                                                                      )
 
 
             assert len(recommended_items_batch_list) == len(test_user_batch_array), "{}: recommended_items_batch_list contained recommendations for {} users, expected was {}".format(
@@ -318,7 +338,9 @@ class EvaluatorHoldout(Evaluator):
 
                 test_user = test_user_batch_array[batch_user_index]
 
+                # Prendi tutte le items nella URM_test per un certo utente
                 relevant_items = self.get_user_relevant_items(test_user)
+                # Prendi lo score di tutte le items nella URM_test per un certo utente
                 relevant_items_rating = self.get_user_test_ratings(test_user)
 
                 all_items_predicted_ratings = scores_batch[batch_user_index]
@@ -396,7 +418,7 @@ class EvaluatorHoldout(Evaluator):
 
         results_dict, n_users_evaluated = self._run_evaluation_on_selected_users(recommender_object, self.usersToEvaluate)
 
-        if (n_users_evaluated > 0):
+        if n_users_evaluated > 0:
 
             for cutoff in self.cutoff_list:
 
@@ -409,7 +431,7 @@ class EvaluatorHoldout(Evaluator):
                     if isinstance(value, Metrics_Object):
                         results_current_cutoff[key] = value.get_metric_value()
                     else:
-                        results_current_cutoff[key] = value/n_users_evaluated
+                        results_current_cutoff[key] = value / n_users_evaluated
 
                 precision_ = results_current_cutoff[EvaluatorMetrics.PRECISION.value]
                 recall_ = results_current_cutoff[EvaluatorMetrics.RECALL.value]
@@ -429,7 +451,7 @@ class EvaluatorHoldout(Evaluator):
         if self.ignore_items_flag:
             recommender_object.reset_items_to_ignore()
 
-        return (results_dict, results_run_string)
+        return results_dict, results_run_string
 
 
 
@@ -594,7 +616,7 @@ class EvaluatorNegativeItemSample(Evaluator):
                 start_time_print = time.time()
 
 
-        if (n_users_evaluated > 0):
+        if n_users_evaluated > 0:
 
             for cutoff in self.cutoff_list:
 
@@ -626,4 +648,4 @@ class EvaluatorNegativeItemSample(Evaluator):
 
         results_run_string = get_result_string(results_dict)
 
-        return (results_dict, results_run_string)
+        return results_dict, results_run_string

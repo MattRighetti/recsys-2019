@@ -5,6 +5,12 @@ Created on 23/10/17
 
 @author: Maurizio Ferrari Dacrema
 """
+from Utils.Toolkit import get_data
+from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
+from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
+from Algorithms.Data_manager.Kaggle.KaggleDataReader import KaggleDataReader
+from Algorithms.Data_manager.DataSplitter_leave_k_out import DataSplitter_leave_k_out
+from Utils.OutputWriter import write_output
 
 from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseItemSimilarityMatrixRecommender
@@ -47,8 +53,22 @@ class ItemKNNCFRecommender(BaseItemSimilarityMatrixRecommender):
             self.URM_train = TF_IDF(self.URM_train.T).T
             self.URM_train = check_matrix(self.URM_train, 'csr')
 
-        similarity = Compute_Similarity(self.URM_train, shrink=shrink, topK=topK, normalize=normalize, similarity = similarity, **similarity_args)
+        similarity = Compute_Similarity(self.URM_train, shrink=shrink, topK=topK, normalize=normalize, similarity=similarity, **similarity_args)
 
 
         self.W_sparse = similarity.compute_similarity()
         self.W_sparse = check_matrix(self.W_sparse, format='csr')
+
+if __name__ == '__main__':
+
+    train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
+
+    evaluator = EvaluatorHoldout(test, [10], target_users=get_data()['target_users'])
+
+    itemCF = ItemKNNCFRecommender(train)
+    # itemCF.load_model("/Users/mattiarighetti/Developer/PycharmProjects/recsys/result_experiments/SKOPT_prova/", file_name="ItemKNNCFRecommender_cosine_best_model.zip")
+    itemCF.fit(29, 5, similarity='tanimoto', normalize=True, feature_weighting='none')
+    itemCF.evaluate_MAP_target(test, get_data()['target_users'])
+    result, result_string = evaluator.evaluateRecommender(itemCF)
+    # write_output(itemCF, get_data()['target_users'])
+    print(f"MAP: {result[10]['MAP']:.5f}")
