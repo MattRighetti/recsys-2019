@@ -5,10 +5,11 @@ from Recommenders.CF.user_cf import UserBasedCollaborativeFiltering
 from Recommenders.CBF.item_CBF import ItemContentBasedRecommender
 from Recommenders.CBF.user_CBF import UserContentBasedRecommender
 from Recommenders.MF.ALS import AlternatingLeastSquare
+from Recommenders.Graph.P3GraphRecommender import P3alphaRecommender
 from Recommenders.SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Recommenders.BaseRecommender import BaseRecommender
 from Recommenders.NonPersonalized.top_pop import TopPop
-from Utils.Toolkit import get_data
+from Utils.Toolkit import get_data, get_target_users_group
 from Utils.OutputWriter import write_output
 import numpy as np
 
@@ -18,7 +19,7 @@ class HybridRecommender(BaseRecommender):
     RECOMMENDER_NAME = "HYB"
 
     def __init__(self, weights=None, userCF_args=None, itemCBF_args=None,
-                 itemCF_args=None, SLIM_BPR_args=None, userCBF_args=None):
+                 itemCF_args=None, SLIM_BPR_args=None, P3alpha_args=None, userCBF_args=None):
 
         super().__init__()
         ######################## URM ########################
@@ -35,6 +36,7 @@ class HybridRecommender(BaseRecommender):
         self.itemCF_args = itemCF_args
         self.SLIM_BPR_args = SLIM_BPR_args
         self.userCBF_args = userCBF_args
+        self.P3alpha_args = P3alpha_args
 
         ######################## Scores ########################
         self.userCF_scores = None
@@ -42,10 +44,18 @@ class HybridRecommender(BaseRecommender):
         self.SLIM_BPR_scores = None
         self.itemCBF_scores = None
         self.ALS_scores = None
+        self.P3alpha_scores =  None
 
         ######################## Collaborative Filtering ########################
         #self.userCF = UserBasedCollaborativeFiltering(topK=self.userCF_args['topK'], shrink=self.userCF_args['shrink'])
-        self.itemCF = ItemBasedCollaborativeFiltering(topK=self.itemCF_args['topK'], shrink=self.itemCF_args['shrink'], feature_weighting='TF-IDF')
+        self.itemCF = ItemBasedCollaborativeFiltering(topK=self.itemCF_args['topK'],
+                                                      shrink=self.itemCF_args['shrink'],
+                                                      feature_weighting=self.itemCF_args['fw'],
+                                                      similarity=self.itemCF_args['similarity'],
+                                                      tversky_alpha=self.itemCF_args['alpha'],
+                                                      tversky_beta=self.itemCF_args['beta'],
+                                                      asymmetric_alpha=self.itemCF_args['a_alpha'])
+
         self.userCBF = UserContentBasedRecommender(topK=self.userCBF_args['topK'], shrink=self.userCBF_args['shrink'])
 
         #self.itemCBF = ItemContentBasedRecommender(topK=self.itemCBF_args['topK'], shrink=self.itemCBF_args['shrink'])
@@ -59,6 +69,10 @@ class HybridRecommender(BaseRecommender):
                                 symmetric=self.SLIM_BPR_args['symmetric'],
                                 learning_rate=self.SLIM_BPR_args['learning_rate'],
                                 batch_size=1000)
+
+        self.P3alpha = P3alphaRecommender(topK=self.P3alpha_args['topK'],
+                                          alpha=self.P3alpha_args['alpha'],
+                                          normalize_similarity=self.P3alpha_args['normalize'])
 
         self.ALS = AlternatingLeastSquare()
 
@@ -81,6 +95,9 @@ class HybridRecommender(BaseRecommender):
         print("Fitting ALS...")
         self.ALS.fit(self.URM_train.copy())
 
+        print("Fitting P3Alpha")
+        self.P3alpha.fit(self.URM_train.copy())
+
         print("Done fitting models...")
 
     def recommend(self, user_id, at=10, exclude_seen=True):
@@ -89,6 +106,7 @@ class HybridRecommender(BaseRecommender):
         self.SLIM_BPR_scores = self.SLIM_BPR.get_expected_ratings(user_id)
         #self.itemCBF_scores = self.itemCBF.get_expected_ratings(user_id)
         self.ALS_scores = self.ALS.get_expected_ratings(user_id)
+        self.P3alpha_scores = self.P3alpha.get_expected_ratings(user_id)
 
         start_pos = self.URM_train.indptr[user_id]
         end_pos = self.URM_train.indptr[user_id + 1]
@@ -102,6 +120,7 @@ class HybridRecommender(BaseRecommender):
             score = self.itemCF_scores * self.weight_initial['item_cf']
             score += self.SLIM_BPR_scores * self.weight_initial['SLIM_BPR']
             score += self.ALS_scores * self.weight_initial['ALS']
+            score += self.P3alpha_scores * self.weight_initial['P3Alpha']
             # scores += self.userCF_scores * self.weight['user_cf']
             # scores += self.itemCBF_scores * self.weight['item_cbf']
 
@@ -109,6 +128,7 @@ class HybridRecommender(BaseRecommender):
             score = self.itemCF_scores * self.weight_middle['item_cf']
             score += self.SLIM_BPR_scores * self.weight_middle['SLIM_BPR']
             score += self.ALS_scores * self.weight_middle['ALS']
+            score += self.P3alpha_scores * self.weight_middle['P3Alpha']
             # scores += self.userCF_scores * self.weight['user_cf']
             # scores += self.itemCBF_scores * self.weight['item_cbf']
 
@@ -116,6 +136,7 @@ class HybridRecommender(BaseRecommender):
             score = self.itemCF_scores * self.weight_end['item_cf']
             score += self.SLIM_BPR_scores * self.weight_end['SLIM_BPR']
             score += self.ALS_scores * self.weight_end['ALS']
+            score += self.P3alpha_scores * self.weight_end['P3Alpha']
             # scores += self.userCF_scores * self.weight['user_cf']
             # scores += self.itemCBF_scores * self.weight['item_cbf']
 
@@ -129,8 +150,14 @@ class HybridRecommender(BaseRecommender):
 ################################################ Test ##################################################
 if __name__ == '__main__':
     test = False
+    split_users = True
     max_map = 0
     data = get_data()
+
+    group_cold = None
+    group_one = None
+    group_two = None
+    group_three = None
 
     userCF_args = {
         'topK' : 102,
@@ -142,9 +169,20 @@ if __name__ == '__main__':
         'shrink' : 7950
     }
 
+    P3alpha_args = {
+        'topK' : 66,
+        'alpha': 0.2731573847973295,
+        'normalize' : True
+    }
+
     itemCF_args = {
-        'topK' : 29,
-        'shrink' : 5
+        'topK': 15,
+        'shrink': 986,
+        'fw': 'TF-IDF',
+        'similarity': 'asymmetric',
+        'a_alpha': 0.30904474725892556,
+        'alpha': 0.0,
+        'beta': 0.0
     }
 
     itemCBF_args = {
@@ -167,23 +205,26 @@ if __name__ == '__main__':
         'item_cf' : 1.55,
         'SLIM_BPR' : 1.45,
         'item_cbf' : 0,
-        'ALS' : 0.6
+        'ALS' : 0.6,
+        'P3Alpha' : 1.5
     }
 
     weights_middle = {
         'user_cf' : 0,
         'item_cf' : 1.55,
-        'SLIM_BPR' : 1.5,
+        'SLIM_BPR' : 1.62,
         'item_cbf' : 0,
-        'ALS' : 0.6
+        'ALS' : 0.6,
+        'P3Alpha': 0.9
     }
 
     weights_end = {
         'user_cf' : 0,
         'item_cf' : 1.55,
-        'SLIM_BPR' : 0.5,
+        'SLIM_BPR' : 0.4,
         'item_cbf' : 0,
-        'ALS' : 0
+        'ALS' : 0.1,
+        'P3Alpha' : 2
     }
 
     hyb = HybridRecommender(weights=[weights_initial, weights_middle, weights_end],
@@ -191,12 +232,28 @@ if __name__ == '__main__':
                             SLIM_BPR_args=SLIM_BPR_args,
                             itemCF_args=itemCF_args,
                             itemCBF_args=itemCBF_args,
-                            userCBF_args=userCBF_args)
+                            userCBF_args=userCBF_args,
+                            P3alpha_args=P3alpha_args)
 
     if test:
+
         hyb.fit(data['train'].tocsr(), data['ICM_subclass'].tocsr(), data['UCM'].tocsr())
-        result = hyb.evaluate_MAP_target(data['test'], data['target_users'])
-        print("Initial {}".format(weights_initial))
+
+        if split_users:
+
+            group_cold, group_one, group_two, group_three = get_target_users_group(data['target_users'], data['train'])
+
+            result_cold = hyb.evaluate_MAP_target(data['test'], group_cold)
+            result_one = hyb.evaluate_MAP_target(data['test'], group_one)
+            result_two = hyb.evaluate_MAP_target(data['test'], group_two)
+            result_three = hyb.evaluate_MAP_target(data['test'], group_three)
+
+            print(f'Total MAP: {result_cold["MAP"] + result_one["MAP"] + result_two["MAP"] + result_three["MAP"]:.5f}')
+
+        elif not split_users:
+            hyb.evaluate_MAP_target(data['test'], data['target_users'])
+
+        print("\nInitial {}".format(weights_initial))
         print("Middle {}".format(weights_middle))
         print("End {}".format(weights_end))
 

@@ -371,7 +371,7 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
             hyperparameters_range_dictionary["epochs"] = Categorical([500])
             hyperparameters_range_dictionary["use_bias"] = Categorical([True, False])
             hyperparameters_range_dictionary["batch_size"] = Categorical([1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024])
-            hyperparameters_range_dictionary["num_factors"] = Categorical([200])
+            hyperparameters_range_dictionary["num_factors"] = Integer(1, 200)
             hyperparameters_range_dictionary["item_reg"] = Real(low = 1e-5, high = 1e-2, prior = 'log-uniform')
             hyperparameters_range_dictionary["user_reg"] = Real(low = 1e-5, high = 1e-2, prior = 'log-uniform')
             hyperparameters_range_dictionary["learning_rate"] = Real(low = 1e-4, high = 1e-1, prior = 'log-uniform')
@@ -597,8 +597,8 @@ def read_data_split_and_search():
         # Random,
         # TopPop,
         # P3alphaRecommender,
-        RP3betaRecommender,
-        # ItemKNNCFRecommender
+        # RP3betaRecommender,
+        ItemKNNCFRecommender
         # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,

@@ -2,7 +2,6 @@ from Utils.Toolkit import get_URM_TFIDF, normalize_matrix, get_data, TF_IDF
 from Utils.OutputWriter import write_output
 from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP_target_users, evaluate_MAP
-from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
 from Algorithms.Base.Similarity.Compute_Similarity import Compute_Similarity
 from Recommenders.BaseRecommender import BaseRecommender
 import numpy as np
@@ -12,7 +11,8 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
 
     RECOMMENDER_NAME = "ItemBasedCollaborativeFiltering"
 
-    def __init__(self, topK, shrink, feature_weighting='TF-IDF', tversky_alpha=1.0, tversky_beta=1.0, asymmetric_alpha=1.0, similarity='cosine'):
+    def __init__(self, topK, shrink, feature_weighting='TF-IDF', tversky_alpha=1.0, tversky_beta=1.0,
+                 asymmetric_alpha=1.0, similarity='cosine'):
         super().__init__()
         self.URM_train = None
         self.topK = topK
@@ -27,15 +27,15 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
         self.RM = None
         self.UFM = None
 
-    def get_similarity_matrix(self, similarity='asymmetric'):
-        similarity_object = Compute_Similarity(self.URM_train,
+    def get_similarity_matrix(self):
+        similarity_object = Compute_Similarity(dataMatrix=self.URM_train,
                                                shrink=self.shrink,
                                                topK=self.topK,
-                                               normalize=True,
-                                               tversky_alpha=1.0,
-                                               tversky_beta=1.0,
-                                               asymmetric_alpha=self.asymmetric_alpha,
-                                               similarity=similarity)
+                                               similarity=self.similarity,
+                                               normalize = True,
+                                               tversky_alpha = self.tversky_alpha,
+                                               tversky_beta = self.tversky_beta,
+                                               asymmetric_alpha=self.asymmetric_alpha)
 
         return similarity_object.compute_similarity()
 
@@ -101,11 +101,21 @@ if __name__ == '__main__':
     best_tversky = {
         'topK': 23,
         'shrink': 26,
-        'similarity' : 'tversky',
+        'similarity': 'tversky',
         'fw': 'TF-IDF',
-        'a_alpha': 0.30904474725892556,
-        'alpha' : 0.12835746708802967,
-        'beta' : 1.995921498038378
+        'a_alpha': 0.0,
+        'alpha': 0.12835746708802967,
+        'beta': 1.995921498038378
+    }
+
+    best = {
+        'topK': 29,
+        'shrink': 5,
+        'similarity': 'tanimoto',
+        'fw': 'None',
+        'a_alpha': 0.0,
+        'alpha': 0.0,
+        'beta': 0.0
     }
 
     max_map = 0
@@ -129,7 +139,7 @@ if __name__ == '__main__':
         result = itemCF.evaluate_MAP_target(data['test'], data['target_users'])
 
     else:
-        URM_final = get_data()['URM_all'].tocsr()
+        URM_final = data['train'] + data['test']
         itemCF.fit(URM_final)
         write_output(itemCF, target_user_list=data['target_users'])
 ################################################ Test ##################################################
