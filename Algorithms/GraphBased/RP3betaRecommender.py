@@ -13,6 +13,10 @@ from Algorithms.Base.Recommender_utils import check_matrix, similarityMatrixTopK
 from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseItemSimilarityMatrixRecommender
 import time, sys
 
+from Utils.Toolkit import get_data
+from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
+from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
+
 class RP3betaRecommender(BaseItemSimilarityMatrixRecommender):
     """ RP3beta recommender """
 
@@ -149,3 +153,16 @@ class RP3betaRecommender(BaseItemSimilarityMatrixRecommender):
 
 
         self.W_sparse = check_matrix(self.W_sparse, format='csr')
+
+if __name__ == '__main__':
+
+    train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
+
+    evaluator = EvaluatorHoldout(test, [10])
+
+    rp3 = RP3betaRecommender(train)
+    rp3.fit(alpha=0.032949920239451876, beta=0.14658580479486563, normalize_similarity=True, topK=75)
+    rp3.evaluate_MAP_target(test, get_data()['target_users'])
+    result, result_string = evaluator.evaluateRecommender(rp3)
+    # write_output(itemCF, get_data()['target_users'])
+    print(f"MAP: {result[10]['MAP']:.5f}")

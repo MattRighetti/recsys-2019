@@ -6,7 +6,7 @@ Created on 22/11/17
 @author: Maurizio Ferrari Dacrema
 """
 
-
+from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
 ######################################################################
 ##########                                                  ##########
 ##########                  PURE COLLABORATIVE              ##########
@@ -583,10 +583,8 @@ def read_data_split_and_search():
         - A _best_result_test file which contains a dictionary with the results, on the test set, of the best solution chosen using the validation set
     """
 
-    data = get_data()
-    URM_test = data['test']
-    URM_train = data['train']
-    URM_train, URM_validation = train_test_holdout(URM_train)
+    URM_train, URM_test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
+    URM_train, URM_validation = split_train_leave_k_out_user_wise(URM_train, k_out=1)
 
     output_folder_path = "result_experiments/SKOPT_prova/"
 
@@ -622,7 +620,7 @@ def read_data_split_and_search():
                                                        URM_train = URM_train,
                                                        metric_to_optimize = "MAP",
                                                        # TODO change num of iterations here
-                                                       n_cases = 30,
+                                                       n_cases = 100,
                                                        evaluator_validation_earlystopping = evaluator_validation,
                                                        evaluator_validation = evaluator_validation,
                                                        evaluator_test = evaluator_test,

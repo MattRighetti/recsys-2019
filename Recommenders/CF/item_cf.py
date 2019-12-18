@@ -13,7 +13,6 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
 
     def __init__(self, topK, shrink, feature_weighting='TF-IDF', tversky_alpha=1.0, tversky_beta=1.0,
                  asymmetric_alpha=1.0, similarity='cosine'):
-
         super().__init__()
         self.URM_train = None
         self.topK = topK
@@ -22,7 +21,7 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
         self.tversky_alpha = tversky_alpha
         self.tversky_beta = tversky_beta
         self.asymmetric_alpha = asymmetric_alpha
-        self.similarity = similarity
+        self.similarity=similarity
 
         self.SM_item = None
         self.RM = None
@@ -48,7 +47,7 @@ class ItemBasedCollaborativeFiltering(BaseRecommender):
             self.URM_train = TF_IDF(self.URM_train.T).T
             self.URM_train = check_matrix(self.URM_train, 'csr')
 
-        self.SM_item = self.get_similarity_matrix()
+        self.SM_item = self.get_similarity_matrix(similarity=self.similarity)
         self.RM = self.URM_train.dot(self.SM_item)
 
     def recommend(self, user_id, at=10, exclude_seen=True):
@@ -84,7 +83,7 @@ if __name__ == '__main__':
         'shrink': 986,
         'fw': 'TF-IDF',
         'similarity': 'asymmetric',
-        'a_alpha': 0.30904474725892556,
+        'a_alpha' : 0.30904474725892556,
         'alpha': 0.0,
         'beta': 0.0
     }
@@ -94,7 +93,7 @@ if __name__ == '__main__':
         'shrink': 999,
         'similarity': 'cosine',
         'fw': 'TF-IDF',
-        'a_alpha': 0.0,
+        'a_alpha': 0.30904474725892556,
         'alpha': 0.0,
         'beta': 0.0
     }
@@ -124,10 +123,10 @@ if __name__ == '__main__':
 
     test = True
 
-    args = best
+    args = best_asymmetric
 
-    itemCF = ItemBasedCollaborativeFiltering(topK=args['topK'],
-                                             shrink=args['shrink'],
+    itemCF = ItemBasedCollaborativeFiltering(args['topK'],
+                                             args['shrink'],
                                              feature_weighting=args['fw'],
                                              similarity=args['similarity'],
                                              tversky_alpha=args['alpha'],

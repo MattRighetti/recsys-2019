@@ -27,7 +27,6 @@ def evaluate_MAP(URM_test, recommender_object, at=10, verbose=False):
 def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10):
     cumulative_MAP = 0.0
     num_eval = 0
-    n_users = URM_test.shape[0]
 
     n_total_miss = 0
     n_relevant = 0
@@ -39,18 +38,54 @@ def evaluate_MAP_target_users(URM_test, recommender_object, target_users, at=10)
 
         if end_pos - start_pos > 0:
             relevant_items = URM_test.indices[start_pos:end_pos]
-
             recommended_items = recommender_object.recommend(user_id, at)
-
+            num_eval += 1
             is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
-
             val = MAP(is_relevant, relevant_items)
+
 
             if val == 0:
                 n_total_miss += 1
             else:
                 n_relevant += 1
 
+
+            cumulative_MAP += val
+
+    print(f"Evaluated {num_eval} users")
+    cumulative_MAP /= num_eval
+
+    results = {
+        'MAP' : cumulative_MAP,
+        'TOT_MISS' : n_total_miss,
+        'RELEVANT' : n_relevant
+    }
+
+    return results
+
+def evaluate_ranklist_MAP(URM_test, recommender_object, target_users, at=10):
+    cumulative_MAP = 0.0
+    n_users = 28106
+
+    n_total_miss = 0
+    n_relevant = 0
+
+    rank_list = recommender_object.recommend(target_users, cutoff=at)
+
+    for i in tqdm(range(len(rank_list)), desc="Evaluating rank list MAP"):
+        start_pos = URM_test.indptr[i]
+        end_pos = URM_test.indptr[i+1]
+
+        if end_pos - start_pos > 0:
+            relevant_items = URM_test.indices[start_pos:end_pos]
+            recommended_items = rank_list[i]
+            is_relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
+            val = MAP(is_relevant, relevant_items)
+
+            if val == 0:
+                n_total_miss += 1
+            else:
+                n_relevant += 1
 
             cumulative_MAP += val
 

@@ -6,6 +6,7 @@ Created on 16/09/2017
 @author: Maurizio Ferrari Dacrema
 """
 
+from Utils.Evaluator_new import evaluate_MAP_target_users, evaluate_MAP
 from Algorithms.Base.BaseRecommender import BaseRecommender
 from Algorithms.Base.DataIO import DataIO
 import numpy as np
