@@ -34,13 +34,13 @@ class SLIMElasticNetRecommender(BaseItemSimilarityMatrixRecommender):
 
     RECOMMENDER_NAME = "SLIMElasticNetRecommender"
 
-    def __init__(self, URM_test, verbose = True):
-        super(SLIMElasticNetRecommender, self).__init__(self.URM_train, verbose = verbose)
+    def __init__(self, URM_train, verbose = True):
+        super(SLIMElasticNetRecommender, self).__init__(URM_train, verbose = verbose)
 
 
     def fit(self, l1_ratio=0.1, alpha = 1.0, positive_only=True, topK = 100):
 
-        assert l1_ratio>= 0 and l1_ratio<=1, "{}: l1_ratio must be between 0 and 1, provided value was {}".format(self.RECOMMENDER_NAME, l1_ratio)
+        assert 0 <= l1_ratio <= 1, "{}: l1_ratio must be between 0 and 1, provided value was {}".format(self.RECOMMENDER_NAME, l1_ratio)
 
         self.l1_ratio = l1_ratio
         self.positive_only = positive_only
@@ -204,7 +204,7 @@ class MultiThreadSLIM_ElasticNet(SLIMElasticNetRecommender, BaseItemSimilarityMa
                  topK = 100,
                  workers=multiprocessing.cpu_count()):
 
-        assert l1_ratio>= 0 and l1_ratio<=1, "SLIM_ElasticNet: l1_ratio must be between 0 and 1, provided value was {}".format(l1_ratio)
+        assert 0 <= l1_ratio <= 1, "SLIM_ElasticNet: l1_ratio must be between 0 and 1, provided value was {}".format(l1_ratio)
 
         self.l1_ratio = l1_ratio
         self.positive_only = positive_only

@@ -32,8 +32,8 @@ class HybridRecommender(BaseRecommender):
         self.SLIM_BPR = None
 
 
-    def fit(self, itemCF_args = None, SLIM_args = None, RP3_args = None, P3_args = None, weight_itemcf = None,
-            weight_slim = None, weight_p3 = None, weight_rp3 = None):
+    def fit(self, itemCF_args = None, SLIM_args = None, RP3_args = None, P3_args = None, weight_itemcf = 0.0,
+            weight_slim = 0.0, weight_p3 = 0.0, weight_rp3 = 0.0):
 
         self.weight_itemcf = weight_itemcf
         self.weight_slim = weight_slim
