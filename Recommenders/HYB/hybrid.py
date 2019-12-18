@@ -52,9 +52,9 @@ class HybridRecommender(BaseRecommender):
                                                       shrink=self.itemCF_args['shrink'],
                                                       feature_weighting=self.itemCF_args['fw'],
                                                       similarity=self.itemCF_args['similarity'],
-                                                      tversky_alpha=self.itemCF_args['alpha'],
-                                                      tversky_beta=self.itemCF_args['beta'],
-                                                      asymmetric_alpha=self.itemCF_args['a_alpha'])
+                                                      tversky_alpha=self.itemCF_args['tversky_alpha'],
+                                                      tversky_beta=self.itemCF_args['tversky_beta'],
+                                                      asymmetric_alpha=self.itemCF_args['asymmetric_alpha'])
 
         self.userCBF = UserContentBasedRecommender(topK=self.userCBF_args['topK'], shrink=self.userCBF_args['shrink'])
 
@@ -170,19 +170,20 @@ if __name__ == '__main__':
     }
 
     P3alpha_args = {
-        'topK' : 66,
+        'topK': 66,
         'alpha': 0.2731573847973295,
-        'normalize' : True
+        'normalize': True
     }
 
     itemCF_args = {
-        'topK': 15,
-        'shrink': 986,
-        'fw': 'TF-IDF',
-        'similarity': 'asymmetric',
-        'a_alpha': 0.30904474725892556,
-        'alpha': 0.0,
-        'beta': 0.0
+        'topK': 12,
+        'shrink': 88,
+        'similarity': 'tversky',
+        'normalize': True,
+        'fw': 'none',
+        'tversky_alpha': 0.12331166243379268,
+        'tversky_beta': 1.9752288743799558,
+        'asymmetric_alpha': 0.0
     }
 
     itemCBF_args = {
@@ -202,26 +203,26 @@ if __name__ == '__main__':
 
     weights_initial = {
         'user_cf' : 0,
-        'item_cf' : 1.55,
-        'SLIM_BPR' : 1.45,
+        'item_cf' : 2,
+        'SLIM_BPR' : 0,
         'item_cbf' : 0,
         'ALS' : 0.6,
-        'P3Alpha' : 1.5
+        'P3Alpha' : 2
     }
 
     weights_middle = {
         'user_cf' : 0,
-        'item_cf' : 1.55,
-        'SLIM_BPR' : 1.62,
+        'item_cf' : 2,
+        'SLIM_BPR' : 0,
         'item_cbf' : 0,
         'ALS' : 0.6,
-        'P3Alpha': 0.9
+        'P3Alpha': 2
     }
 
     weights_end = {
         'user_cf' : 0,
-        'item_cf' : 1.55,
-        'SLIM_BPR' : 0.4,
+        'item_cf' : 2,
+        'SLIM_BPR' : 0.0,
         'item_cbf' : 0,
         'ALS' : 0.1,
         'P3Alpha' : 2
