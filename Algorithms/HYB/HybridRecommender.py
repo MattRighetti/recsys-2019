@@ -23,25 +23,66 @@ class HybridRecommender(BaseRecommender):
 
     RECOMMENDER_NAME = "HybridRecommender"
 
-    def __init__(self, URM_train, weights = None, verbose=True):
+    def __init__(self, URM_train, verbose=True):
         super(HybridRecommender, self).__init__(URM_train, verbose)
 
         ############## RECOMMENDERS ##############
         self.itemCF = None
         self.SLIM_BPR = None
 
-        self.weights = weights
 
+    def fit(self, itemCF_args = None, SLIM_args = None, RP3_args = None, P3_args = None, weight_itemcf = None,
+            weight_slim = None, weight_p3 = None, weight_rp3 = None):
 
-    def fit(self, itemCF_args = None, SLIM_args = None, RP3_args = None, P3_args = None):
+        self.weight_itemcf = weight_itemcf
+        self.weight_slim = weight_slim
+        self.weight_p3 = weight_p3
+        self.weight_rp3 = weight_rp3
+
+        ###################### DEFAULT VALUES #########################
+        itemCF_args = {
+            'topK': 12,
+            'shrink': 88,
+            'similarity': 'tversky',
+            'normalize': True,
+            'fw': 'none',
+            'tversky_alpha': 0.12331166243379268,
+            'tversky_beta': 1.9752288743799558,
+            'asymmetric_alpha': 0.0
+        }
+
+        SLIM_args = {
+            'topK': 20,
+            'lambda_i': 0.01,
+            'lambda_j': 0.007,
+            'epochs': 100,
+            'learning_rate': 1e-4,
+            'symmetric': True,
+            'sgd_mode': 'adagrad'
+        }
+
+        P3_args = {
+            'topK': 66,
+            'alpha': 0.2731573847973295,
+            'normalize': True
+        }
+
+        RP3_args = {
+            'topK': 75,
+            'alpha': 0.032949920239451876,
+            'beta': 0.14658580479486563,
+            'normalize_similarity': True
+        }
 
         ############################ INIT ############################
+        print("Initialising models...")
         self.itemCF = ItemKNNCFRecommender(self.URM_train, verbose=False)
         self.SLIM_BPR = SLIM_BPR_Cython(self.URM_train, verbose=False)
         self.RP3 = RP3betaRecommender(self.URM_train, verbose=False)
         self.P3 = P3alphaRecommender(self.URM_train, verbose=False)
 
         ############################ FIT #############################
+        print("Fitting Item CF")
         self.itemCF.fit(topK=itemCF_args['topK'],
                         shrink=itemCF_args['shrink'],
                         similarity=itemCF_args['similarity'],
@@ -50,6 +91,7 @@ class HybridRecommender(BaseRecommender):
                         tversky_beta=itemCF_args['tversky_beta'],
                         asymmetric_alpha=itemCF_args['asymmetric_alpha'])
 
+        print("Fitting SLIM BPR")
         self.SLIM_BPR.fit(epochs=SLIM_args['epochs'],
                           topK=SLIM_args['topK'],
                           lambda_i=SLIM_args['lambda_i'],
@@ -58,10 +100,12 @@ class HybridRecommender(BaseRecommender):
                           symmetric=SLIM_args['symmetric'],
                           learning_rate=SLIM_args['learning_rate'])
 
+        print("Fitting P3")
         self.P3.fit(topK=P3_args['topK'],
                     alpha=P3_args['alpha'],
                     normalize_similarity=P3_args['normalize'])
 
+        print("Fitting RP3")
         self.RP3.fit(alpha=RP3_args['alpha'],
                      beta=RP3_args['beta'],
                      topK=RP3_args['topK'],
@@ -69,15 +113,16 @@ class HybridRecommender(BaseRecommender):
 
 
     def _compute_item_score(self, user_id_array, items_to_compute = None):
+
         itemCF_scores = self.itemCF._compute_item_score(user_id_array)
         SLIM_scores = self.SLIM_BPR._compute_item_score(user_id_array)
         P3_scores = self.P3._compute_item_score(user_id_array)
         RP3_scores = self.RP3._compute_item_score(user_id_array)
 
-        scores = itemCF_scores * self.weights['item_cf']
-        scores += SLIM_scores * self.weights['SLIM_BPR']
-        scores += P3_scores * self.weights['P3']
-        scores += RP3_scores * self.weights['RP3']
+        scores = itemCF_scores * self.weight_itemcf
+        scores += SLIM_scores * self.weight_slim
+        scores += P3_scores * self.weight_p3
+        scores += RP3_scores * self.weight_rp3
 
         return scores
 

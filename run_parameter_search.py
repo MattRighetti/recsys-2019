@@ -32,6 +32,9 @@ from Algorithms.MatrixFactorization.NMFRecommender import NMFRecommender
 from Algorithms.MatrixFactorization.Cython.MatrixFactorization_Cython import MatrixFactorization_BPR_Cython,\
     MatrixFactorization_FunkSVD_Cython, MatrixFactorization_AsySVD_Cython
 
+# Hybrid
+from Algorithms.HYB.HybridRecommender import HybridRecommender
+
 
 
 
@@ -519,6 +522,23 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
                 FIT_KEYWORD_ARGS = {}
             )
 
+        #########################################################################################################
+
+        if recommender_class is HybridRecommender:
+
+            hyperparameters_range_dictionary = {}
+            hyperparameters_range_dictionary["weight_itemcf"] = Real(low=0.0, high=6.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_slim"] = Real(low=0.0, high=6.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_p3"] = Real(low=0.0, high=6.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_rp3"] = Real(low=0.0, high=6.0, prior='uniform')
+
+            recommender_input_args = SearchInputRecommenderArgs(
+                CONSTRUCTOR_POSITIONAL_ARGS = [URM_train],
+                CONSTRUCTOR_KEYWORD_ARGS = {},
+                FIT_POSITIONAL_ARGS = [],
+                FIT_KEYWORD_ARGS = {}
+            )
+
 
 
        #########################################################################################################
@@ -598,7 +618,8 @@ def read_data_split_and_search():
         # TopPop,
         # P3alphaRecommender,
         # RP3betaRecommender,
-        ItemKNNCFRecommender
+        # ItemKNNCFRecommender,
+        HybridRecommender
         # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
