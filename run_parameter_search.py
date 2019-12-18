@@ -597,8 +597,8 @@ def read_data_split_and_search():
         # Random,
         # TopPop,
         # P3alphaRecommender,
-        RP3betaRecommender,
-        # ItemKNNCFRecommender
+        # RP3betaRecommender,
+        ItemKNNCFRecommender
         # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
@@ -612,8 +612,8 @@ def read_data_split_and_search():
 
     from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 
-    evaluator_validation = EvaluatorHoldout(URM_validation, cutoff_list=[10])
-    evaluator_test = EvaluatorHoldout(URM_test, cutoff_list=[10])
+    evaluator_validation = EvaluatorHoldout(URM_validation, cutoff_list=[10], target_users=get_data()['target_users'])
+    evaluator_test = EvaluatorHoldout(URM_test, cutoff_list=[10], target_users=get_data()['target_users'])
 
 
     runParameterSearch_Collaborative_partial = partial(runParameterSearch_Collaborative,
