@@ -29,6 +29,7 @@ from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import SLIMElasticNetR
 from Algorithms.MatrixFactorization.PureSVDRecommender import PureSVDRecommender
 from Algorithms.MatrixFactorization.IALSRecommender import IALSRecommender
 from Algorithms.MatrixFactorization.NMFRecommender import NMFRecommender
+from Algorithms.MatrixFactorization.ALSRecommender import ALSRecommender
 from Algorithms.MatrixFactorization.Cython.MatrixFactorization_Cython import MatrixFactorization_BPR_Cython,\
     MatrixFactorization_FunkSVD_Cython, MatrixFactorization_AsySVD_Cython
 
@@ -522,8 +523,24 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
                 FIT_KEYWORD_ARGS={}
             )
 
-        #########################################################################################################
+        ##########################################################################################################
 
+        if recommender_class is ALSRecommender:
+
+            hyperparameters_range_dictionary = {}
+            hyperparameters_range_dictionary["n_factors"] = Integer(5, 1000)
+            hyperparameters_range_dictionary["regularization"] = Real(low=1e-5, high=1.0, prior='log-uniform')
+            hyperparameters_range_dictionary["iterations"] = Integer(10, 30)
+            hyperparameters_range_dictionary["alpha_val"] = Integer(1, 40)
+
+            recommender_input_args = SearchInputRecommenderArgs(
+                CONSTRUCTOR_POSITIONAL_ARGS=[URM_train],
+                CONSTRUCTOR_KEYWORD_ARGS={},
+                FIT_POSITIONAL_ARGS=[],
+                FIT_KEYWORD_ARGS={}
+            )
+
+        #########################################################################################################
         if recommender_class is HybridRecommender:
 
             hyperparameters_range_dictionary = {}
@@ -531,15 +548,14 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
             # hyperparameters_range_dictionary["weight_slim"] = Real(low=0.0, high=6.0, prior='uniform')
             hyperparameters_range_dictionary["weight_p3"] = Real(low=0.0, high=2.0, prior='uniform')
             hyperparameters_range_dictionary["weight_rp3"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_als"] = Real(low=0.0, high=2.0, prior='uniform')
 
             recommender_input_args = SearchInputRecommenderArgs(
-                CONSTRUCTOR_POSITIONAL_ARGS = [URM_train],
+                CONSTRUCTOR_POSITIONAL_ARGS = [URM_train, get_data()['UCM']],
                 CONSTRUCTOR_KEYWORD_ARGS = {},
                 FIT_POSITIONAL_ARGS = [],
                 FIT_KEYWORD_ARGS = {}
             )
-
-
 
        #########################################################################################################
 
@@ -620,7 +636,8 @@ def read_data_split_and_search():
         # RP3betaRecommender,
         # ItemKNNCFRecommender,
         # HybridRecommender
-        UserKNNCFRecommender,
+        ALSRecommender
+        # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
         # PureSVDRecommender,

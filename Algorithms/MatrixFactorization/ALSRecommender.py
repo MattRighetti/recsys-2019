@@ -44,6 +44,9 @@ class ALSRecommender(BaseRecommender):
 
         return np.asarray(scores_list, dtype=np.float32)
 
+    def save_model(self, folder_path, file_name = None):
+        print("Saving not implemented...")
+
 
 if __name__ == '__main__':
 
