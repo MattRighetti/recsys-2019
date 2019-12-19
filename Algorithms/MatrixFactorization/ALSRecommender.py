@@ -50,11 +50,21 @@ class ALSRecommender(BaseRecommender):
 
 if __name__ == '__main__':
 
+    ALS_args = {
+        'n_factors': 300,
+        'iterations': 30,
+        'regularization': 0.55,
+        'alpha_val' : 15
+    }
+
     train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
     evaluator = EvaluatorHoldout(test, [10], target_users=get_data()['target_users'])
 
     als = ALSRecommender(train)
-    als.fit()
+    als.fit(n_factors=ALS_args['n_factors'],
+            regularization=ALS_args['regularization'],
+            iterations=ALS_args['iterations'],
+            alpha_val=ALS_args['alpha_val'])
 
     result, result_string = evaluator.evaluateRecommender(als)
     print(f"MAP: {result[10]['MAP']:.5f}")
