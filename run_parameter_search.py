@@ -279,7 +279,7 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
         if recommender_class in [ItemKNNCFRecommender, UserKNNCFRecommender]:
 
             if similarity_type_list is None:
-                similarity_type_list = ['cosine', 'jaccard', "asymmetric", "dice", "tversky"]
+                similarity_type_list = ['cosine', 'jaccard', 'tanimoto', "asymmetric", "dice", "tversky"]
 
             recommender_input_args = SearchInputRecommenderArgs(
                 CONSTRUCTOR_POSITIONAL_ARGS = [URM_train],
@@ -512,14 +512,14 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
 
             hyperparameters_range_dictionary = {}
             hyperparameters_range_dictionary["topK"] = Integer(5, 1000)
-            hyperparameters_range_dictionary["l1_ratio"] = Real(low = 1e-5, high = 1.0, prior = 'log-uniform')
-            hyperparameters_range_dictionary["alpha"] = Real(low = 1e-3, high = 1.0, prior = 'uniform')
+            hyperparameters_range_dictionary["l1_ratio"] = Real(low=1e-5, high=1.0, prior='log-uniform')
+            hyperparameters_range_dictionary["alpha"] = Real(low=1e-3, high=1.0, prior='uniform')
 
             recommender_input_args = SearchInputRecommenderArgs(
-                CONSTRUCTOR_POSITIONAL_ARGS = [URM_train],
-                CONSTRUCTOR_KEYWORD_ARGS = {},
-                FIT_POSITIONAL_ARGS = [],
-                FIT_KEYWORD_ARGS = {}
+                CONSTRUCTOR_POSITIONAL_ARGS=[URM_train],
+                CONSTRUCTOR_KEYWORD_ARGS={},
+                FIT_POSITIONAL_ARGS=[],
+                FIT_KEYWORD_ARGS={}
             )
 
         #########################################################################################################
@@ -527,10 +527,10 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
         if recommender_class is HybridRecommender:
 
             hyperparameters_range_dictionary = {}
-            hyperparameters_range_dictionary["weight_itemcf"] = Real(low=0.0, high=6.0, prior='uniform')
-            hyperparameters_range_dictionary["weight_slim"] = Real(low=0.0, high=6.0, prior='uniform')
-            hyperparameters_range_dictionary["weight_p3"] = Real(low=0.0, high=6.0, prior='uniform')
-            hyperparameters_range_dictionary["weight_rp3"] = Real(low=0.0, high=6.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_itemcf"] = Real(low=0.0, high=2.0, prior='uniform')
+            # hyperparameters_range_dictionary["weight_slim"] = Real(low=0.0, high=6.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_p3"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_rp3"] = Real(low=0.0, high=2.0, prior='uniform')
 
             recommender_input_args = SearchInputRecommenderArgs(
                 CONSTRUCTOR_POSITIONAL_ARGS = [URM_train],
@@ -619,8 +619,8 @@ def read_data_split_and_search():
         # P3alphaRecommender,
         # RP3betaRecommender,
         # ItemKNNCFRecommender,
-        HybridRecommender
-        # UserKNNCFRecommender,
+        # HybridRecommender
+        UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
         # PureSVDRecommender,

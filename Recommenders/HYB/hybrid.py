@@ -150,7 +150,7 @@ class HybridRecommender(BaseRecommender):
 ################################################ Test ##################################################
 if __name__ == '__main__':
     test = False
-    split_users = True
+    split_users = False
     max_map = 0
     data = get_data()
 
@@ -204,7 +204,7 @@ if __name__ == '__main__':
     weights_initial = {
         'user_cf' : 0,
         'item_cf' : 2,
-        'SLIM_BPR' : 0,
+        'SLIM_BPR' : 1.62,
         'item_cbf' : 0,
         'ALS' : 0.6,
         'P3Alpha' : 2
@@ -213,7 +213,7 @@ if __name__ == '__main__':
     weights_middle = {
         'user_cf' : 0,
         'item_cf' : 2,
-        'SLIM_BPR' : 0,
+        'SLIM_BPR' : 1.62,
         'item_cbf' : 0,
         'ALS' : 0.6,
         'P3Alpha': 2

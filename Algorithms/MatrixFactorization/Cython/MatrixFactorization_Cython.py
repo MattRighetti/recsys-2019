@@ -55,7 +55,7 @@ class _MatrixFactorization_Cython(BaseMatrixFactorizationRecommender, Incrementa
         self.negative_interactions_quota = negative_interactions_quota
 
         # Import compiled module
-        from MatrixFactorization.Cython.MatrixFactorization_Cython_Epoch import MatrixFactorization_Cython_Epoch
+        from Algorithms.MatrixFactorization.Cython.MatrixFactorization_Cython_Epoch import MatrixFactorization_Cython_Epoch
 
 
         if self.algorithm_name in ["FUNK_SVD", "ASY_SVD"]:
