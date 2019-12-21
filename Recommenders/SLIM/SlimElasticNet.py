@@ -6,9 +6,12 @@ import numpy as np
 import scipy.sparse as sps
 from sklearn.linear_model import ElasticNet
 
-from helper import Helper
-from run import Runner
-
+from Utils.Toolkit import get_data
+from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
+from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
+from Algorithms.Data_manager.Kaggle.KaggleDataReader import KaggleDataReader
+from Algorithms.Data_manager.DataSplitter_leave_k_out import DataSplitter_leave_k_out
+from Utils.OutputWriter import write_output
 
 class SLIMElasticNetRecommender(object):
     """
@@ -130,5 +133,29 @@ class SLIMElasticNetRecommender(object):
         return recommended_items[:at]
 
 
-# recommender = SLIMElasticNetRecommender()
-# Runner.run(True, recommender, None)
+if __name__ == '__main__':
+
+    evaluate = True
+
+    weight_itemcf = 0.06469128422082827
+    weight_p3 = 0.04997541987671707
+    weight_rp3 = 0.030600333541027876
+    weight_als = 0.0
+
+    train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
+    ucm = get_data()['UCM']
+
+    if evaluate:
+        evaluator = EvaluatorHoldout(test, [10], target_users=get_data()['target_users'])
+
+        hybrid = HybridRecommender(train, ucm)
+        hybrid.fit(weight_itemcf=weight_itemcf, weight_p3=weight_p3, weight_rp3=weight_rp3, weight_als=weight_als)
+
+        result, result_string = evaluator.evaluateRecommender(hybrid)
+        print(f"MAP: {result[10]['MAP']:.5f}")
+
+    else:
+        urm_all = train + test
+        hybrid = HybridRecommender(urm_all, ucm)
+        hybrid.fit(weight_itemcf=weight_itemcf, weight_p3=weight_p3, weight_rp3=weight_rp3, weight_als=weight_als)
+        write_output(hybrid, get_data()['target_users'])

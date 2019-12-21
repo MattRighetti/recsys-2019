@@ -16,6 +16,7 @@ import time, sys
 from Utils.Toolkit import get_data
 from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
+from Utils.OutputWriter import write_output
 
 class RP3betaRecommender(BaseItemSimilarityMatrixRecommender):
     """ RP3beta recommender """
@@ -154,15 +155,23 @@ class RP3betaRecommender(BaseItemSimilarityMatrixRecommender):
 
         self.W_sparse = check_matrix(self.W_sparse, format='csr')
 
+        self.RM = self.URM_train.dot(self.W_sparse)
+
+    def get_expected_ratings(self, user_id):
+        expected_recommendations = self.RM[user_id].todense()
+        return np.squeeze(np.asarray(expected_recommendations))
+
 if __name__ == '__main__':
 
     train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
 
+    urm = train + test
+
     evaluator = EvaluatorHoldout(test, [10])
 
-    rp3 = RP3betaRecommender(train)
+    rp3 = RP3betaRecommender(urm)
     rp3.fit(alpha=0.032949920239451876, beta=0.14658580479486563, normalize_similarity=True, topK=75)
-    rp3.evaluate_MAP_target(test, get_data()['target_users'])
-    result, result_string = evaluator.evaluateRecommender(rp3)
-    # write_output(itemCF, get_data()['target_users'])
-    print(f"MAP: {result[10]['MAP']:.5f}")
+    # rp3.evaluate_MAP_target(test, get_data()['target_users'])
+    # result, result_string = evaluator.evaluateRecommender(rp3)
+    write_output(rp3, get_data()['target_users'])
+    #print(f"MAP: {result[10]['MAP']:.5f}")

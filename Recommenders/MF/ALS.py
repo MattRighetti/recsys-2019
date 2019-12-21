@@ -15,7 +15,7 @@ class AlternatingLeastSquare(BaseRecommender):
     This is Alternating Least Squares.
     """
 
-    def __init__(self, n_factors=300, regularization=0.55, iterations=30):
+    def __init__(self, n_factors=433, regularization=1.707545716729426e-05, iterations=29):
         super().__init__()
         self.n_factors = n_factors
         self.regularization = regularization
@@ -31,7 +31,7 @@ class AlternatingLeastSquare(BaseRecommender):
         # Initialize the als model and fit it using the sparse item-user matrix
         model = AlternatingLeastSquares(factors=self.n_factors, regularization=self.regularization, iterations=self.iterations)
 
-        alpha_val = 15
+        alpha_val = 5
 
         # Calculate the confidence by multiplying it by our alpha value.
         data_conf = (sparse_item_user * alpha_val).astype('double')
