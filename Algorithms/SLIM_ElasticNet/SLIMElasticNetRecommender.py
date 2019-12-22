@@ -4,6 +4,12 @@
 @author: Massimo Quadrana
 """
 
+from Utils.Toolkit import get_data
+from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
+from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
+from Algorithms.Data_manager.Kaggle.KaggleDataReader import KaggleDataReader
+from Algorithms.Data_manager.DataSplitter_leave_k_out import DataSplitter_leave_k_out
+from Utils.OutputWriter import write_output
 
 import numpy as np
 import scipy.sparse as sps
@@ -170,7 +176,7 @@ class MultiThreadSLIM_ElasticNet(SLIMElasticNetRecommender, BaseItemSimilarityMa
                                 copy_X=False,
                                 precompute=True,
                                 selection='random',
-                                max_iter=100,
+                                max_iter=200,
                                 tol=1e-4)
 
         # WARNING: make a copy of X to avoid race conditions on column j
@@ -201,7 +207,7 @@ class MultiThreadSLIM_ElasticNet(SLIMElasticNetRecommender, BaseItemSimilarityMa
 
     def fit(self,l1_ratio=0.1,
                  positive_only=True,
-                 topK = 100,
+                 topK = 500,
                  workers=multiprocessing.cpu_count()):
 
         assert 0 <= l1_ratio <= 1, "SLIM_ElasticNet: l1_ratio must be between 0 and 1, provided value was {}".format(l1_ratio)
@@ -236,3 +242,30 @@ class MultiThreadSLIM_ElasticNet(SLIMElasticNetRecommender, BaseItemSimilarityMa
         # generate the sparse weight matrix
         self.W_sparse = sps.csr_matrix((values, (rows, cols)), shape=(n_items, n_items), dtype=np.float32)
 
+if __name__ == '__main__':
+
+    evaluate = True
+
+    train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
+
+    SLIMElasticNet_args = {
+        'l1_ratio': 1e-05,
+        'alpha' : 0.001,
+        'topK' : 1000
+    }
+
+    if evaluate:
+        evaluator = EvaluatorHoldout(test, [10], target_users=get_data()['target_users'])
+
+        slel = SLIMElasticNetRecommender(train)
+        slel.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'],
+                 topK=SLIMElasticNet_args['topK'], alpha=SLIMElasticNet_args['alpha'])
+
+        result, result_string = evaluator.evaluateRecommender(slel)
+        print(f"MAP: {result[10]['MAP']:.5f}")
+
+    else:
+        urm_all = train + test
+        hybrid = HybridRecommender(urm_all, ucm)
+        hybrid.fit(weight_itemcf=weight_itemcf, weight_p3=weight_p3, weight_rp3=weight_rp3, weight_als=weight_als)
+        write_output(hybrid, get_data()['target_users'])
