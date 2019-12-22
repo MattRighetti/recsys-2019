@@ -11,6 +11,7 @@ from Algorithms.MatrixFactorization.ALSRecommender import ALSRecommender
 from Algorithms.SLIM_BPR.Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Algorithms.GraphBased.P3alphaRecommender import P3alphaRecommender
 from Algorithms.GraphBased.RP3betaRecommender import RP3betaRecommender
+from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import MultiThreadSLIM_ElasticNet
 
 from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Base.BaseRecommender import BaseRecommender
@@ -39,14 +40,16 @@ class HybridRecommender(BaseRecommender):
         self.P3 = None
         self.userCBF = None
         self.ALS = None
+        self.slimEl = None
 
 
-    def fit(self, weight_itemcf = 0.0, weight_p3 = 0.0, weight_rp3 = 0.0, weight_als = 0.0):
+    def fit(self, weight_itemcf = 0.0, weight_p3 = 0.0, weight_rp3 = 0.0, weight_als = 0.0, weight_slimel = 0.0):
 
         self.weight_itemcf = weight_itemcf
         self.weight_p3 = weight_p3
         self.weight_rp3 = weight_rp3
         self.weight_als = weight_als
+        self.weight_slimel = weight_slimel
 
         ###################### DEFAULT VALUES #########################
         itemCF_args = {
@@ -58,6 +61,12 @@ class HybridRecommender(BaseRecommender):
             'tversky_alpha': 0.12331166243379268,
             'tversky_beta': 1.9752288743799558,
             'asymmetric_alpha': 0.0
+        }
+
+        SLIMElasticNet_args = {
+            'l1_ratio': 1e-5,
+            'alpha': 0.001,
+            'topK': 2500
         }
 
         P3_args = {
@@ -79,10 +88,10 @@ class HybridRecommender(BaseRecommender):
         }
 
         ALS_args = {
-            'n_factors' : 300,
-            'regularization' : 0.55,
-            'iterations' : 30,
-            'alpha_val' : 15
+            'n_factors': 433,
+            'iterations': 29,
+            'regularization': 1.707545716729426e-05,
+            'alpha_val': 5
         }
 
         ############################ INIT ############################
@@ -94,6 +103,7 @@ class HybridRecommender(BaseRecommender):
         self.P3 = P3alphaRecommender(self.URM_train, verbose=False)
         self.userCBF = UserKNNCBFRecommender(self.URM_train, self.UCM, verbose=False)
         self.ALS = ALSRecommender(self.URM_train, verbose = False)
+        self.slimEl = MultiThreadSLIM_ElasticNet(self.URM_train, verbose = False)
 
         ############################ FIT #############################
         if self.verbose:
@@ -132,16 +142,20 @@ class HybridRecommender(BaseRecommender):
                      iterations=ALS_args['iterations'],
                      alpha_val=ALS_args['alpha_val'])
 
+        self.slimEl.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'], topK=SLIMElasticNet_args['topK'])
+
     def _compute_weighted_scores(self, user_id_array):
         itemCF_scores = self.itemCF._compute_item_score(user_id_array)
         P3_scores = self.P3._compute_item_score(user_id_array)
         RP3_scores = self.RP3._compute_item_score(user_id_array)
         ALS_scores = self.ALS._compute_item_score(user_id_array)
+        SLIMElasticNet_scores = self.slimEl._compute_item_score(user_id_array)
 
         scores = itemCF_scores * self.weight_itemcf
         scores += P3_scores * self.weight_p3
         scores += RP3_scores * self.weight_rp3
         scores += ALS_scores * self.weight_als
+        scores += SLIMElasticNet_scores * self.weight_slimel
 
         return scores
 
@@ -176,19 +190,28 @@ class HybridRecommender(BaseRecommender):
 
 
 if __name__ == '__main__':
+    evaluate = False
 
     weight_itemcf = 0.06469128422082827
     weight_p3 = 0.04997541987671707
     weight_rp3 = 0.030600333541027876
     weight_als = 0.0
+    weight_slimEl = 1.0
 
     train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
     ucm = get_data()['UCM']
 
-    evaluator = EvaluatorHoldout(test, [10], target_users=get_data()['target_users'])
+    if evaluate:
+        evaluator = EvaluatorHoldout(test, [10], target_users=get_data()['target_users'])
 
-    hybrid = HybridRecommender(train, ucm)
-    hybrid.fit(weight_itemcf=weight_itemcf, weight_p3=weight_p3, weight_rp3=weight_rp3, weight_als=weight_als)
+        hybrid = HybridRecommender(train, ucm)
+        hybrid.fit(weight_itemcf=weight_itemcf, weight_p3=weight_p3, weight_rp3=weight_rp3, weight_als=weight_als, weight_slimel=weight_slimEl)
 
-    result, result_string = evaluator.evaluateRecommender(hybrid)
-    print(f"MAP: {result[10]['MAP']:.5f}")
+        result, result_string = evaluator.evaluateRecommender(hybrid)
+        print(f"MAP: {result[10]['MAP']:.5f}")
+
+    else:
+        urm_all = train + test
+        hybrid = HybridRecommender(urm_all, ucm)
+        hybrid.fit(weight_itemcf=weight_itemcf, weight_p3=weight_p3, weight_rp3=weight_rp3, weight_als=weight_als, weight_slimel=weight_slimEl)
+        write_output(hybrid, get_data()['target_users'])
