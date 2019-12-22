@@ -161,7 +161,7 @@ if __name__ == '__main__':
     weights_initial = {
         'user_cf' : 0,
         'item_cf' : 2,
-        'ALS' : 0.6,
+        'ALS' : 0.5,
         'P3Alpha' : 2,
         'RP3Alpha': 2
     }
@@ -169,7 +169,7 @@ if __name__ == '__main__':
     weights_middle = {
         'user_cf' : 0,
         'item_cf' : 2,
-        'ALS' : 0.6,
+        'ALS' : 0.5,
         'P3Alpha': 2,
         'RP3Alpha': 2
     }
@@ -177,7 +177,7 @@ if __name__ == '__main__':
     weights_end = {
         'user_cf' : 0,
         'item_cf' : 2,
-        'ALS' : 0.1,
+        'ALS' : 0.5,
         'P3Alpha' : 2,
         'RP3Alpha': 2
     }
