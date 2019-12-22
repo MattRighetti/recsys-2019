@@ -51,10 +51,10 @@ class ALSRecommender(BaseRecommender):
 if __name__ == '__main__':
 
     ALS_args = {
-        'n_factors': 300,
-        'iterations': 30,
-        'regularization': 0.55,
-        'alpha_val' : 15
+        'n_factors': 433,
+        'iterations': 29,
+        'regularization': 1.707545716729426e-05,
+        'alpha_val' : 5
     }
 
     train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
