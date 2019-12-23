@@ -4,6 +4,8 @@
 @author: Massimo Quadrana
 """
 
+from tqdm import tqdm
+
 from Utils.Toolkit import get_data
 from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
@@ -44,6 +46,22 @@ class SLIMElasticNetRecommender(BaseItemSimilarityMatrixRecommender):
         super(SLIMElasticNetRecommender, self).__init__(URM_train, verbose = verbose)
 
 
+    def get_expected_ratings(self, user_id):
+        user_profile = self.URM_train[user_id]
+        expected_ratings = user_profile.dot(self.W_sparse).toarray().ravel()
+        return expected_ratings
+
+    def recommend(self, user_id, at=10):
+        scores = self.get_expected_ratings(user_id)
+        user_profile = self.URM_train[user_id].indices
+        scores[user_profile] = 0
+
+        # rank items
+        recommended_items = np.flip(np.argsort(scores), 0)
+
+        return recommended_items[:at]
+
+
     def fit(self, l1_ratio=0.1, alpha = 1.0, positive_only=True, topK = 100):
 
         assert 0 <= l1_ratio <= 1, "{}: l1_ratio must be between 0 and 1, provided value was {}".format(self.RECOMMENDER_NAME, l1_ratio)
@@ -53,7 +71,7 @@ class SLIMElasticNetRecommender(BaseItemSimilarityMatrixRecommender):
         self.topK = topK
 
         # Display ConvergenceWarning only once and not for every item it occurs
-        warnings.simplefilter("once", category = ConvergenceWarning)
+        warnings.simplefilter("ignore", category = ConvergenceWarning)
 
         # initialize the ElasticNet model
         self.model = ElasticNet(alpha=alpha,
@@ -83,7 +101,7 @@ class SLIMElasticNetRecommender(BaseItemSimilarityMatrixRecommender):
         start_time_printBatch = start_time
 
         # fit each item's factors sequentially (not in parallel)
-        for currentItem in range(n_items):
+        for currentItem in tqdm(range(n_items), desc="Fitting model..."):
 
             # get the target column
             y = URM_train[:, currentItem].toarray()
@@ -242,16 +260,31 @@ class MultiThreadSLIM_ElasticNet(SLIMElasticNetRecommender, BaseItemSimilarityMa
         # generate the sparse weight matrix
         self.W_sparse = sps.csr_matrix((values, (rows, cols)), shape=(n_items, n_items), dtype=np.float32)
 
+    def get_expected_ratings(self, user_id):
+        user_profile = self.URM_train[user_id]
+        expected_ratings = user_profile.dot(self.W_sparse).toarray().ravel()
+        return expected_ratings
+
+    def recommend(self, user_id, at=10):
+        scores = self.get_expected_ratings(user_id)
+        user_profile = self.URM_train[user_id].indices
+        scores[user_profile] = 0
+
+        # rank items
+        recommended_items = np.flip(np.argsort(scores), 0)
+
+        return recommended_items[:at]
+
 if __name__ == '__main__':
 
-    evaluate = True
+    evaluate = False
 
     train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
 
     SLIMElasticNet_args = {
-        'l1_ratio': 1e-05,
-        'alpha' : 0.001,
-        'topK' : 1000
+        'l1_ratio': 0.0006245454169236135,
+        'alpha' : 0.0039850527909321976,
+        'topK' : 118
     }
 
     if evaluate:
@@ -266,6 +299,10 @@ if __name__ == '__main__':
 
     else:
         urm_all = train + test
-        hybrid = HybridRecommender(urm_all, ucm)
-        hybrid.fit(weight_itemcf=weight_itemcf, weight_p3=weight_p3, weight_rp3=weight_rp3, weight_als=weight_als)
-        write_output(hybrid, get_data()['target_users'])
+
+        slel = SLIMElasticNetRecommender(urm_all)
+        slel.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'],
+                 topK=SLIMElasticNet_args['topK'],
+                 alpha=SLIMElasticNet_args['alpha'])
+
+        write_output(slel, get_data()['target_users'])
