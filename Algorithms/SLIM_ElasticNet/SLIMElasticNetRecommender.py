@@ -45,6 +45,10 @@ class SLIMElasticNetRecommender(BaseItemSimilarityMatrixRecommender):
     def __init__(self, URM_train, verbose = True):
         super(SLIMElasticNetRecommender, self).__init__(URM_train, verbose = verbose)
 
+    def get_expected_ratings(self, user_id):
+        user_profile = self.URM_train[user_id]
+        expected_ratings = user_profile.dot(self.W_sparse).toarray().ravel()
+        return expected_ratings
 
     def fit(self, l1_ratio=0.1, alpha = 1.0, positive_only=True, topK = 100):
 
@@ -171,7 +175,7 @@ class MultiThreadSLIM_ElasticNet(SLIMElasticNetRecommender, BaseItemSimilarityMa
 
 
     def _partial_fit(self, currentItem, X, topK):
-        model = ElasticNet(alpha=1.0,
+        model = ElasticNet(alpha=self.alpha,
                                 l1_ratio=self.l1_ratio,
                                 positive=self.positive_only,
                                 fit_intercept=False,
@@ -207,16 +211,19 @@ class MultiThreadSLIM_ElasticNet(SLIMElasticNetRecommender, BaseItemSimilarityMa
 
         return values, rows, cols
 
-    def fit(self,l1_ratio=0.1,
-                 positive_only=True,
-                 topK = 500,
-                 workers=multiprocessing.cpu_count()):
+    def fit(self,
+            l1_ratio=0.1,
+            positive_only=True,
+            topK = 500,
+            alpha=1.0,
+            workers=multiprocessing.cpu_count()):
 
         assert 0 <= l1_ratio <= 1, "SLIM_ElasticNet: l1_ratio must be between 0 and 1, provided value was {}".format(l1_ratio)
 
         self.l1_ratio = l1_ratio
         self.positive_only = positive_only
         self.topK = topK
+        self.alpha = alpha
 
         self.workers = workers
 
@@ -244,37 +251,23 @@ class MultiThreadSLIM_ElasticNet(SLIMElasticNetRecommender, BaseItemSimilarityMa
         # generate the sparse weight matrix
         self.W_sparse = sps.csr_matrix((values, (rows, cols)), shape=(n_items, n_items), dtype=np.float32)
 
-    def get_expected_ratings(self, user_id):
-        user_profile = self.URM_train[user_id]
-        expected_ratings = user_profile.dot(self.W_sparse).toarray().ravel()
-        return expected_ratings
-
-    def recommend(self, user_id, at=10):
-        scores = self.get_expected_ratings(user_id)
-        user_profile = self.URM_train[user_id].indices
-        scores[user_profile] = 0
-
-        # rank items
-        recommended_items = np.flip(np.argsort(scores), 0)
-
-        return recommended_items[:at]
-
 if __name__ == '__main__':
 
-    evaluate = False
+    best_values = [
+        {'topK': 852, 'l1_ratio': 1.0351291192456847e-05, 'alpha': 0.002222232489404766},
+        {'l1_ratio': 0.0006245454169236135, 'alpha': 0.0039850527909321976, 'topK': 118}
+    ]
+
+    evaluate = True
 
     train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
 
-    SLIMElasticNet_args = {
-        'l1_ratio': 0.0006245454169236135,
-        'alpha' : 0.0039850527909321976,
-        'topK' : 118
-    }
+    SLIMElasticNet_args = best_values[0]
 
     if evaluate:
         evaluator = EvaluatorHoldout(test, [10], target_users=get_data()['target_users'])
 
-        slel = SLIMElasticNetRecommender(train)
+        slel = MultiThreadSLIM_ElasticNet(train)
         slel.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'],
                  topK=SLIMElasticNet_args['topK'], alpha=SLIMElasticNet_args['alpha'])
 

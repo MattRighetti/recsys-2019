@@ -138,7 +138,7 @@ class HybridRecommender(BaseRecommender):
 
 ################################################ Test ##################################################
 if __name__ == '__main__':
-    test = False
+    test = True
     split_users = True
     max_map = 0
     data = get_data()
