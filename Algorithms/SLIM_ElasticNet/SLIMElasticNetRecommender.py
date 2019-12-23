@@ -46,22 +46,6 @@ class SLIMElasticNetRecommender(BaseItemSimilarityMatrixRecommender):
         super(SLIMElasticNetRecommender, self).__init__(URM_train, verbose = verbose)
 
 
-    def get_expected_ratings(self, user_id):
-        user_profile = self.URM_train[user_id]
-        expected_ratings = user_profile.dot(self.W_sparse).toarray().ravel()
-        return expected_ratings
-
-    def recommend(self, user_id, at=10):
-        scores = self.get_expected_ratings(user_id)
-        user_profile = self.URM_train[user_id].indices
-        scores[user_profile] = 0
-
-        # rank items
-        recommended_items = np.flip(np.argsort(scores), 0)
-
-        return recommended_items[:at]
-
-
     def fit(self, l1_ratio=0.1, alpha = 1.0, positive_only=True, topK = 100):
 
         assert 0 <= l1_ratio <= 1, "{}: l1_ratio must be between 0 and 1, provided value was {}".format(self.RECOMMENDER_NAME, l1_ratio)
