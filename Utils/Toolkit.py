@@ -259,16 +259,18 @@ def get_static_data(index=1):
     icm_price = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/data_ICM_price.npz')
     ucm_age = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/data_UCM_age.npz')
     ucm_region = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/data_UCM_region.npz')
+    target_users = np.load('/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/target_users.npy')
 
     data = {
-	'URM_all' : urm,
-	'UCM_region': ucm_region,
-	'UCM_age': ucm_age,
-	'ICM_subclass': icm_subclass,
-	'ICM_asset': icm_asset,
-	'ICM_price': icm_price,
-	'test': static_test,
-	'train': static_train	
+        'URM_all' : urm,
+        'UCM_region': ucm_region,
+        'UCM_age': ucm_age,
+        'ICM_subclass': icm_subclass,
+        'ICM_asset': icm_asset,
+        'ICM_price': icm_price,
+        'test': static_test,
+        'train': static_train,
+        'target_users': target_users
     }
     
     return data
