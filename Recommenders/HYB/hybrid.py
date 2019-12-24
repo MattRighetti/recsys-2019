@@ -5,7 +5,7 @@ from Recommenders.CF.user_cf import UserBasedCollaborativeFiltering
 from Recommenders.CBF.item_CBF import ItemContentBasedRecommender
 from Recommenders.CBF.user_CBF import UserContentBasedRecommender
 from Recommenders.MF.ALS import AlternatingLeastSquare
-from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import SLIMElasticNetRecommender
+from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import MultiThreadSLIM_ElasticNet
 from Recommenders.Graph.P3GraphRecommender import P3alphaRecommender
 from Algorithms.GraphBased.RP3betaRecommender import RP3betaRecommender
 from Recommenders.SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
@@ -90,8 +90,8 @@ class HybridRecommender(BaseRecommender):
 
         print("Done fitting models...")
 
-        self.Slim_El = SLIMElasticNetRecommender(self.URM_train, verbose=False)
-        self.Slim_El.fit(l1_ratio=1e-05, alpha=0.001, topK=1000)
+        self.Slim_El = MultiThreadSLIM_ElasticNet(self.URM_train, verbose=False)
+        self.Slim_El.fit(l1_ratio=0.0006245454169236135, alpha=0.0039850527909321976, topK=118)
 
     def recommend(self, user_id, at=10, exclude_seen=True):
         self.itemCF_scores = self.itemCF.get_expected_ratings(user_id)
@@ -171,30 +171,30 @@ if __name__ == '__main__':
     }
 
     weights_initial = {
-        'user_cf' : 0,
-        'item_cf' : 0,
-        'ALS' : 0,
-        'P3Alpha' : 0,
-        'RP3Alpha': 0,
-        'SLIMElasticNet' : 1
+        'user_cf': 0,
+        'item_cf': 2,
+        'ALS': 0.5,
+        'P3Alpha': 2,
+        'RP3Alpha': 2,
+        'SLIMElasticNet': 2
     }
 
     weights_middle = {
-        'user_cf' : 0,
-        'item_cf' : 0,
-        'ALS' : 0,
-        'P3Alpha' : 0,
-        'RP3Alpha': 0,
-        'SLIMElasticNet' : 1
+        'user_cf': 0,
+        'item_cf': 2,
+        'ALS': 0.5,
+        'P3Alpha': 2,
+        'RP3Alpha': 2,
+        'SLIMElasticNet': 2
     }
 
     weights_end = {
-        'user_cf' : 0,
-        'item_cf' : 0,
-        'ALS' : 0,
-        'P3Alpha' : 0,
-        'RP3Alpha': 0,
-        'SLIMElasticNet' : 1
+        'user_cf': 0,
+        'item_cf': 2,
+        'ALS': 0.5,
+        'P3Alpha': 2,
+        'RP3Alpha': 2,
+        'SLIMElasticNet': 2
     }
 
     hyb = HybridRecommender(weights=[weights_initial, weights_middle, weights_end],

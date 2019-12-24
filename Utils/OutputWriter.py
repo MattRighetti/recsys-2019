@@ -1,5 +1,6 @@
 import os
 import datetime
+from tqdm import tqdm
 
 def write_output(fittedRecommender, target_user_list):
     """
@@ -11,7 +12,7 @@ def write_output(fittedRecommender, target_user_list):
     file = open(create_unique_file(), "w+")
     file.write("user_id,item_list\n")
 
-    for user_id in target_user_list:
+    for user_id in tqdm(target_user_list):
         recommendations = fittedRecommender.recommend(user_id, 10)
         array_string = " ".join(str(x) for x in recommendations)
         file.write(f'{user_id},{array_string}\n')

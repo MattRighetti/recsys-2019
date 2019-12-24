@@ -173,6 +173,10 @@ class MultiThreadSLIM_ElasticNet(SLIMElasticNetRecommender, BaseItemSimilarityMa
 
         super(MultiThreadSLIM_ElasticNet, self).__init__(URM_train, verbose = verbose)
 
+    def get_expected_ratings(self, user_id):
+        user_profile = self.URM_train[user_id]
+        expected_ratings = user_profile.dot(self.W_sparse).toarray().ravel()
+        return expected_ratings
 
     def _partial_fit(self, currentItem, X, topK):
         model = ElasticNet(alpha=self.alpha,
@@ -225,7 +229,7 @@ class MultiThreadSLIM_ElasticNet(SLIMElasticNetRecommender, BaseItemSimilarityMa
         self.topK = topK
         self.alpha = alpha
 
-        self.workers = workers
+        self.workers = 7
 
         self.URM_train = check_matrix(self.URM_train, 'csc', dtype=np.float32)
         n_items = self.URM_train.shape[1]
