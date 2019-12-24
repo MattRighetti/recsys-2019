@@ -137,7 +137,7 @@ class HybridRecommender(BaseRecommender):
 
         if os.path.isfile(
                 f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.RP3.RECOMMENDER_NAME}.zip'):
-            self.itemCF.load_model(
+            self.RP3.load_model(
                 '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
                 f'{self.RP3.RECOMMENDER_NAME}.zip')
         else:
@@ -160,14 +160,21 @@ class HybridRecommender(BaseRecommender):
             self.userCBF.fit(topK=userCBF_args['topK'], shrink=userCBF_args['shrink'])
             self.userCBF.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.userCBF.RECOMMENDER_NAME)
 
-        self.ALS.fit(n_factors=ALS_args['n_factors'],
-                     regularization=ALS_args['regularization'],
-                     iterations=ALS_args['iterations'],
-                     alpha_val=ALS_args['alpha_val'])
+        if os.path.isfile(
+                f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.ALS.RECOMMENDER_NAME}.zip'):
+            self.ALS.load_model(
+                '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
+                f'{self.ALS.RECOMMENDER_NAME}.zip')
+        else:
+            self.ALS.fit(n_factors=ALS_args['n_factors'],
+                         regularization=ALS_args['regularization'],
+                         iterations=ALS_args['iterations'],
+                         alpha_val=ALS_args['alpha_val'])
+            self.ALS.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.ALS.RECOMMENDER_NAME)
 
         if os.path.isfile(
                 f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.slimEl.RECOMMENDER_NAME}.zip'):
-            self.itemCF.load_model(
+            self.slimEl.load_model(
                 '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
                 f'{self.slimEl.RECOMMENDER_NAME}.zip')
         else:
@@ -218,6 +225,11 @@ class HybridRecommender(BaseRecommender):
     def save_model(self, folder_path, file_name = None):
         print("Saving not implemented...")
 
+
+    def _check_if_loadable(self, model):
+        if os.path.isfile(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{model.RECOMMENDER_NAME}.zip'):
+            model.load_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
+                             f'{model.RECOMMENDER_NAME}.zip')
 
 
 

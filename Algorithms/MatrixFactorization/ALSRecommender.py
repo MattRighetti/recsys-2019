@@ -3,6 +3,7 @@ from implicit.als import AlternatingLeastSquares
 import numpy as np
 
 from Utils.Toolkit import get_data
+from Algorithms.Base.DataIO import DataIO
 from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
 from Algorithms.Data_manager.Kaggle.KaggleDataReader import KaggleDataReader
@@ -11,8 +12,12 @@ from Utils.OutputWriter import write_output
 
 class ALSRecommender(BaseRecommender):
 
+    RECOMMENDER_NAME = "ALSRecommender"
+
     def __init__(self, URM_train, verbose=True):
         super().__init__(URM_train, verbose)
+        self.user_factors = None
+        self.item_factors = None
 
 
     def fit(self, n_factors=300, regularization=0.55, iterations=30, alpha_val=15):
@@ -45,7 +50,16 @@ class ALSRecommender(BaseRecommender):
         return np.asarray(scores_list, dtype=np.float32)
 
     def save_model(self, folder_path, file_name = None):
-        print("Saving not implemented...")
+
+        if file_name is None:
+            file_name = self.RECOMMENDER_NAME
+
+        data_dict_to_save = {"user_factors": self.user_factors, "item_factors": self.item_factors}
+
+        dataIO = DataIO(folder_path=folder_path)
+        dataIO.save_data(file_name=file_name, data_dict_to_save=data_dict_to_save)
+
+        self._print("Saving complete")
 
 
 if __name__ == '__main__':
