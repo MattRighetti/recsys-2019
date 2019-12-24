@@ -222,8 +222,8 @@ def get_data(split_kind=None, test_train_index='1'):
     ICM = dataReader.ICM_total()
     UCM = dataReader.UCM_total()
     target_users = dataReader.target_users()
-    static_train = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/saved_test_train/train_{test_train_index}.npz')
-    static_test = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/saved_test_train/test_{test_train_index}.npz')
+    static_train = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/saved_test_train/train/train_{test_train_index}.npz')
+    static_test = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/saved_test_train/test/test_{test_train_index}.npz')
 
     if split_kind is None:
         testGen = TestGen(URM_all.tocsr(), ICM_subclass.tocsr(), TestSplit.LEAVE_ONE_OUT)
@@ -248,4 +248,27 @@ def get_data(split_kind=None, test_train_index='1'):
         's_test':static_test
     }
 
+    return data
+
+def get_static_data(index=1):
+    static_train = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/saved_test_train/train/train_{index}.npz')
+    static_test = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/saved_test_train/test/test_{index}.npz')
+    urm = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/data_train.npz')
+    icm_subclass = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/data_ICM_sub_class.npz')
+    icm_asset = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/data_ICM_asset.npz')
+    icm_price = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/data_ICM_price.npz')
+    ucm_age = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/data_UCM_age.npz')
+    ucm_region = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/data_UCM_region.npz')
+
+    data = {
+	'URM_all' : urm,
+	'UCM_region': ucm_region,
+	'UCM_age': ucm_age,
+	'ICM_subclass': icm_subclass,
+	'ICM_asset': icm_asset,
+	'ICM_price': icm_price,
+	'test': static_test,
+	'train': static_train	
+    }
+    
     return data
