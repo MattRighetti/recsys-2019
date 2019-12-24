@@ -69,7 +69,7 @@ class SLIMElasticNetRecommender(BaseItemSimilarityMatrixRecommender):
                                 copy_X=False,
                                 precompute=True,
                                 selection='random',
-                                max_iter=100,
+                                max_iter=40,
                                 tol=1e-4)
 
         URM_train = check_matrix(self.URM_train, 'csc', dtype=np.float32)
@@ -146,7 +146,7 @@ class SLIMElasticNetRecommender(BaseItemSimilarityMatrixRecommender):
             if time.time() - start_time_printBatch > 300 or currentItem == n_items-1:
                 self._print("Processed {} ( {:.2f}% ) in {:.2f} {}. Items per second: {:.2f}".format(
                     currentItem+1,
-                    100.0* float(currentItem+1)/n_items,
+                    100.0 * float(currentItem+1)/n_items,
                     new_time_value,
                     new_time_unit,
                     float(currentItem)/elapsed_time))
@@ -186,7 +186,7 @@ class MultiThreadSLIM_ElasticNet(SLIMElasticNetRecommender, BaseItemSimilarityMa
                                 copy_X=False,
                                 precompute=True,
                                 selection='random',
-                                max_iter=200,
+                                max_iter=40,
                                 tol=1e-4)
 
         # WARNING: make a copy of X to avoid race conditions on column j
@@ -259,19 +259,20 @@ if __name__ == '__main__':
 
     best_values = [
         {'topK': 852, 'l1_ratio': 1.0351291192456847e-05, 'alpha': 0.002222232489404766},
-        {'l1_ratio': 0.0006245454169236135, 'alpha': 0.0039850527909321976, 'topK': 118}
+        {'l1_ratio': 0.0006245454169236135, 'alpha': 0.0039850527909321976, 'topK': 118},
+        {'l1_ratio':0.00622, 'topK':150, 'alpha':0.00308}
     ]
 
     evaluate = True
 
-    train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
+    train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'].tocsr(), k_out=1)
 
-    SLIMElasticNet_args = best_values[0]
+    SLIMElasticNet_args = best_values[2]
 
     if evaluate:
         evaluator = EvaluatorHoldout(test, [10], target_users=get_data()['target_users'])
 
-        slel = MultiThreadSLIM_ElasticNet(train)
+        slel = SLIMElasticNetRecommender(train)
         slel.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'],
                  topK=SLIMElasticNet_args['topK'], alpha=SLIMElasticNet_args['alpha'])
 
