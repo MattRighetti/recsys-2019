@@ -211,7 +211,7 @@ def get_target_users_group(target_users, URM):
     return np.array(group_cold), np.array(group_one), np.array(group_two), np.array(group_three)
 
 
-def get_data(split_kind=None, test_train_index=1):
+def get_data(split_kind=None, test_train_index='1'):
     dataReader = DataReader()
     UCM_region = dataReader.UCM_region_COO()
     UCM_age = dataReader.UCM_age_COO()
@@ -222,10 +222,8 @@ def get_data(split_kind=None, test_train_index=1):
     ICM = dataReader.ICM_total()
     UCM = dataReader.UCM_total()
     target_users = dataReader.target_users()
-    static_train = sps.load_npz('/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/saved_test_train/train_'
-                                + str(test_train_index))
-    static_test = sps.load_npz('/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/saved_test_train/test_'
-                               + str(test_train_index))
+    static_train = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/saved_test_train/train_{test_train_index}.npz')
+    static_test = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/saved_test_train/test_{test_train_index}.npz')
 
     if split_kind is None:
         testGen = TestGen(URM_all.tocsr(), ICM_subclass.tocsr(), TestSplit.LEAVE_ONE_OUT)
