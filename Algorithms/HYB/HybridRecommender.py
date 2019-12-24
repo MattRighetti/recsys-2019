@@ -1,4 +1,5 @@
-from Utils.Toolkit import get_data
+from Utils.Toolkit import get_static_data
+import os.path
 from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
 from Algorithms.Data_manager.Kaggle.KaggleDataReader import KaggleDataReader
@@ -64,9 +65,9 @@ class HybridRecommender(BaseRecommender):
         }
 
         SLIMElasticNet_args = {
-            'l1_ratio': 1e-5,
-            'alpha': 0.001,
-            'topK': 2500
+            'topK': 852,
+            'l1_ratio': 1.0351291192456847e-05,
+            'alpha': 0.002222232489404766
         }
 
         P3_args = {
@@ -106,43 +107,74 @@ class HybridRecommender(BaseRecommender):
         self.slimEl = MultiThreadSLIM_ElasticNet(self.URM_train, verbose = False)
 
         ############################ FIT #############################
-        if self.verbose:
-            print("Fitting Item CF", end='\r')
+        if os.path.isfile(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.itemCF.RECOMMENDER_NAME}.zip'):
+            self.itemCF.load_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', f'{self.itemCF.RECOMMENDER_NAME}.zip')
+        else:
+            if self.verbose:
+                print("Fitting Item CF", end='\r')
+            self.itemCF.fit(topK=itemCF_args['topK'],
+                            shrink=itemCF_args['shrink'],
+                            similarity=itemCF_args['similarity'],
+                            feature_weighting=itemCF_args['fw'],
+                            tversky_alpha=itemCF_args['tversky_alpha'],
+                            tversky_beta=itemCF_args['tversky_beta'],
+                            asymmetric_alpha=itemCF_args['asymmetric_alpha'])
 
-        self.itemCF.fit(topK=itemCF_args['topK'],
-                        shrink=itemCF_args['shrink'],
-                        similarity=itemCF_args['similarity'],
-                        feature_weighting=itemCF_args['fw'],
-                        tversky_alpha=itemCF_args['tversky_alpha'],
-                        tversky_beta=itemCF_args['tversky_beta'],
-                        asymmetric_alpha=itemCF_args['asymmetric_alpha'])
+            self.itemCF.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.itemCF.RECOMMENDER_NAME)
 
-        if self.verbose:
-            print("Fitting P3", end='\r')
+        if os.path.isfile(
+                f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.P3.RECOMMENDER_NAME}.zip'):
+            self.P3.load_model(
+                '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
+                f'{self.P3.RECOMMENDER_NAME}.zip')
+        else:
+            if self.verbose:
+                print("Fitting P3", end='\r')
+            self.P3.fit(topK=P3_args['topK'],
+                        alpha=P3_args['alpha'],
+                        normalize_similarity=P3_args['normalize'])
+            self.P3.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.P3.RECOMMENDER_NAME)
 
-        self.P3.fit(topK=P3_args['topK'],
-                    alpha=P3_args['alpha'],
-                    normalize_similarity=P3_args['normalize'])
+        if os.path.isfile(
+                f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.RP3.RECOMMENDER_NAME}.zip'):
+            self.itemCF.load_model(
+                '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
+                f'{self.RP3.RECOMMENDER_NAME}.zip')
+        else:
+            if self.verbose:
+                print("Fitting RP3", end='\r')
+            self.RP3.fit(alpha=RP3_args['alpha'],
+                         beta=RP3_args['beta'],
+                         topK=RP3_args['topK'],
+                         normalize_similarity=RP3_args['normalize_similarity'])
+            self.RP3.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.RP3.RECOMMENDER_NAME)
 
-        if self.verbose:
-            print("Fitting RP3", end='\r')
-
-        self.RP3.fit(alpha=RP3_args['alpha'],
-                     beta=RP3_args['beta'],
-                     topK=RP3_args['topK'],
-                     normalize_similarity=RP3_args['normalize_similarity'])
-
-        if self.verbose:
-            print("Fitting UserCBF", end='\r')
-
-        self.userCBF.fit(topK=userCBF_args['topK'], shrink=userCBF_args['shrink'])
+        if os.path.isfile(
+                f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.userCBF.RECOMMENDER_NAME}.zip'):
+            self.userCBF.load_model(
+                '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
+                f'{self.userCBF.RECOMMENDER_NAME}.zip')
+        else:
+            if self.verbose:
+                print("Fitting UserCBF", end='\r')
+            self.userCBF.fit(topK=userCBF_args['topK'], shrink=userCBF_args['shrink'])
+            self.userCBF.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.userCBF.RECOMMENDER_NAME)
 
         self.ALS.fit(n_factors=ALS_args['n_factors'],
                      regularization=ALS_args['regularization'],
                      iterations=ALS_args['iterations'],
                      alpha_val=ALS_args['alpha_val'])
 
-        self.slimEl.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'], topK=SLIMElasticNet_args['topK'])
+        if os.path.isfile(
+                f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.slimEl.RECOMMENDER_NAME}.zip'):
+            self.itemCF.load_model(
+                '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
+                f'{self.slimEl.RECOMMENDER_NAME}.zip')
+        else:
+            if self.verbose:
+                print("Fitting SlimElasticNet", end='\r')
+            self.slimEl.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'], topK=SLIMElasticNet_args['topK'])
+            self.slimEl.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.slimEl.RECOMMENDER_NAME)
 
     def _compute_weighted_scores(self, user_id_array):
         itemCF_scores = self.itemCF._compute_item_score(user_id_array)
@@ -190,7 +222,7 @@ class HybridRecommender(BaseRecommender):
 
 
 if __name__ == '__main__':
-    evaluate = False
+    evaluate = True
 
     weight_itemcf = 0.06469128422082827
     weight_p3 = 0.04997541987671707
@@ -198,11 +230,13 @@ if __name__ == '__main__':
     weight_als = 0.0
     weight_slimEl = 1.0
 
-    train, test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
-    ucm = get_data()['UCM']
+    data = get_static_data(5)
+    train = data['train']
+    test = data['test']
+    ucm = data['UCM']
 
     if evaluate:
-        evaluator = EvaluatorHoldout(test, [10], target_users=get_data()['target_users'])
+        evaluator = EvaluatorHoldout(test, [10], target_users=data['target_users'])
 
         hybrid = HybridRecommender(train, ucm)
         hybrid.fit(weight_itemcf=weight_itemcf, weight_p3=weight_p3, weight_rp3=weight_rp3, weight_als=weight_als, weight_slimel=weight_slimEl)
@@ -214,4 +248,4 @@ if __name__ == '__main__':
         urm_all = train + test
         hybrid = HybridRecommender(urm_all, ucm)
         hybrid.fit(weight_itemcf=weight_itemcf, weight_p3=weight_p3, weight_rp3=weight_rp3, weight_als=weight_als, weight_slimel=weight_slimEl)
-        write_output(hybrid, get_data()['target_users'])
+        write_output(hybrid, data['target_users'])

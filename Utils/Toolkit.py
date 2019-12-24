@@ -260,11 +260,13 @@ def get_static_data(index=1):
     ucm_age = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/data_UCM_age.npz')
     ucm_region = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/data_UCM_region.npz')
     target_users = np.load('/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/target_users.npy')
+    ucm_joined = sps.hstack((ucm_age, ucm_region))
 
     data = {
         'URM_all' : urm,
         'UCM_region': ucm_region,
         'UCM_age': ucm_age,
+        'UCM': ucm_joined,
         'ICM_subclass': icm_subclass,
         'ICM_asset': icm_asset,
         'ICM_price': icm_price,
