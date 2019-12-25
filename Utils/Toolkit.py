@@ -1,4 +1,5 @@
 from Algorithms.Base.IR_feature_weighting import okapi_BM_25
+from Algorithms.Base.Recommender_utils import check_matrix
 from Utils.DataSplitter import DataSplitter
 from sklearn.preprocessing import normalize
 from sklearn import feature_extraction
@@ -261,6 +262,11 @@ def get_static_data(index=1):
     ucm_region = sps.load_npz(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/data_UCM_region.npz')
     target_users = np.load('/Users/mattiarighetti/Developer/PycharmProjects/recsys/data/data_matrices/target_users.npy')
     ucm_joined = sps.hstack((ucm_age, ucm_region))
+
+    for matrix in [static_train, static_train, urm, icm_subclass, icm_asset,
+                   icm_price, ucm_region, ucm_age, ucm_joined]:
+
+        check_matrix(matrix, format='csr')
 
     data = {
         'URM_all' : urm,
