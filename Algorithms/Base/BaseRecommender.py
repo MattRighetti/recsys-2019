@@ -21,7 +21,7 @@ class BaseRecommender(object):
 
         super(BaseRecommender, self).__init__()
 
-        self.URM_train = check_matrix(URM_train.copy(), 'csr', dtype=np.float32)
+        self.URM_train = check_matrix(URM_train.copy(), 'csr', dtype=np.float64)
         self.URM_train.eliminate_zeros()
 
         self.n_users, self.n_items = self.URM_train.shape

@@ -41,7 +41,7 @@ class HybridRecommender(BaseRecommender):
         self.P3 = None
         self.userCBF = None
         self.ALS = None
-        # self.slimEl = None
+        self.slimEl = None
 
 
     def fit(self, weight_itemcf = 0.0, weight_p3 = 0.0, weight_rp3 = 0.0, weight_als = 0.0, weight_slimel = 0.0):
@@ -104,7 +104,7 @@ class HybridRecommender(BaseRecommender):
         self.P3 = P3alphaRecommender(self.URM_train, verbose=False)
         self.userCBF = UserKNNCBFRecommender(self.URM_train, self.UCM, verbose=False)
         self.ALS = ALSRecommender(self.URM_train, verbose = False)
-        # self.slimEl = MultiThreadSLIM_ElasticNet(self.URM_train, verbose = False)
+        self.slimEl = MultiThreadSLIM_ElasticNet(self.URM_train, verbose = False)
 
         ############################ FIT #############################
         if os.path.isfile(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.itemCF.RECOMMENDER_NAME}.zip'):
@@ -172,29 +172,29 @@ class HybridRecommender(BaseRecommender):
                          alpha_val=ALS_args['alpha_val'])
             self.ALS.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.ALS.RECOMMENDER_NAME)
 
-        # if os.path.isfile(
-        #         f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.slimEl.RECOMMENDER_NAME}.zip'):
-        #     self.slimEl.load_model(
-        #         '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
-        #         f'{self.slimEl.RECOMMENDER_NAME}.zip')
-        # else:
-        #     if self.verbose:
-        #         print("Fitting SlimElasticNet", end='\r')
-        #     self.slimEl.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'], topK=SLIMElasticNet_args['topK'])
-        #     self.slimEl.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.slimEl.RECOMMENDER_NAME)
+        if os.path.isfile(
+                f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.slimEl.RECOMMENDER_NAME}.zip'):
+            self.slimEl.load_model(
+                '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
+                f'{self.slimEl.RECOMMENDER_NAME}.zip')
+        else:
+            if self.verbose:
+                print("Fitting SlimElasticNet", end='\r')
+            self.slimEl.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'], topK=SLIMElasticNet_args['topK'])
+            self.slimEl.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.slimEl.RECOMMENDER_NAME)
 
     def _compute_weighted_scores(self, user_id_array):
         itemCF_scores = self.itemCF._compute_item_score(user_id_array)
         P3_scores = self.P3._compute_item_score(user_id_array)
         RP3_scores = self.RP3._compute_item_score(user_id_array)
         ALS_scores = self.ALS._compute_item_score(user_id_array)
-        # SLIMElasticNet_scores = self.slimEl._compute_item_score(user_id_array)
+        SLIMElasticNet_scores = self.slimEl._compute_item_score(user_id_array)
 
         scores = itemCF_scores * self.weight_itemcf
         scores += P3_scores * self.weight_p3
         scores += RP3_scores * self.weight_rp3
         scores += ALS_scores * self.weight_als
-        # scores += SLIMElasticNet_scores * self.weight_slimel
+        scores += SLIMElasticNet_scores * self.weight_slimel
 
         return scores
 
@@ -234,7 +234,7 @@ class HybridRecommender(BaseRecommender):
 
 
 if __name__ == '__main__':
-    evaluate = True
+    evaluate = False
 
     weight_itemcf = 0.0
     weight_p3 = 0.0
