@@ -6,7 +6,7 @@ from Recommenders.CBF.item_CBF import ItemContentBasedRecommender
 from Recommenders.CBF.user_CBF import UserContentBasedRecommender
 from Recommenders.MF.ALS import AlternatingLeastSquare
 from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import MultiThreadSLIM_ElasticNet
-from Recommenders.Graph.P3GraphRecommender import P3alphaRecommender
+from Recommenders.Graph.P3GraphRecommender import P3AlphaRecommender
 from Algorithms.GraphBased.RP3betaRecommender import RP3betaRecommender
 from Recommenders.SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Recommenders.BaseRecommender import BaseRecommender
@@ -54,7 +54,7 @@ class HYB(BaseRecommender):
 
         self.userCBF = UserContentBasedRecommender(topK=self.userCBF_args['topK'], shrink=self.userCBF_args['shrink'])
 
-        self.P3alpha = P3alphaRecommender(topK=self.P3alpha_args['topK'],
+        self.P3alpha = P3AlphaRecommender(topK=self.P3alpha_args['topK'],
                                           alpha=self.P3alpha_args['alpha'],
                                           normalize_similarity=self.P3alpha_args['normalize'])
 

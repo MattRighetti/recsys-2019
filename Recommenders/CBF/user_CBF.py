@@ -1,6 +1,6 @@
-from Algorithms.Base.Similarity.Cython.Compute_Similarity_Cython import Compute_Similarity_Cython
+from Algorithms.Base.Similarity.Compute_Similarity import Compute_Similarity
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_algorithm, evaluate_MAP, evaluate_MAP_target_users
-from Utils.Toolkit import DataReader, normalize, get_URM_BM_25, get_URM_TFIDF, get_data
+from Algorithms.Base.IR_feature_weighting import TF_IDF
 from Recommenders.BaseRecommender import BaseRecommender
 import numpy as np
 import scipy.sparse as sps
@@ -20,9 +20,13 @@ class UserContentBasedRecommender(BaseRecommender):
         self.SM = None
         self.RM = None
 
-    def compute_similarity(self, UCM, topK, shrink):
-        similarity_object = Compute_Similarity_Cython(UCM, shrink, topK, True, similarity='cosine')
-        return sps.csr_matrix(similarity_object.compute_similarity())
+    def compute_similarity(self, UCM, topK, shrink, similarity):
+        similarity_object = Compute_Similarity(dataMatrix=UCM,
+                                               shrink=shrink,
+                                               topK=topK,
+                                               similarity=similarity,
+                                               normalize = True)
+        return similarity_object.compute_similarity()
 
     def recommend(self, user_id, at=10, exclude_seen=True):
         expected_ratings = self.get_expected_ratings(user_id)
@@ -38,8 +42,9 @@ class UserContentBasedRecommender(BaseRecommender):
         # PRICE IS NOT INCLUDED INTENTIONALLY
         self.URM_train = URM_train.copy()
         self.UCM = UCM.copy()
-        self.UCM = get_URM_TFIDF(self.UCM)
-        self.SM = self.compute_similarity(self.UCM.T, self.topK, self.shrink)
+        self.UCM = self.UCM.astype(np.float64)
+        self.UCM = TF_IDF(self.UCM)
+        self.SM = self.compute_similarity(self.UCM.T, self.topK, self.shrink, similarity='cosine')
         self.RM = self.SM.dot(self.URM_train)
         self.RM = self.RM.tocsr()
 

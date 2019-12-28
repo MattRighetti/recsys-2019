@@ -9,7 +9,6 @@ from Utils.OutputWriter import write_output
 from Algorithms.KNN.ItemKNNCFRecommender import ItemKNNCFRecommender
 from Algorithms.KNN.UserKNNCBFRecommender import UserKNNCBFRecommender
 from Algorithms.MatrixFactorization.ALSRecommender import ALSRecommender
-from Algorithms.SLIM_BPR.Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Algorithms.GraphBased.P3alphaRecommender import P3alphaRecommender
 from Algorithms.GraphBased.RP3betaRecommender import RP3betaRecommender
 from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import MultiThreadSLIM_ElasticNet
@@ -236,11 +235,11 @@ class HybridRecommender(BaseRecommender):
 if __name__ == '__main__':
     evaluate = False
 
-    weight_itemcf = 0.0
-    weight_p3 = 0.0
-    weight_rp3 = 0.0
+    weight_itemcf = 0.06469128422082827
+    weight_p3 = 0.04997541987671707
+    weight_rp3 = 0.030600333541027876
     weight_als = 1.506525953103991
-    weight_slimEl = 2.0
+    weight_slimEl = 0.0
 
     data = get_static_data(5)
     train = data['train']

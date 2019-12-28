@@ -29,11 +29,11 @@ class UserKNNCBFRecommender(BaseUserSimilarityMatrixRecommender):
                     self.FEATURE_WEIGHTING_VALUES, feature_weighting))
 
         if feature_weighting == "BM25":
-            self.ICM_train = self.ICM_train.astype(np.float32)
+            self.ICM_train = self.ICM_train.astype(np.float64)
             self.ICM_train = okapi_BM_25(self.ICM_train)
 
         elif feature_weighting == "TF-IDF":
-            self.ICM_train = self.ICM_train.astype(np.float32)
+            self.ICM_train = self.ICM_train.astype(np.float64)
             self.ICM_train = TF_IDF(self.ICM_train)
 
         similarity = Compute_Similarity(self.ICM_train.T, shrink=shrink, topK=topK, normalize=normalize,

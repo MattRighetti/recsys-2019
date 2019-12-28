@@ -49,14 +49,14 @@ class RP3betaRecommender(BaseItemSimilarityMatrixRecommender):
             self.URM_train.data[self.URM_train.data < self.min_rating] = 0
             self.URM_train.eliminate_zeros()
             if self.implicit:
-                self.URM_train.data = np.ones(self.URM_train.data.size, dtype=np.float32)
+                self.URM_train.data = np.ones(self.URM_train.data.size, dtype=np.float64)
 
         #Pui is the row-normalized urm
         Pui = normalize(self.URM_train, norm='l1', axis=1)
 
         #Piu is the column-normalized, "boolean" urm transposed
         X_bool = self.URM_train.transpose(copy=True)
-        X_bool.data = np.ones(X_bool.data.size, np.float32)
+        X_bool.data = np.ones(X_bool.data.size, np.float64)
 
         # Taking the degree of each item to penalize top popular
         # Some rows might be zero, make sure their degree remains zero
@@ -88,7 +88,7 @@ class RP3betaRecommender(BaseItemSimilarityMatrixRecommender):
 
         rows = np.zeros(dataBlock, dtype=np.int32)
         cols = np.zeros(dataBlock, dtype=np.int32)
-        values = np.zeros(dataBlock, dtype=np.float32)
+        values = np.zeros(dataBlock, dtype=np.float64)
 
         numCells = 0
 
@@ -120,7 +120,7 @@ class RP3betaRecommender(BaseItemSimilarityMatrixRecommender):
                     if numCells == len(rows):
                         rows = np.concatenate((rows, np.zeros(dataBlock, dtype=np.int32)))
                         cols = np.concatenate((cols, np.zeros(dataBlock, dtype=np.int32)))
-                        values = np.concatenate((values, np.zeros(dataBlock, dtype=np.float32)))
+                        values = np.concatenate((values, np.zeros(dataBlock, dtype=np.float64)))
 
 
                     rows[numCells] = current_block_start_row + row_in_block

@@ -129,12 +129,12 @@ class BaseRecommender(object):
         scores_batch = self._compute_item_score(user_id_array, items_to_compute=items_to_compute)
 
 
-        for user_index in range(len(user_id_array)):
-
-            user_id = user_id_array[user_index]
-
-            if remove_seen_flag:
-                scores_batch[user_index,:] = self._remove_seen_on_scores(user_id, scores_batch[user_index, :])
+        # for user_index in range(len(user_id_array)):
+        #
+        #     user_id = user_id_array[user_index]
+        #
+        #     if remove_seen_flag:
+        #         scores_batch[user_index,:] = self._remove_seen_on_scores(user_id, scores_batch[user_index, :])
 
             # Sorting is done in three steps. Faster then plain np.argsort for higher number of items
             # - Partition the data to extract the set of relevant items
@@ -153,30 +153,19 @@ class BaseRecommender(object):
         if remove_custom_items_flag:
             scores_batch = self._remove_custom_items_on_scores(scores_batch)
 
-        # relevant_items_partition is block_size x cutoff
-        relevant_items_partition = (-scores_batch).argpartition(cutoff, axis=1)[:,0:cutoff]
-
-        # Get original value and sort it
-        # [:, None] adds 1 dimension to the array, from (block_size,) to (block_size,1)
-        # This is done to correctly get scores_batch value as [row, relevant_items_partition[row,:]]
-        relevant_items_partition_original_value = scores_batch[np.arange(scores_batch.shape[0])[:, None], relevant_items_partition]
-        relevant_items_partition_sorting = np.argsort(-relevant_items_partition_original_value, axis=1)
-        ranking = relevant_items_partition[np.arange(relevant_items_partition.shape[0])[:, None], relevant_items_partition_sorting]
+        ranking = np.flip(np.argsort(scores_batch, axis=1), axis=1)
 
         ranking_list = [None] * ranking.shape[0]
 
         # Remove from the recommendation list any item that has a -inf score
         # Since -inf is a flag to indicate an item to remove
         for user_index in range(len(user_id_array)):
+            user_id = user_id_array[user_index]
             user_recommendation_list = ranking[user_index]
-            user_item_scores = scores_batch[user_index, user_recommendation_list]
-
-            not_inf_scores_mask = np.logical_not(np.isinf(user_item_scores))
-
-            user_recommendation_list = user_recommendation_list[not_inf_scores_mask]
+            unseen = np.in1d(user_recommendation_list, self.URM_train.indices[self.URM_train.indptr[user_id]:self.URM_train.indptr[user_id+1]],
+                             assume_unique=True, invert=True)
+            user_recommendation_list = user_recommendation_list[unseen]
             ranking_list[user_index] = user_recommendation_list.tolist()
-
-
 
         # Return single list for one user, instead of list of lists
         if single_user:

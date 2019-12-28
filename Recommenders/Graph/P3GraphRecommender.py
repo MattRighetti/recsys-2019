@@ -5,10 +5,8 @@ from sklearn.preprocessing import normalize
 from Utils.Toolkit import get_data
 from Recommenders.BaseRecommender import BaseRecommender
 from Algorithms.Base.Recommender_utils import check_matrix, similarityMatrixTopK
-from Algorithms.Base.BaseSimilarityMatrixRecommender import BaseItemSimilarityMatrixRecommender
 
-
-class P3alphaRecommender(BaseRecommender):
+class P3AlphaRecommender(BaseRecommender):
 
     RECOMMENDER_NAME = "P3alphaRecommender"
 

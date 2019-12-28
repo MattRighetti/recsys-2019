@@ -1,12 +1,12 @@
 from Algorithms.Notebooks_utils.evaluation_function import evaluate_MAP, evaluate_MAP_target_users
-from Algorithms.GraphBased.P3alphaRecommender import P3alphaRecommender
+# from Algorithms.GraphBased.P3alphaRecommender import P3alphaRecommender
 from Recommenders.CF.item_cf import ItemBasedCollaborativeFiltering
 from Recommenders.CF.user_cf import UserBasedCollaborativeFiltering
 from Recommenders.CBF.item_CBF import ItemContentBasedRecommender
 from Recommenders.CBF.user_CBF import UserContentBasedRecommender
 from Recommenders.MF.ALS import AlternatingLeastSquare
 from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import MultiThreadSLIM_ElasticNet
-from Recommenders.Graph.P3GraphRecommender import P3alphaRecommender
+from Recommenders.Graph.P3GraphRecommender import P3AlphaRecommender
 from Algorithms.GraphBased.RP3betaRecommender import RP3betaRecommender
 from Recommenders.SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Recommenders.BaseRecommender import BaseRecommender
@@ -58,7 +58,7 @@ class HybridRecommender(BaseRecommender):
 
         self.userCBF = UserContentBasedRecommender(topK=self.userCBF_args['topK'], shrink=self.userCBF_args['shrink'])
 
-        self.P3alpha = P3alphaRecommender(topK=self.P3alpha_args['topK'],
+        self.P3alpha = P3AlphaRecommender(topK=self.P3alpha_args['topK'],
                                           alpha=self.P3alpha_args['alpha'],
                                           normalize_similarity=self.P3alpha_args['normalize'])
 
@@ -90,8 +90,8 @@ class HybridRecommender(BaseRecommender):
 
         print("Done fitting models...")
 
-        self.Slim_El = MultiThreadSLIM_ElasticNet(self.URM_train, verbose=False)
-        self.Slim_El.fit(l1_ratio=0.0006245454169236135, alpha=0.0039850527909321976, topK=118)
+        #self.Slim_El = MultiThreadSLIM_ElasticNet(self.URM_train, verbose=False)
+        #self.Slim_El.fit(l1_ratio=0.0006245454169236135, alpha=0.0039850527909321976, topK=118)
 
     def recommend(self, user_id, at=10, exclude_seen=True):
         self.itemCF_scores = self.itemCF.get_expected_ratings(user_id)
