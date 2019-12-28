@@ -8,7 +8,6 @@ Created on 23/10/17
 from Utils.Toolkit import get_data
 from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
-from Algorithms.Data_manager.Kaggle.KaggleDataReader import KaggleDataReader
 from Algorithms.Data_manager.DataSplitter_leave_k_out import DataSplitter_leave_k_out
 from Utils.OutputWriter import write_output
 

@@ -17,7 +17,7 @@ class UserKNNCBFRecommender(BaseUserSimilarityMatrixRecommender):
 
         self.ICM_train = ICM_train
 
-    def fit(self, topK=50, shrink=100, similarity='cosine', normalize=True, feature_weighting="none",
+    def fit(self, topK=50, shrink=100, similarity='cosine', normalize=True, feature_weighting="TF-IDF",
             **similarity_args):
 
         self.topK = topK

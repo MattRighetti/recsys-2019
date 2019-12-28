@@ -2,7 +2,6 @@ from Utils.Toolkit import get_static_data
 import os.path
 from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
-from Algorithms.Data_manager.Kaggle.KaggleDataReader import KaggleDataReader
 from Algorithms.Data_manager.DataSplitter_leave_k_out import DataSplitter_leave_k_out
 from Utils.OutputWriter import write_output
 
@@ -233,7 +232,7 @@ class HybridRecommender(BaseRecommender):
 
 
 if __name__ == '__main__':
-    evaluate = False
+    evaluate = True
 
     weight_itemcf = 0.06469128422082827
     weight_p3 = 0.04997541987671707
