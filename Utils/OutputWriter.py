@@ -1,6 +1,8 @@
 import os
 import datetime
+import pandas as pd
 from tqdm import tqdm
+import numpy as np
 
 def write_output(fittedRecommender, target_user_list):
     """
@@ -10,12 +12,29 @@ def write_output(fittedRecommender, target_user_list):
     :return:
     """
     file = open(create_unique_file(), "w+")
-    file.write("user_id,item_list\n")
 
-    for user_id in tqdm(target_user_list):
-        recommendations = fittedRecommender.recommend(user_id, 10)
-        array_string = " ".join(str(x) for x in recommendations)
-        file.write(f'{user_id},{array_string}\n')
+    print("Getting recommendations...")
+    rec_list = fittedRecommender.recommend(target_user_list, cutoff=10)
+
+    user_index = 0
+    df_list = []
+
+    print("Generating new list...")
+
+    for list_ in tqdm(rec_list):
+        row = [target_user_list[user_index], np.squeeze(np.array(list_))]
+        df_list.append(row)
+        user_index += 1
+
+    cols = ['user_id', 'item_list']
+
+    df = pd.DataFrame(df_list, columns=cols)
+
+    string = df.to_csv(index=False)
+    string = string.replace(']', '')
+    string = string.replace('[', '')
+
+    file.write(string)
 
     file.close()
     print("Success")

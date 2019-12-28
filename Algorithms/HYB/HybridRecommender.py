@@ -1,5 +1,6 @@
 from Utils.Toolkit import get_static_data
 import os.path
+from tqdm import tqdm
 from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
 from Algorithms.Data_manager.Split_functions.split_train_validation_leave_k_out import split_train_leave_k_out_user_wise
 from Algorithms.Data_manager.DataSplitter_leave_k_out import DataSplitter_leave_k_out
@@ -43,6 +44,8 @@ class HybridRecommender(BaseRecommender):
 
 
     def fit(self, weight_itemcf = 0.0, weight_p3 = 0.0, weight_rp3 = 0.0, weight_als = 0.0, weight_slimel = 0.0):
+
+        saved_model_path = '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/'
 
         self.weight_itemcf = weight_itemcf
         self.weight_p3 = weight_p3
@@ -105,8 +108,8 @@ class HybridRecommender(BaseRecommender):
         self.slimEl = SLIMElasticNetRecommender(self.URM_train, verbose = False)
 
         ############################ FIT #############################
-        if os.path.isfile(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.itemCF.RECOMMENDER_NAME}.zip'):
-            self.itemCF.load_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', f'{self.itemCF.RECOMMENDER_NAME}.zip')
+        if os.path.isfile(f'{saved_model_path}{self.itemCF.RECOMMENDER_NAME}.zip'):
+            self.itemCF.load_model(saved_model_path, f'{self.itemCF.RECOMMENDER_NAME}.zip')
         else:
             if self.verbose:
                 print("Fitting Item CF", end='\r')
@@ -118,26 +121,21 @@ class HybridRecommender(BaseRecommender):
                             tversky_beta=itemCF_args['tversky_beta'],
                             asymmetric_alpha=itemCF_args['asymmetric_alpha'])
 
-            self.itemCF.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.itemCF.RECOMMENDER_NAME)
+            self.itemCF.save_model(saved_model_path, self.itemCF.RECOMMENDER_NAME)
 
         if os.path.isfile(
-                f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.P3.RECOMMENDER_NAME}.zip'):
-            self.P3.load_model(
-                '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
-                f'{self.P3.RECOMMENDER_NAME}.zip')
+                f'{saved_model_path}{self.P3.RECOMMENDER_NAME}.zip'):
+            self.P3.load_model(saved_model_path, f'{self.P3.RECOMMENDER_NAME}.zip')
         else:
             if self.verbose:
                 print("Fitting P3", end='\r')
             self.P3.fit(topK=P3_args['topK'],
                         alpha=P3_args['alpha'],
                         normalize_similarity=P3_args['normalize'])
-            self.P3.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.P3.RECOMMENDER_NAME)
+            self.P3.save_model(saved_model_path, self.P3.RECOMMENDER_NAME)
 
-        if os.path.isfile(
-                f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.RP3.RECOMMENDER_NAME}.zip'):
-            self.RP3.load_model(
-                '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
-                f'{self.RP3.RECOMMENDER_NAME}.zip')
+        if os.path.isfile(f'{saved_model_path}{self.RP3.RECOMMENDER_NAME}.zip'):
+            self.RP3.load_model(saved_model_path, f'{self.RP3.RECOMMENDER_NAME}.zip')
         else:
             if self.verbose:
                 print("Fitting RP3", end='\r')
@@ -145,80 +143,57 @@ class HybridRecommender(BaseRecommender):
                          beta=RP3_args['beta'],
                          topK=RP3_args['topK'],
                          normalize_similarity=RP3_args['normalize_similarity'])
-            self.RP3.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.RP3.RECOMMENDER_NAME)
+            self.RP3.save_model(saved_model_path, self.RP3.RECOMMENDER_NAME)
 
-        if os.path.isfile(
-                f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.userCBF.RECOMMENDER_NAME}.zip'):
-            self.userCBF.load_model(
-                '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
-                f'{self.userCBF.RECOMMENDER_NAME}.zip')
+        if os.path.isfile(f'{saved_model_path}{self.userCBF.RECOMMENDER_NAME}.zip'):
+            self.userCBF.load_model(saved_model_path, f'{self.userCBF.RECOMMENDER_NAME}.zip')
         else:
             if self.verbose:
                 print("Fitting UserCBF", end='\r')
             self.userCBF.fit(topK=userCBF_args['topK'], shrink=userCBF_args['shrink'])
-            self.userCBF.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.userCBF.RECOMMENDER_NAME)
+            self.userCBF.save_model(saved_model_path, self.userCBF.RECOMMENDER_NAME)
 
-        if os.path.isfile(
-                f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.ALS.RECOMMENDER_NAME}.zip'):
-            self.ALS.load_model(
-                '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
-                f'{self.ALS.RECOMMENDER_NAME}.zip')
+        if os.path.isfile(f'{saved_model_path}{self.ALS.RECOMMENDER_NAME}.zip'):
+            self.ALS.load_model(saved_model_path, f'{self.ALS.RECOMMENDER_NAME}.zip')
         else:
             self.ALS.fit(n_factors=ALS_args['n_factors'],
                          regularization=ALS_args['regularization'],
                          iterations=ALS_args['iterations'],
                          alpha_val=ALS_args['alpha_val'])
-            self.ALS.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.ALS.RECOMMENDER_NAME)
+            self.ALS.save_model(saved_model_path, self.ALS.RECOMMENDER_NAME)
 
-        if os.path.isfile(
-                f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.slimEl.RECOMMENDER_NAME}.zip'):
-            self.slimEl.load_model(
-                '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/',
-                f'{self.slimEl.RECOMMENDER_NAME}.zip')
+        if os.path.isfile(f'{saved_model_path}{self.slimEl.RECOMMENDER_NAME}.zip'):
+            self.slimEl.load_model(saved_model_path, f'{self.slimEl.RECOMMENDER_NAME}.zip')
         else:
             if self.verbose:
                 print("Fitting SlimElasticNet", end='\r')
             self.slimEl.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'], topK=SLIMElasticNet_args['topK'])
-            self.slimEl.save_model('/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/', self.slimEl.RECOMMENDER_NAME)
+            self.slimEl.save_model(saved_model_path, self.slimEl.RECOMMENDER_NAME)
 
-    def _compute_weighted_scores(self, user_id_array):
-        itemCF_scores = self.itemCF._compute_item_score(user_id_array)
-        P3_scores = self.P3._compute_item_score(user_id_array)
-        RP3_scores = self.RP3._compute_item_score(user_id_array)
-        ALS_scores = self.ALS._compute_item_score(user_id_array)
-        SLIMElasticNet_scores = self.slimEl._compute_item_score(user_id_array)
+    def _compute_item_score(self, user_id_array, items_to_compute=None):
 
-        scores = itemCF_scores * self.weight_itemcf
-        scores += P3_scores * self.weight_p3
-        scores += RP3_scores * self.weight_rp3
-        scores += ALS_scores * self.weight_als
-        scores += SLIMElasticNet_scores * self.weight_slimel
+        result = [None] * len(user_id_array)
 
-        return scores
-
-    def _compute_item_score(self, user_id_array, items_to_compute = None):
-        # If input is a single int
-        if np.isscalar(user_id_array):
-            if user_id_array in self.cold_users:
-                return self.userCBF._compute_item_score(user_id_array)
+        for i in tqdm(range(len(user_id_array))):
+            if user_id_array[i] in self.cold_users:
+                result[i] = self.userCBF._compute_item_score(user_id_array[i]).ravel().tolist()
             else:
-                return self._compute_weighted_scores(user_id_array)
-        # If input is an array of int
-        else:
+                itemCF_scores = self.itemCF._compute_item_score(user_id_array[i])
+                P3_scores = self.P3._compute_item_score(user_id_array[i])
+                RP3_scores = self.RP3._compute_item_score(user_id_array[i])
+                ALS_scores = self.ALS._compute_item_score(user_id_array[i])
+                SLIMElasticNet_scores = self.slimEl._compute_item_score(user_id_array[i])
 
-            rank_list = []
+                scores = itemCF_scores * self.weight_itemcf
+                scores += P3_scores * self.weight_p3
+                scores += RP3_scores * self.weight_rp3
+                scores += ALS_scores * self.weight_als
+                scores += SLIMElasticNet_scores * self.weight_slimel
+                scores = scores.ravel().tolist()
 
-            for user_id in user_id_array:
-                if user_id in self.cold_users:
-                    score = self.userCBF._compute_item_score(user_id)
-                    score = score.ravel()
-                    rank_list.append(score)
-                else:
-                    score = self._compute_weighted_scores(user_id)
-                    score = score.ravel()
-                    rank_list.append(score)
+                result[i] = scores
 
-            return np.asarray(rank_list, dtype=np.float32)
+        return result
 
     def save_model(self, folder_path, file_name = None):
         print("Saving not implemented...")
@@ -232,7 +207,7 @@ class HybridRecommender(BaseRecommender):
 
 
 if __name__ == '__main__':
-    evaluate = True
+    evaluate = False
 
     weight_itemcf = 0.06469128422082827
     weight_p3 = 0.04997541987671707

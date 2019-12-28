@@ -121,9 +121,6 @@ class BaseRecommender(object):
         else:
             single_user = False
 
-        if cutoff is None:
-            cutoff = self.URM_train.shape[1] - 1
-
         # Compute the scores using the model-specific function
         # Vectorize over all users in user_id_array
         scores_batch = self._compute_item_score(user_id_array, items_to_compute=items_to_compute)
@@ -165,6 +162,10 @@ class BaseRecommender(object):
             unseen = np.in1d(user_recommendation_list, self.URM_train.indices[self.URM_train.indptr[user_id]:self.URM_train.indptr[user_id+1]],
                              assume_unique=True, invert=True)
             user_recommendation_list = user_recommendation_list[unseen]
+
+            if cutoff is not None:
+                user_recommendation_list = user_recommendation_list[:cutoff]
+
             ranking_list[user_index] = user_recommendation_list.tolist()
 
         # Return single list for one user, instead of list of lists
