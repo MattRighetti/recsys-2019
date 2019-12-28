@@ -57,7 +57,7 @@ from Algorithms.Utils.PoolWithSubprocess import PoolWithSubprocess
 from Algorithms.ParameterTuning.SearchBayesianSkopt import SearchBayesianSkopt
 from Algorithms.ParameterTuning.SearchSingleCase import SearchSingleCase
 from Algorithms.ParameterTuning.SearchAbstractClass import SearchInputRecommenderArgs
-from Utils.Toolkit import get_data
+from Utils.Toolkit import get_static_data
 
 
 def run_KNNRecommender_on_similarity_type(similarity_type, parameterSearch,
@@ -545,7 +545,7 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
 
             hyperparameters_range_dictionary = {}
             hyperparameters_range_dictionary["weight_itemcf"] = Real(low=0.0, high=2.0, prior='uniform')
-            # hyperparameters_range_dictionary["weight_slim"] = Real(low=0.0, high=6.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_slimel"] = Real(low=0.0, high=2.0, prior='uniform')
             hyperparameters_range_dictionary["weight_p3"] = Real(low=0.0, high=2.0, prior='uniform')
             hyperparameters_range_dictionary["weight_rp3"] = Real(low=0.0, high=2.0, prior='uniform')
             hyperparameters_range_dictionary["weight_als"] = Real(low=0.0, high=2.0, prior='uniform')
@@ -618,11 +618,12 @@ def read_data_split_and_search():
         - A _best_result_validation file which contains a dictionary with the results of the best solution on the validation
         - A _best_result_test file which contains a dictionary with the results, on the test set, of the best solution chosen using the validation set
     """
-
-    URM_train, URM_test = split_train_leave_k_out_user_wise(get_data()['URM_all'], k_out=1)
+    data = get_static_data(13)
+    URM_train = data['train']
+    URM_test = data['test']
     URM_train, URM_validation = split_train_leave_k_out_user_wise(URM_train, k_out=1)
 
-    output_folder_path = "result_experiments/SKOPT_prova/"
+    output_folder_path = "result_experiments/SKOPT/"
 
 
     # If directory does not exist, create
@@ -635,8 +636,8 @@ def read_data_split_and_search():
         # P3alphaRecommender,
         # RP3betaRecommender,
         # ItemKNNCFRecommender,
-        # HybridRecommender
-        ALSRecommender
+        HybridRecommender
+        # ALSRecommender
         # UserKNNCFRecommender,
         # MatrixFactorization_BPR_Cython,
         # MatrixFactorization_FunkSVD_Cython,
@@ -658,7 +659,7 @@ def read_data_split_and_search():
                                                        URM_train = URM_train,
                                                        metric_to_optimize = "MAP",
                                                        # TODO change num of iterations here
-                                                       n_cases = 100,
+                                                       n_cases = 1000,
                                                        evaluator_validation_earlystopping = evaluator_validation,
                                                        evaluator_validation = evaluator_validation,
                                                        evaluator_test = evaluator_test,

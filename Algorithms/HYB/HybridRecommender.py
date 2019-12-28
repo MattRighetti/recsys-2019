@@ -10,7 +10,7 @@ from Algorithms.KNN.UserKNNCBFRecommender import UserKNNCBFRecommender
 from Algorithms.MatrixFactorization.ALSRecommender import ALSRecommender
 from Algorithms.GraphBased.P3alphaRecommender import P3alphaRecommender
 from Algorithms.GraphBased.RP3betaRecommender import RP3betaRecommender
-from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import MultiThreadSLIM_ElasticNet
+from Algorithms.SLIM_ElasticNet.SLIMElasticNetRecommender import SLIMElasticNetRecommender
 
 from Algorithms.Base.Recommender_utils import check_matrix
 from Algorithms.Base.BaseRecommender import BaseRecommender
@@ -102,7 +102,7 @@ class HybridRecommender(BaseRecommender):
         self.P3 = P3alphaRecommender(self.URM_train, verbose=False)
         self.userCBF = UserKNNCBFRecommender(self.URM_train, self.UCM, verbose=False)
         self.ALS = ALSRecommender(self.URM_train, verbose = False)
-        self.slimEl = MultiThreadSLIM_ElasticNet(self.URM_train, verbose = False)
+        self.slimEl = SLIMElasticNetRecommender(self.URM_train, verbose = False)
 
         ############################ FIT #############################
         if os.path.isfile(f'/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/{self.itemCF.RECOMMENDER_NAME}.zip'):
