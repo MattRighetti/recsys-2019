@@ -7,7 +7,7 @@ from Recommenders.CBF.user_CBF import UserContentBasedRecommender
 from Recommenders.MF.ALS import AlternatingLeastSquare
 from Recommenders.Graph.P3GraphRecommender import P3alphaRecommender
 from Algorithms.GraphBased.RP3betaRecommender import RP3betaRecommender
-from Recommenders.SLIM.SLIM_BPR_Cython import SLIM_BPR_Cython
+from Recommenders.SLIM.SlimElasticNet import SLIMElasticNetRecommender
 from Recommenders.BaseRecommender import BaseRecommender
 from Recommenders.NonPersonalized.top_pop import TopPop
 from Utils.Toolkit import get_data, get_target_users_group
@@ -20,7 +20,7 @@ class HybridRecommender(BaseRecommender):
     RECOMMENDER_NAME = "HYB"
 
     def __init__(self, weights=None, userCF_args=None, itemCF_args=None, P3alpha_args=None,
-                 userCBF_args=None, RP3alpha_args=None):
+                 userCBF_args=None, RP3alpha_args=None, SlimEl_args=None):
         super().__init__()
         ######################## URM ########################
         self.URM_train = None
@@ -36,6 +36,7 @@ class HybridRecommender(BaseRecommender):
         self.userCBF_args = userCBF_args
         self.P3alpha_args = P3alpha_args
         self.RP3alpha_args = RP3alpha_args
+        self.SlimEl_args = SlimEl_args
 
         ######################## Scores ########################
         self.userCF_scores = None
@@ -43,6 +44,7 @@ class HybridRecommender(BaseRecommender):
         self.ALS_scores = None
         self.P3alpha_scores =  None
         self.RP3alpha_scores = None
+        self.SlimEl_scores = None
 
         ######################## Collaborative Filtering ########################
         self.itemCF = ItemBasedCollaborativeFiltering(topK=self.itemCF_args['topK'],
@@ -62,6 +64,8 @@ class HybridRecommender(BaseRecommender):
         self.ALS = AlternatingLeastSquare()
 
         self.RP3alpha = None
+
+        self.SlimElasticNet = None
 
     def fit(self, URM_train, UCM):
         self.URM_train = URM_train.copy()
@@ -83,6 +87,10 @@ class HybridRecommender(BaseRecommender):
         self.RP3alpha = RP3betaRecommender(self.URM_train.copy(), verbose=False)
         self.RP3alpha.fit(alpha=0.032949920239451876, beta=0.14658580479486563, normalize_similarity=True, topK=75)
 
+        print("Fitting SlimElasticNet")
+        self.SlimElasticNet = SLIMElasticNetRecommender(self.URM_train)
+        self.SlimElasticNet.fit(topK=150, l1_ratio=0.00622, alpha=0.00308, positive_only=True, max_iter=40)
+
         print("Done fitting models...")
 
     def recommend(self, user_id, at=10, exclude_seen=True):
@@ -90,6 +98,7 @@ class HybridRecommender(BaseRecommender):
         self.ALS_scores = self.ALS.get_expected_ratings(user_id)
         self.P3alpha_scores = self.P3alpha.get_expected_ratings(user_id)
         self.RP3alpha_scores = self.RP3alpha.get_expected_ratings(user_id)
+        self.SlimEl_scores = self.SlimElasticNet.get_expected_ratings(user_id)
 
         start_pos = self.URM_train.indptr[user_id]
         end_pos = self.URM_train.indptr[user_id + 1]
@@ -104,18 +113,21 @@ class HybridRecommender(BaseRecommender):
             score += self.ALS_scores * self.weight_initial['ALS']
             score += self.P3alpha_scores * self.weight_initial['P3Alpha']
             score += self.RP3alpha_scores * self.weight_initial['RP3Alpha']
+            score += self.SlimEl_scores * self.weight_initial['SlimElasticNet']
 
         elif 2 < len(self.URM_train.indices[start_pos:end_pos]) <= 5:
             score = self.itemCF_scores * self.weight_middle['item_cf']
             score += self.ALS_scores * self.weight_middle['ALS']
             score += self.P3alpha_scores * self.weight_middle['P3Alpha']
-            score += self.RP3alpha_scores * self.weight_initial['RP3Alpha']
+            score += self.RP3alpha_scores * self.weight_middle['RP3Alpha']
+            score += self.SlimEl_scores * self.weight_middle['SlimElasticNet']
 
         elif 5 < len(self.URM_train.indices[start_pos:end_pos]):
             score = self.itemCF_scores * self.weight_end['item_cf']
             score += self.ALS_scores * self.weight_end['ALS']
             score += self.P3alpha_scores * self.weight_end['P3Alpha']
-            score += self.RP3alpha_scores * self.weight_initial['RP3Alpha']
+            score += self.RP3alpha_scores * self.weight_end['RP3Alpha']
+            score += self.SlimEl_scores * self.weight_end['SlimElasticNet']
 
         if exclude_seen:
             score = self._filter_seen(user_id, score)
@@ -126,7 +138,7 @@ class HybridRecommender(BaseRecommender):
 
 ################################################ Test ##################################################
 if __name__ == '__main__':
-    test = False
+    test = True
     split_users = True
     max_map = 0
     data = get_data()
@@ -160,26 +172,29 @@ if __name__ == '__main__':
 
     weights_initial = {
         'user_cf' : 0,
-        'item_cf' : 2,
-        'ALS' : 0.5,
-        'P3Alpha' : 2,
-        'RP3Alpha': 2
+        'item_cf' : 0.9,
+        'ALS' : 0.1,
+        'P3Alpha' : 0.9,
+        'RP3Alpha': 0.9,
+        'SlimElasticNet':1
     }
 
     weights_middle = {
         'user_cf' : 0,
-        'item_cf' : 2,
-        'ALS' : 0.5,
-        'P3Alpha': 2,
-        'RP3Alpha': 2
+        'item_cf' : 0.9,
+        'ALS' : 0.1,
+        'P3Alpha': 0.9,
+        'RP3Alpha': 0.9,
+        'SlimElasticNet':1
     }
 
     weights_end = {
         'user_cf' : 0,
-        'item_cf' : 2,
-        'ALS' : 0.5,
-        'P3Alpha' : 2,
-        'RP3Alpha': 2
+        'item_cf' : 0.9,
+        'ALS' : 0.1,
+        'P3Alpha' : 0.9,
+        'RP3Alpha': 0.9,
+        'SlimElasticNet':1
     }
 
     hyb = HybridRecommender(weights=[weights_initial, weights_middle, weights_end],
