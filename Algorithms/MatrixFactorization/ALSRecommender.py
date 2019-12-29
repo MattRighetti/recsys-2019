@@ -19,7 +19,8 @@ class ALSRecommender(BaseRecommender):
         self.item_factors = None
 
 
-    def fit(self, n_factors=300, regularization=0.55, iterations=30, alpha_val=15):
+    def fit(self, n_factors=433, regularization=1.707545716729426e-05, iterations=29, alpha_val=5):
+
         W_sparse = self.URM_train.T
 
         model = AlternatingLeastSquares(factors=n_factors, regularization=regularization,
@@ -46,7 +47,7 @@ class ALSRecommender(BaseRecommender):
             scores = np.squeeze(scores)
             scores_list.append(scores)
 
-        return np.asarray(scores_list, dtype=np.float32)
+        return np.asarray(scores_list, dtype=np.float64)
 
     def save_model(self, folder_path, file_name = None):
 

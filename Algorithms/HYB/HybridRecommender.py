@@ -42,6 +42,12 @@ class HybridRecommender(BaseRecommender):
         self.ALS = None
         self.slimEl = None
 
+    def set_weights(self, weight_itemcf = 0.0, weight_p3 = 0.0, weight_rp3 = 0.0, weight_als = 0.0, weight_slimel = 0.0):
+        self.weight_itemcf = weight_itemcf
+        self.weight_p3 = weight_p3
+        self.weight_rp3 = weight_rp3
+        self.weight_als = weight_als
+        self.weight_slimel = weight_slimel
 
     def fit(self, weight_itemcf = 0.0, weight_p3 = 0.0, weight_rp3 = 0.0, weight_als = 0.0, weight_slimel = 0.0):
 
@@ -105,7 +111,7 @@ class HybridRecommender(BaseRecommender):
         self.P3 = P3alphaRecommender(self.URM_train, verbose=False)
         self.userCBF = UserKNNCBFRecommender(self.URM_train, self.UCM, verbose=False)
         self.ALS = ALSRecommender(self.URM_train, verbose = False)
-        self.slimEl = SLIMElasticNetRecommender(self.URM_train, verbose = False)
+        #self.slimEl = SLIMElasticNetRecommender(self.URM_train, verbose = False)
 
         ############################ FIT #############################
         if os.path.isfile(f'{saved_model_path}{self.itemCF.RECOMMENDER_NAME}.zip'):
@@ -162,19 +168,19 @@ class HybridRecommender(BaseRecommender):
                          alpha_val=ALS_args['alpha_val'])
             self.ALS.save_model(saved_model_path, self.ALS.RECOMMENDER_NAME)
 
-        if os.path.isfile(f'{saved_model_path}{self.slimEl.RECOMMENDER_NAME}.zip'):
-            self.slimEl.load_model(saved_model_path, f'{self.slimEl.RECOMMENDER_NAME}.zip')
-        else:
-            if self.verbose:
-                print("Fitting SlimElasticNet", end='\r')
-            self.slimEl.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'], topK=SLIMElasticNet_args['topK'])
-            self.slimEl.save_model(saved_model_path, self.slimEl.RECOMMENDER_NAME)
+        # if os.path.isfile(f'{saved_model_path}{self.slimEl.RECOMMENDER_NAME}.zip'):
+        #     self.slimEl.load_model(saved_model_path, f'{self.slimEl.RECOMMENDER_NAME}.zip')
+        # else:
+        #     if self.verbose:
+        #         print("Fitting SlimElasticNet", end='\r')
+        #     self.slimEl.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'], topK=SLIMElasticNet_args['topK'])
+        #     self.slimEl.save_model(saved_model_path, self.slimEl.RECOMMENDER_NAME)
 
     def _compute_item_score(self, user_id_array, items_to_compute=None):
 
         result = [None] * len(user_id_array)
 
-        for i in tqdm(range(len(user_id_array))):
+        for i in range(len(user_id_array)):
             if user_id_array[i] in self.cold_users:
                 result[i] = self.userCBF._compute_item_score(user_id_array[i]).ravel().tolist()
             else:
@@ -182,13 +188,13 @@ class HybridRecommender(BaseRecommender):
                 P3_scores = self.P3._compute_item_score(user_id_array[i])
                 RP3_scores = self.RP3._compute_item_score(user_id_array[i])
                 ALS_scores = self.ALS._compute_item_score(user_id_array[i])
-                SLIMElasticNet_scores = self.slimEl._compute_item_score(user_id_array[i])
+                # SLIMElasticNet_scores = self.slimEl._compute_item_score(user_id_array[i])
 
                 scores = itemCF_scores * self.weight_itemcf
                 scores += P3_scores * self.weight_p3
                 scores += RP3_scores * self.weight_rp3
                 scores += ALS_scores * self.weight_als
-                scores += SLIMElasticNet_scores * self.weight_slimel
+                # scores += SLIMElasticNet_scores * self.weight_slimel
                 scores = scores.ravel().tolist()
 
                 result[i] = scores

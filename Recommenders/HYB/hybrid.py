@@ -16,7 +16,7 @@ from Utils.OutputWriter import write_output
 import numpy as np
 
 
-class HybridRecommender(BaseRecommender):
+class MyHybridRecommender(BaseRecommender):
 
     RECOMMENDER_NAME = "HYB"
 
@@ -93,12 +93,25 @@ class HybridRecommender(BaseRecommender):
         #self.Slim_El = MultiThreadSLIM_ElasticNet(self.URM_train, verbose=False)
         #self.Slim_El.fit(l1_ratio=0.0006245454169236135, alpha=0.0039850527909321976, topK=118)
 
+    def get_expected_ratings(self, user_id):
+
+        scores_dict = {
+            'ALS' :self.ALS.get_expected_ratings(user_id),
+            'P3' : self.P3alpha.get_expected_ratings(user_id),
+            'RP3' : self.RP3alpha.get_expected_ratings(user_id),
+            'itemCF' : self.itemCF.get_expected_ratings(user_id)
+        }
+
+        return scores_dict
+
     def recommend(self, user_id, at=10, exclude_seen=True):
-        self.itemCF_scores = self.itemCF.get_expected_ratings(user_id)
-        self.ALS_scores = self.ALS.get_expected_ratings(user_id)
-        self.P3alpha_scores = self.P3alpha.get_expected_ratings(user_id)
-        self.RP3alpha_scores = self.RP3alpha.get_expected_ratings(user_id)
-        self.Slim_El_scores = self.Slim_El.get_expected_ratings(user_id)
+        scores_dict = self.get_expected_ratings(user_id)
+        # self.Slim_El_scores = self.Slim_El.get_expected_ratings(user_id)
+
+        self.itemCF_scores = scores_dict['itemCF']
+        self.ALS_scores = scores_dict['ALS']
+        self.P3alpha_scores = scores_dict['P3']
+        self.RP3alpha_scores = scores_dict['RP3']
 
         start_pos = self.URM_train.indptr[user_id]
         end_pos = self.URM_train.indptr[user_id + 1]
@@ -113,26 +126,28 @@ class HybridRecommender(BaseRecommender):
             score += self.ALS_scores * self.weight_initial['ALS']
             score += self.P3alpha_scores * self.weight_initial['P3Alpha']
             score += self.RP3alpha_scores * self.weight_initial['RP3Alpha']
-            score += self.Slim_El_scores * self.weight_initial['SLIMElasticNet']
+            # score += self.Slim_El_scores * self.weight_initial['SLIMElasticNet']
 
         elif 2 < len(self.URM_train.indices[start_pos:end_pos]) <= 5:
             score = self.itemCF_scores * self.weight_middle['item_cf']
             score += self.ALS_scores * self.weight_middle['ALS']
             score += self.P3alpha_scores * self.weight_middle['P3Alpha']
-            score += self.RP3alpha_scores * self.weight_initial['RP3Alpha']
-            score += self.Slim_El_scores * self.weight_middle['SLIMElasticNet']
+            score += self.RP3alpha_scores * self.weight_middle['RP3Alpha']
+            # score += self.Slim_El_scores * self.weight_middle['SLIMElasticNet']
 
         elif 5 < len(self.URM_train.indices[start_pos:end_pos]):
             score = self.itemCF_scores * self.weight_end['item_cf']
             score += self.ALS_scores * self.weight_end['ALS']
             score += self.P3alpha_scores * self.weight_end['P3Alpha']
-            score += self.RP3alpha_scores * self.weight_initial['RP3Alpha']
-            score += self.Slim_El_scores * self.weight_end['SLIMElasticNet']
+            score += self.RP3alpha_scores * self.weight_end['RP3Alpha']
+            # score += self.Slim_El_scores * self.weight_end['SLIMElasticNet']
 
+        ranking = np.flip(score.argsort(), 0)
+
+        # remove seen of above
         if exclude_seen:
-            score = self._filter_seen(user_id, score)
-
-        ranking = score.argsort()[::-1]
+            unseen_items_mask = np.in1d(ranking, self.URM_train[user_id].indices, assume_unique=True, invert=True)
+            ranking = ranking[unseen_items_mask]
 
         return ranking[:at]
 
