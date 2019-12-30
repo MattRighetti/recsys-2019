@@ -25,7 +25,7 @@ class AlternatingLeastSquare(BaseRecommender):
         self.item_factors = None
 
     def fit(self, URM):
-        self.URM = URM
+        self.URM = URM.copy()
         sparse_item_user = self.URM.T
 
         # Initialize the als model and fit it using the sparse item-user matrix

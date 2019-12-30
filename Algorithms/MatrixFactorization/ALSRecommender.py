@@ -47,7 +47,7 @@ class ALSRecommender(BaseRecommender):
             scores = np.squeeze(scores)
             scores_list.append(scores)
 
-        return np.asarray(scores_list, dtype=np.float64)
+        return np.asarray(scores_list)
 
     def save_model(self, folder_path, file_name = None):
 

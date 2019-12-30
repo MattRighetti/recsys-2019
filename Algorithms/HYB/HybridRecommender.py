@@ -61,20 +61,20 @@ class HybridRecommender(BaseRecommender):
 
         ###################### DEFAULT VALUES #########################
         itemCF_args = {
-            'topK': 12,
-            'shrink': 88,
-            'similarity': 'tversky',
+            'topK': 14,
+            'shrink': 990,
+            'similarity': 'cosine',
             'normalize': True,
-            'fw': 'none',
+            'fw': 'TF-IDF',
             'tversky_alpha': 0.12331166243379268,
             'tversky_beta': 1.9752288743799558,
             'asymmetric_alpha': 0.0
         }
 
         SLIMElasticNet_args = {
-            'topK': 852,
-            'l1_ratio': 1.0351291192456847e-05,
-            'alpha': 0.002222232489404766
+            'topK': 1000,
+            'l1_ratio': 1e-05,
+            'alpha': 0.001
         }
 
         P3_args = {
@@ -111,7 +111,7 @@ class HybridRecommender(BaseRecommender):
         self.P3 = P3alphaRecommender(self.URM_train, verbose=False)
         self.userCBF = UserKNNCBFRecommender(self.URM_train, self.UCM, verbose=False)
         self.ALS = ALSRecommender(self.URM_train, verbose = False)
-        #self.slimEl = SLIMElasticNetRecommender(self.URM_train, verbose = False)
+        self.slimEl = SLIMElasticNetRecommender(self.URM_train, verbose = False)
 
         ############################ FIT #############################
         if os.path.isfile(f'{saved_model_path}{self.itemCF.RECOMMENDER_NAME}.zip'):
@@ -168,13 +168,13 @@ class HybridRecommender(BaseRecommender):
                          alpha_val=ALS_args['alpha_val'])
             self.ALS.save_model(saved_model_path, self.ALS.RECOMMENDER_NAME)
 
-        # if os.path.isfile(f'{saved_model_path}{self.slimEl.RECOMMENDER_NAME}.zip'):
-        #     self.slimEl.load_model(saved_model_path, f'{self.slimEl.RECOMMENDER_NAME}.zip')
-        # else:
-        #     if self.verbose:
-        #         print("Fitting SlimElasticNet", end='\r')
-        #     self.slimEl.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'], topK=SLIMElasticNet_args['topK'])
-        #     self.slimEl.save_model(saved_model_path, self.slimEl.RECOMMENDER_NAME)
+        if os.path.isfile(f'{saved_model_path}{self.slimEl.RECOMMENDER_NAME}.zip'):
+            self.slimEl.load_model(saved_model_path, f'{self.slimEl.RECOMMENDER_NAME}.zip')
+        else:
+            if self.verbose:
+                print("Fitting SlimElasticNet", end='\r')
+            self.slimEl.fit(l1_ratio=SLIMElasticNet_args['l1_ratio'], topK=SLIMElasticNet_args['topK'])
+            self.slimEl.save_model(saved_model_path, self.slimEl.RECOMMENDER_NAME)
 
     def _compute_item_score(self, user_id_array, items_to_compute=None):
 
@@ -188,13 +188,13 @@ class HybridRecommender(BaseRecommender):
                 P3_scores = self.P3._compute_item_score(user_id_array[i])
                 RP3_scores = self.RP3._compute_item_score(user_id_array[i])
                 ALS_scores = self.ALS._compute_item_score(user_id_array[i])
-                # SLIMElasticNet_scores = self.slimEl._compute_item_score(user_id_array[i])
+                SLIMElasticNet_scores = self.slimEl._compute_item_score(user_id_array[i])
 
                 scores = itemCF_scores * self.weight_itemcf
                 scores += P3_scores * self.weight_p3
                 scores += RP3_scores * self.weight_rp3
                 scores += ALS_scores * self.weight_als
-                # scores += SLIMElasticNet_scores * self.weight_slimel
+                scores += SLIMElasticNet_scores * self.weight_slimel
                 scores = scores.ravel().tolist()
 
                 result[i] = scores
@@ -215,11 +215,11 @@ class HybridRecommender(BaseRecommender):
 if __name__ == '__main__':
     evaluate = False
 
-    weight_itemcf = 0.06469128422082827
-    weight_p3 = 0.04997541987671707
-    weight_rp3 = 0.030600333541027876
-    weight_als = 1.506525953103991
-    weight_slimEl = 0.0
+    weight_itemcf = 0.5
+    weight_p3 = 0.5
+    weight_rp3 = 0.5
+    weight_als = 0.0
+    weight_slimEl = 1.0
 
     data = get_static_data(5)
     train = data['train']
