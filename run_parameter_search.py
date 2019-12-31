@@ -57,7 +57,7 @@ from Algorithms.Utils.PoolWithSubprocess import PoolWithSubprocess
 from Algorithms.ParameterTuning.SearchBayesianSkopt import SearchBayesianSkopt
 from Algorithms.ParameterTuning.SearchSingleCase import SearchSingleCase
 from Algorithms.ParameterTuning.SearchAbstractClass import SearchInputRecommenderArgs
-from Utils.Toolkit import get_static_data
+from Utils.Toolkit import get_static_data, get_data
 
 
 def run_KNNRecommender_on_similarity_type(similarity_type, parameterSearch,
@@ -544,14 +544,21 @@ def runParameterSearch_Collaborative(recommender_class, URM_train, URM_train_las
         if recommender_class is HybridRecommender:
 
             hyperparameters_range_dictionary = {}
-            hyperparameters_range_dictionary["weight_itemcf"] = Real(low=0.0, high=2.0, prior='uniform')
-            hyperparameters_range_dictionary["weight_slimel"] = Real(low=0.0, high=2.0, prior='uniform')
-            hyperparameters_range_dictionary["weight_p3"] = Real(low=0.0, high=2.0, prior='uniform')
-            hyperparameters_range_dictionary["weight_rp3"] = Real(low=0.0, high=2.0, prior='uniform')
-            hyperparameters_range_dictionary["weight_als"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_initial_itemCF"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_initial_p3"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_initial_rp3"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_initial_slimel"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_middle_itemCF"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_middle_p3"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_middle_rp3"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_middle_slimel"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_end_itemCF"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_end_p3"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_end_rp3"] = Real(low=0.0, high=2.0, prior='uniform')
+            hyperparameters_range_dictionary["weight_end_slimel"] = Real(low=0.0, high=2.0, prior='uniform')
 
             recommender_input_args = SearchInputRecommenderArgs(
-                CONSTRUCTOR_POSITIONAL_ARGS = [URM_train, get_data()['UCM']],
+                CONSTRUCTOR_POSITIONAL_ARGS = [URM_train, get_static_data()['UCM']],
                 CONSTRUCTOR_KEYWORD_ARGS = {},
                 FIT_POSITIONAL_ARGS = [],
                 FIT_KEYWORD_ARGS = {}
@@ -618,7 +625,7 @@ def read_data_split_and_search():
         - A _best_result_validation file which contains a dictionary with the results of the best solution on the validation
         - A _best_result_test file which contains a dictionary with the results, on the test set, of the best solution chosen using the validation set
     """
-    data = get_static_data(13)
+    data = get_static_data(20)
     URM_train = data['train']
     URM_test = data['test']
     URM_train, URM_validation = split_train_leave_k_out_user_wise(URM_train, k_out=1)
@@ -659,7 +666,7 @@ def read_data_split_and_search():
                                                        URM_train = URM_train,
                                                        metric_to_optimize = "MAP",
                                                        # TODO change num of iterations here
-                                                       n_cases = 1000,
+                                                       n_cases = 8,
                                                        evaluator_validation_earlystopping = evaluator_validation,
                                                        evaluator_validation = evaluator_validation,
                                                        evaluator_test = evaluator_test,

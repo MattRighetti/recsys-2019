@@ -1,4 +1,4 @@
-from Utils.Toolkit import get_static_data
+from Utils.Toolkit import get_static_data, get_data
 import os.path
 from tqdm import tqdm
 from Algorithms.Base.Evaluation.Evaluator import EvaluatorHoldout
@@ -49,15 +49,33 @@ class HybridRecommender(BaseRecommender):
         self.weight_als = weight_als
         self.weight_slimel = weight_slimel
 
-    def fit(self, weight_itemcf = 0.0, weight_p3 = 0.0, weight_rp3 = 0.0, weight_als = 0.0, weight_slimel = 0.0):
+    def fit(self, weight_initial_itemCF = 0,
+            weight_initial_p3 = 0,
+            weight_initial_rp3 = 0,
+            weight_initial_slimel = 0,
+            weight_middle_itemCF = 0,
+            weight_middle_p3 = 0,
+            weight_middle_rp3 = 0,
+            weight_middle_slimel = 0,
+            weight_end_itemCF = 0,
+            weight_end_p3 = 0,
+            weight_end_rp3 = 0,
+            weight_end_slimel = 0):
 
         saved_model_path = '/Users/mattiarighetti/Developer/PycharmProjects/recsys/Algorithms/HYB/saved_models/'
 
-        self.weight_itemcf = weight_itemcf
-        self.weight_p3 = weight_p3
-        self.weight_rp3 = weight_rp3
-        self.weight_als = weight_als
-        self.weight_slimel = weight_slimel
+        self.weight_initial_itemCF = weight_initial_itemCF
+        self.weight_initial_p3 = weight_initial_p3
+        self.weight_initial_rp3 = weight_initial_rp3
+        self.weight_initial_slimel = weight_initial_slimel
+        self.weight_middle_itemCF = weight_middle_itemCF
+        self.weight_middle_p3 = weight_middle_p3
+        self.weight_middle_rp3 = weight_middle_rp3
+        self.weight_middle_slimel = weight_middle_slimel
+        self.weight_end_itemCF = weight_end_itemCF
+        self.weight_end_p3 = weight_end_p3
+        self.weight_end_rp3 = weight_end_rp3
+        self.weight_end_slimel = weight_end_slimel
 
         ###################### DEFAULT VALUES #########################
         itemCF_args = {
@@ -181,25 +199,51 @@ class HybridRecommender(BaseRecommender):
         result = [None] * len(user_id_array)
 
         for i in range(len(user_id_array)):
+
             if user_id_array[i] in self.cold_users:
-                result[i] = self.userCBF._compute_item_score(user_id_array[i]).ravel().tolist()
+                result[i] = list(self.userCBF._compute_item_score(user_id_array[i]).ravel())
+
             else:
+
                 itemCF_scores = self.itemCF._compute_item_score(user_id_array[i])
                 P3_scores = self.P3._compute_item_score(user_id_array[i])
                 RP3_scores = self.RP3._compute_item_score(user_id_array[i])
                 ALS_scores = self.ALS._compute_item_score(user_id_array[i])
                 SLIMElasticNet_scores = self.slimEl._compute_item_score(user_id_array[i])
 
-                scores = itemCF_scores * self.weight_itemcf
-                scores += P3_scores * self.weight_p3
-                scores += RP3_scores * self.weight_rp3
-                scores += ALS_scores * self.weight_als
-                scores += SLIMElasticNet_scores * self.weight_slimel
-                scores = scores.ravel().tolist()
+                user_id = user_id_array[i]
+                n_interactions = len(self.URM_train.indices[self.URM_train.indptr[user_id]:self.URM_train.indptr[user_id+1]])
+
+                if 0 < n_interactions <= 2:
+
+                    scores = itemCF_scores * self.weight_initial_itemCF
+                    scores += P3_scores * self.weight_initial_p3
+                    scores += RP3_scores * self.weight_initial_rp3
+                    scores += ALS_scores * 0.0
+                    scores += SLIMElasticNet_scores * self.weight_initial_slimel
+                    scores = list(scores.ravel())
+
+                elif 2 < n_interactions <= 5:
+
+                    scores = itemCF_scores * self.weight_middle_itemCF
+                    scores += P3_scores * self.weight_middle_p3
+                    scores += RP3_scores * self.weight_middle_rp3
+                    scores += ALS_scores * 0.0
+                    scores += SLIMElasticNet_scores * self.weight_middle_slimel
+                    scores = list(scores.ravel())
+
+                elif 5 < n_interactions:
+
+                    scores = itemCF_scores * self.weight_end_itemCF
+                    scores += P3_scores * self.weight_end_p3
+                    scores += RP3_scores * self.weight_middle_rp3
+                    scores += ALS_scores * 0.0
+                    scores += SLIMElasticNet_scores * self.weight_middle_slimel
+                    scores = list(scores.ravel())
 
                 result[i] = scores
 
-        return result
+        return np.array(result)
 
     def save_model(self, folder_path, file_name = None):
         print("Saving not implemented...")
@@ -213,7 +257,7 @@ class HybridRecommender(BaseRecommender):
 
 
 if __name__ == '__main__':
-    evaluate = False
+    evaluate = True
 
     weight_itemcf = 0.5
     weight_p3 = 0.5
@@ -222,15 +266,16 @@ if __name__ == '__main__':
     weight_slimEl = 1.0
 
     data = get_static_data(5)
+    target_users = get_data()['target_users']
     train = data['train']
     test = data['test']
     ucm = data['UCM']
 
     if evaluate:
-        evaluator = EvaluatorHoldout(test, [10], target_users=data['target_users'])
+        evaluator = EvaluatorHoldout(test, [10], target_users=target_users)
 
         hybrid = HybridRecommender(train, ucm)
-        hybrid.fit(weight_itemcf=weight_itemcf, weight_p3=weight_p3, weight_rp3=weight_rp3, weight_als=weight_als, weight_slimel=weight_slimEl)
+        hybrid.fit()
 
         result, result_string = evaluator.evaluateRecommender(hybrid)
         print(f"MAP: {result[10]['MAP']:.5f}")
